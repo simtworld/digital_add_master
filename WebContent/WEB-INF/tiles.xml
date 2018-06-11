@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+
+<tiles-definitions>  
+ 
+<!-- Home Page definition -->
+<definition name="home"  template="/WEB-INF/views/commons/layout.jsp">
+	<put-attribute name="Header" value="/WEB-INF/views/commons/header.jsp"></put-attribute>
+	<put-attribute name="Body" value="/WEB-INF/views/welcome.jsp"></put-attribute>
+	<put-attribute name="Left" value=""></put-attribute>
+	<put-attribute name="Footer" value="/WEB-INF/views/commons/footer.jsp"></put-attribute>
+</definition>
+
+<definition name="home.tiles"  extends="home">
+	<put-attribute name="Body" value="/WEB-INF/views/welcome.jsp"></put-attribute>
+</definition>
+ 
+ <definition name="registration.tiles"  extends="home">
+	<put-attribute name="Body" value="/WEB-INF/views/my-account/registration.jsp"></put-attribute>
+</definition>
+
+<definition name="login.tiles"  extends="home">
+	<put-attribute name="Body" value="/WEB-INF/views/my-account/login.jsp"></put-attribute>
+</definition>
+
+<definition name="dashboard.tiles"  extends="home">
+	<put-attribute name="Left" value=""></put-attribute>
+	<put-attribute name="Body" value="/WEB-INF/views/dashboard.jsp"></put-attribute>
+	<put-attribute name="Header" value="/WEB-INF/views/commons/dash_header.jsp"></put-attribute>
+	 
+	<put-attribute name="Left" value=""></put-attribute>
+	<put-attribute name="Footer" value=""></put-attribute>	
+</definition>
+
+<definition name="my-profile.tiles"  extends="home">
+	<put-attribute name="Body" value="/WEB-INF/views/my-account/my-profile.jsp"></put-attribute>
+	<put-attribute name="Left" value="/WEB-INF/views/commons/left-menu.jsp"></put-attribute>	
+</definition>
+
+<definition name="changePassword.tiles"  extends="home">
+	<put-attribute name="Body" value="/WEB-INF/views/my-account/change-password.jsp"></put-attribute>
+	<put-attribute name="Left" value="/WEB-INF/views/commons/left-menu.jsp"></put-attribute>	
+</definition>
+ 
+</tiles-definitions>
