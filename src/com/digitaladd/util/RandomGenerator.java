@@ -1,8 +1,5 @@
 package com.digitaladd.util;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-
 import com.Ostermiller.util.RandPass;
 
 public class RandomGenerator {

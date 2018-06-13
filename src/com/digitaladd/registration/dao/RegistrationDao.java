@@ -1,22 +1,15 @@
 package com.digitaladd.registration.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.digitaladd.common.DBConnectionHandler;
-import com.digitaladd.registration.model.ProductDetails;
 import com.digitaladd.registration.model.User;
 import com.digitaladd.util.ResourceUtility;
-import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 public class RegistrationDao {
 	// singleton implementation
