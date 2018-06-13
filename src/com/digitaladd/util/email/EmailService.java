@@ -1,9 +1,12 @@
 package com.digitaladd.util.email;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.mail.BodyPart;
 import javax.mail.Message;
@@ -16,47 +19,53 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import com.digitaladd.util.ResourceUtility;
+public class EmailService {
+	private String to;
+	private String from;
 
-public class SendEmail {
-	String to;
-	String from;
-
-	final protected String userName;
-	final protected String password;
-
-	// Assuming you are sending email through relay.jangosmtp.net
-	String host;
-	String port;
-
-	boolean flag;
-
-	protected Properties props;
-
-	public SendEmail() {
+	static private String userName;
+	static private String password;
+	static private String host;
+	static private String port;
+	static private Properties props;
+	static private EmailDao emailDAO;
+	
+	private EmailTemplateVO emailTemplateVO;
+	
+	static {
+		configurEmailSMTP();
+	}
+	
+	public EmailService() {
 		super();
-		host = ResourceUtility.getCommonConstant("email.smtp.host");
-
+	}
+	
+	public static void configurEmailSMTP() {
+		
+		emailDAO=EmailDao.getInstance();
+		
+		EmailConfigVO emailConfigVO = emailDAO.getEmailSMTPConfig();
+		
+		userName = emailConfigVO.getUserName();
+		password = emailConfigVO.getPassword();
+		host = emailConfigVO.getHost();
+		port = emailConfigVO.getPort();
+		
 		props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", host);
 		props.put("mail.smtp.port", port);
-
-		userName = ResourceUtility.getCommonConstant("email.smtp.username");
-		;
-		password = ResourceUtility.getCommonConstant("email.smtp.password");
-		;
-
 	}
 
-	public boolean sendMail() {
+	public boolean sendMail(String templateId,Class clazz) {
 		boolean flag = false;
-
+		Field[] filds=clazz.getFields();
+		
 		Map<String, String> input = new HashMap<String, String>();
-		EmailContent emailTemptet = EmailContent.getInstance();
 		Properties emailContentKeywords = new Properties();
-
+		from=userName;
+		EmailTemplateVO emailTemplateVO=emailDAO.getEmailTemplateByTemplateId(templateId);
 		// Get the Session object.
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
@@ -75,16 +84,14 @@ public class SendEmail {
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 
 			// Set Subject: header field
-			message.setSubject("Testing Subject");
+			message.setSubject(emailTemplateVO.emailSubject);
 
 			// start template
 				MimeMultipart _mulPart = new MimeMultipart();
 				BodyPart _bodyPart = new MimeBodyPart();
-				// Set key values
-				emailContentKeywords.load(SendEmail.class.getResourceAsStream("resources/emailKeywords.properties"));
-				input=(Map)emailContentKeywords;
+				
 				// HTML mail content
-				String htmlText =emailTemptet.readHtml(input);
+				String htmlText =this.getHtml(emailTemplateVO.getEmailKewords(), emailTemplateVO);
 				_bodyPart.setContent(htmlText, "text/html");
 	
 				_mulPart.addBodyPart(_bodyPart);
@@ -104,7 +111,25 @@ public class SendEmail {
 		}
 		return flag;
 	}
-
+	
+	
+	/**
+	 * desc this method replace all the keywords with valid data
+	 * @param input
+	 * @param emailTemplateVO
+	 * @return
+	 * @throws IOException
+	 */
+	protected static String getHtml(Map<String, String> input,EmailTemplateVO emailTemplateVO) throws IOException {
+		String msg=emailTemplateVO.emailTemplate;
+		
+		Set<Entry<String, String>> entries = input.entrySet();
+		for (Map.Entry<String, String> entry : entries) {
+			msg = msg.replace(entry.getKey().trim(), entry.getValue().trim());
+		}
+		return msg;
+	}
+	
 	public void setTo(String to) {
 		this.to = to;
 	}
