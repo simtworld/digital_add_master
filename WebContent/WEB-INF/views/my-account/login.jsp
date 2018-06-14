@@ -57,7 +57,7 @@
                                     </div>
                                     <input id="uuid" type="hidden"/>
                                     <div class="footer text-center">
-                                        <button type="button" onclick="checkLogin()" class="btn btn-rose btn-simple btn-wd btn-lg">Let's go</button>
+                                        <button type="button" id="login" onclick="checkLogin()" class="btn btn-rose btn-simple btn-wd btn-lg">Let's go</button>
                                         <button type="button" onclick="openForgotPasswordPopup()" class="btn btn-rose btn-simple btn-wd btn-lg">Forgot Password</button>
                                     </div>
                                 </div>
@@ -71,6 +71,19 @@
     </div>
 </body>
 <script>
+var input=document.getElementById("password")
+	input.addEventListener("keyup", function(event) {
+	  // Cancel the default action, if needed
+		  event.preventDefault();
+	  // Number 13 is the "Enter" key on the keyboard
+	 		 if (event.keyCode === 13) {
+	    // Trigger the button element with a click
+	    document.getElementById("login").click();
+	  }
+	});
+</script>
+<script>
+
 	function checkLogin(){
 		var check = $('#loginForm').valid();
 		

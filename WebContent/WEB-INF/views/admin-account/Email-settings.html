@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<!-- <link
+	href="https://fonts.googleapis.com/css?family=Roboto:400,700&amp;subset=latin,cyrillic-ext"
+	rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet" type="text/css" />
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+	integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+	integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+	crossorigin="anonymous"> -->
+</head>
+<body>
+<div class="row">
+<div class="col-lg-6 col-md-6">
+<div class="card">
+<div class="header">
+<h2>E-mail Settings</h2>
+</div>
+
+<div class="body">
+<div class="alert alert-success email-settings-alert">&nbsp;</div>
+
+<form class="email-settings" method="POST"><label for="smtp_or_mail">Server Type</label>
+
+<div class="form-group"><input id="smtp_or_mail-enabled" name="smtp_or_mail" type="radio" value="smtp" /> <label for="smtp_or_mail-enabled">SMTP Server</label> <input id="smtp_or_mail-disabled" name="smtp_or_mail" type="radio" value="mail" /> <label class="m-l-20" for="smtp_or_mail-disabled">Server Mail (Default)</label></div>
+&nbsp;
+
+<div class="form-group form-float">
+<div class="form-line"><input class="form-control" id="smtp_host" name="smtp_host" type="text" value="mail.pinemitra.com" /> <label class="form-label">SMTP Host</label></div>
+</div>
+
+<div class="form-group form-float">
+<div class="form-line"><input class="form-control" id="smtp_username" name="smtp_username" type="text" value="support@pinemitra.com" /> <label class="form-label">SMTP Username</label></div>
+</div>
+
+<div class="form-group form-float">
+<div class="form-line"><input class="form-control" id="smtp_password" name="smtp_password" type="password" value="pinemitra@98" /> <label class="form-label">SMTP Password</label></div>
+</div>
+
+<div class="form-group form-float">
+<div class="form-line"><input class="form-control" id="smtp_port" name="smtp_port" type="text" value="465" /> <label class="form-label">SMTP Port</label></div>
+</div>
+<label for="smtp_encryption">SMTP Encryption</label>
+
+<div class="form-group"><input id="smtp_encryption-enabled" name="smtp_encryption" type="radio" value="tls" /> <label for="smtp_encryption-enabled">TLS</label> <input id="smtp_encryption-disabled" name="smtp_encryption" type="radio" value="ssl" /> <label class="m-l-20" for="smtp_encryption-disabled">SSL</label></div>
+<span class="help-block">After clicking &quot;Test message&quot;, a test message will be sent to your account email address.</span> <span class="help-block" style="color: red;">Please save the form before testing the server.</span> <input name="hash_id" type="hidden" value="1f5a6b8a87cf031adf39f0a0d1105d1e6b50450f" /><button class="btn btn-primary m-t-15 waves-effect" type="submit">Save</button><button class="btn btn-warning m-t-15 waves-effect" onclick="Wo_TestMessage();" type="button">Test E-mail Server</button></form>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

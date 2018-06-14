@@ -6,7 +6,7 @@
 
 	<div id="wrapper">
 
-		<!-- Navigation -->
+		<%-- <!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
 			<div class="navbar-header">
@@ -202,9 +202,9 @@
 
 
 
-					<%-- <c:set var="uid_data" scope="session" value="USER_01"></c:set>
-					<c:if test="${bean.userTypeId==uid_data}"> --%>
-					<%-- <span>test <c:out value="${bean.userTypeId}" /></span> --%>
+					<c:set var="uid_data" scope="session" value="USER_01"></c:set>
+					<c:if test="${bean.userTypeId==uid_data}">
+					<span>test <c:out value="${bean.userTypeId}" /></span>
 
 
 
@@ -234,8 +234,9 @@
 								<li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
 										User Charts<span class="fa arrow"></span></a>
 									<ul class="nav nav-second-level">
-										<li><a href="flot.html">Flot Charts</a></li>
-										<li><a href="morris.html">Morris.js Charts</a></li>
+										<li><a href="flot.html">float</a></li>
+										<li><a href="morris.html">
+										morris</a></li>
 									</ul> <!-- /.nav-second-level --></li>
 
 								<li><a href="#"><i class="fa fa-sitemap fa-fw"></i>
@@ -259,10 +260,10 @@
 										Admin Tables</a></li>
 
 								<li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
-										AdminCharts<span class="fa arrow"></span></a>
+										Settings<span class="fa arrow"></span></a>
 									<ul class="nav nav-second-level">
-										<li><a href="flot.html">Flot Charts</a></li>
-										<li><a href="morris.html">Morris.js Charts</a></li>
+										<li><a href="email-settings">Email Settings</a></li>
+										<li><a href="morris.html">SMS Settings</a></li>
 									</ul> <!-- /.nav-second-level --></li>
 
 								<li><a href="#"><i class="fa fa-sitemap fa-fw"></i>
@@ -285,13 +286,15 @@
 						        </c:otherwise>
 						</c:choose>
 
-						<%-- </c:if> --%>
+					</c:if>
 				</div>
+				
 				<!-- /.sidebar-collapse -->
 			</div>
+			
 			<!-- /.navbar-static-side -->
 		</nav>
-
+ --%>
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
@@ -526,37 +529,7 @@
 	<!-- /#wrapper -->
 
 	<!-- jQuery -->
-	<script src="<%=request.getContextPath()%>/assets/js/jquery.min.js"></script>
-
-	<!-- Bootstrap Core JavaScript -->
-	<script src="<%=request.getContextPath()%>/assets/js/bootstrap.min.js"></script>
-
-	<!-- Bootstrap Core JavaScript -->
-	<script src="<%=request.getContextPath()%>/assets/js/metisMenu.min.js"></script>
-
-	<!-- Morris Charts JavaScript -->
-	<script src="<%=request.getContextPath()%>/assets/js/raphael.min.js"></script>
-	<script src="<%=request.getContextPath()%>/assets/js/morris.min.js"></script>
-	<script src="<%=request.getContextPath()%>/assets/js/morris-data.js"></script>
-
-	<!-- Custom Theme JavaScript -->
-	<script src="<%=request.getContextPath()%>/assets/js/sb-admin-2.js"></script>
-
-	<!-- Custom Bootstrap Script -->
-	<script src="<%=request.getContextPath()%>/assets/js/custom-scripts.js"></script>
-
-	<!--  DataTables.net Plugin, full documentation here: https://datatables.net/    -->
-	<script
-		src="<%=request.getContextPath()%>/assets/js/jquery.datatables.js"></script>
-
-	<!--  DataTables.net Plugin, full documentation here: https://datatables.net/    -->
-	<script
-		src="<%=request.getContextPath()%>/assets/js/dataTables.bootstrap.js"></script>
-
-	<!-- Sweet Alert plugin, full documentation here:https://sweetalert.js.org/guides/ -->
-	<script src="<%=request.getContextPath()%>/assets/js/sweetalert.min.js"></script>
-
-<script src="<%=request.getContextPath()%>/assets/js/fileinput.min.js"></script>
+	
 
 </body>
 
