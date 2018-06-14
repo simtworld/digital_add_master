@@ -24,6 +24,46 @@ public class EmailDao {
 		super();
 		//no-op
 	}
+	
+	/**
+	 * @param emailTemplateVO
+	 * @return
+	 */
+	public boolean saveEmailTemplate(EmailTemplateVO emailTemplateVO) {
+		boolean flag=false;
+		Connection connection = null;
+		ResultSet rs = null;
+		PreparedStatement preparedStmt = null;
+		EmailTemplateVO vo = null;
+		try {
+			connection = DBConnectionHandler.getDBConnection();
+			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("save.email.template"));
+			preparedStmt.setString(1, emailTemplateVO.getEmailTemplateId());
+			preparedStmt.setString(2, emailTemplateVO.getEmailTemplate());
+			preparedStmt.setString(3, emailTemplateVO.getEmailSubject());
+			preparedStmt.setString(4, emailTemplateVO.getCreatedDate());
+			preparedStmt.setString(5, emailTemplateVO.getCreatedBy());
+			preparedStmt.setString(6, emailTemplateVO.getUpdatedDate());
+			preparedStmt.setString(7, emailTemplateVO.getUpdatedBy());
+			preparedStmt.setInt(8, emailTemplateVO.getStatus());
+			preparedStmt.setString(9, emailTemplateVO.getComments());
+			
+			int i = preparedStmt.executeUpdate();
+			if(i!=0) {
+				flag=true;
+			}
+			
+		} catch (SQLException sx) {
+			System.out.println("EmailDao > saveEmailTemplate() > sqlexception >" + sx);
+			sx.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("EmailDao > saveEmailTemplate() > exception >" + e);
+			e.printStackTrace();
+		} finally {
+			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
+		}
+		return flag;
+	}
 
 	/**
 	 * @param emailTemplateId
@@ -67,11 +107,14 @@ public class EmailDao {
 		return vo;
 	}
 
+	/**
+	 * @param emailTemplateId
+	 * @return
+	 */
 	private HashMap<String, String> getEmailTemplateKeywordsList(String emailTemplateId){
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		EmailTemplateVO vo = null;
 		Map<String,String> emailTemplateKeywordsList=new HashMap<String,String>();
 		try {
 			connection = DBConnectionHandler.getDBConnection();
@@ -93,7 +136,7 @@ public class EmailDao {
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}
-		return null;
+		return (HashMap<String, String>) emailTemplateKeywordsList;
 	}
 	
 	/**

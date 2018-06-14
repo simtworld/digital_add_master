@@ -40,6 +40,14 @@ public class EmailService {
 		super();
 	}
 	
+	/**
+	 * @param emailTemplateVO
+	 * @return
+	 */
+	public boolean changeEmailTemplate(EmailTemplateVO emailTemplateVO) {
+		return emailDAO.saveEmailTemplate(emailTemplateVO);
+	}
+	
 	public static void configurEmailSMTP() {
 		
 		emailDAO=EmailDao.getInstance();
@@ -58,9 +66,8 @@ public class EmailService {
 		props.put("mail.smtp.port", port);
 	}
 
-	public boolean sendMail(String templateId,Class clazz) {
+	public boolean sendMail(String templateId,Map<String,String> realValues) {
 		boolean flag = false;
-		Field[] filds=clazz.getFields();
 		
 		Map<String, String> input = new HashMap<String, String>();
 		Properties emailContentKeywords = new Properties();
@@ -91,7 +98,7 @@ public class EmailService {
 				BodyPart _bodyPart = new MimeBodyPart();
 				
 				// HTML mail content
-				String htmlText =this.getHtml(emailTemplateVO.getEmailKewords(), emailTemplateVO);
+				String htmlText =this.getHtml(createFinalEmailKeywordsMap(emailTemplateVO.getEmailKewords(),realValues), emailTemplateVO);
 				_bodyPart.setContent(htmlText, "text/html");
 	
 				_mulPart.addBodyPart(_bodyPart);
@@ -128,6 +135,20 @@ public class EmailService {
 			msg = msg.replace(entry.getKey().trim(), entry.getValue().trim());
 		}
 		return msg;
+	}
+	
+	/**
+	 * Desc:- create and returns the final keywords Map
+	 * @param emailKeywords
+	 * @param realValues
+	 * @return
+	 */
+	private Map<String,String> createFinalEmailKeywordsMap(Map<String,String> emailKeywords, Map<String,String> realValues){
+		Map<String,String> finalEmailKeywordsMap= new HashMap<String,String>();
+		for (String emailKeywordskey : emailKeywords.keySet()){
+			finalEmailKeywordsMap.put(emailKeywords.get(emailKeywordskey), realValues.get(emailKeywordskey));
+		}
+		return finalEmailKeywordsMap;
 	}
 	
 	public void setTo(String to) {
