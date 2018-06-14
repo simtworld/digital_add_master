@@ -1,8 +1,8 @@
-package com.digitaladd.util.email;
+package com.digitaladd.util.emailAPI;
 
 import java.io.Serializable;
 
-public class EmailConfigVO implements Serializable {
+public class EmailAPIConfigVO implements Serializable {
 	/**
 	 * 
 	 */
@@ -85,7 +85,7 @@ public class EmailConfigVO implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EmailConfigVO other = (EmailConfigVO) obj;
+		EmailAPIConfigVO other = (EmailAPIConfigVO) obj;
 		if (host == null) {
 			if (other.host != null)
 				return false;
@@ -108,7 +108,7 @@ public class EmailConfigVO implements Serializable {
 			return false;
 		return true;
 	}
-	public EmailConfigVO() {
+	public EmailAPIConfigVO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

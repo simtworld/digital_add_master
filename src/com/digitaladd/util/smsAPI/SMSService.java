@@ -1,4 +1,4 @@
-package com.digitaladd.util.sms;
+package com.digitaladd.util.smsAPI;
 
 import java.io.BufferedReader;
 import java.io.IOException;

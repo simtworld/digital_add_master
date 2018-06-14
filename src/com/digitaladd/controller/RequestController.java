@@ -22,12 +22,14 @@ import com.digitaladd.dao.ProductDao;
 import com.digitaladd.dao.RegistrationDao;
 import com.digitaladd.model.ProductDetailsMO;
 import com.digitaladd.model.UserMO;
+import com.digitaladd.service.EmailService;
 import com.digitaladd.util.RandomGenerator;
 import com.digitaladd.util.ResourceUtility;
-import com.digitaladd.util.sms.SMSAuditingVO;
-import com.digitaladd.util.sms.SMSService;
-import com.digitaladd.util.sms.SMSTemplateVO;
-import com.digitaladd.util.sms.SMSVO;
+import com.digitaladd.util.emailAPI.EmailAPITemplateVO;
+import com.digitaladd.util.smsAPI.SMSAuditingVO;
+import com.digitaladd.util.smsAPI.SMSService;
+import com.digitaladd.util.smsAPI.SMSTemplateVO;
+import com.digitaladd.util.smsAPI.SMSVO;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -558,4 +560,14 @@ public class RequestController {
 		return ProductDao.getInstance().updateProduct(productDetails);
 	}
 
+	@RequestMapping(value = "/change-email-template", method= RequestMethod.POST)
+	public @ResponseBody boolean changeEmailTemplate(EmailAPITemplateVO emailAPITemplateVO) {
+		return EmailService.getInstance().changeEmailTemplateService(emailAPITemplateVO);
+	}
+	
+	@RequestMapping(value="/send-product-mail",method = RequestMethod.GET)
+	public @ResponseBody boolean sendProductMail(@RequestParam(value="emailTemplateId") String emailTemplateId) {
+		return EmailService.getInstance().sendProductMail(emailTemplateId);
+	}
+	
 }

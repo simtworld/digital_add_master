@@ -1,4 +1,4 @@
-package com.digitaladd.util.email;
+package com.digitaladd.util.emailAPI;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,43 +10,43 @@ import java.util.Map;
 import com.digitaladd.common.DBConnectionHandler;
 import com.digitaladd.util.ResourceUtility;
 
-public class EmailDao {
-	private static EmailDao instance;
+public class EmailAPIDao {
+	private static EmailAPIDao instance;
 	
-	public static synchronized EmailDao getInstance() {
+	public static synchronized EmailAPIDao getInstance() {
 		if(instance==null) {
-			instance = new EmailDao();
+			instance = new EmailAPIDao();
 		}
 		return instance;
 	}
 	
-	private EmailDao() {
+	private EmailAPIDao() {
 		super();
 		//no-op
 	}
 	
 	/**
-	 * @param emailTemplateVO
+	 * @param emailAPITemplateVO
 	 * @return
 	 */
-	public boolean saveEmailTemplate(EmailTemplateVO emailTemplateVO) {
+	public boolean saveEmailTemplate(EmailAPITemplateVO emailAPITemplateVO) {
 		boolean flag=false;
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		EmailTemplateVO vo = null;
+		EmailAPITemplateVO vo = null;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("save.email.template"));
-			preparedStmt.setString(1, emailTemplateVO.getEmailTemplateId());
-			preparedStmt.setString(2, emailTemplateVO.getEmailTemplate());
-			preparedStmt.setString(3, emailTemplateVO.getEmailSubject());
-			preparedStmt.setString(4, emailTemplateVO.getCreatedDate());
-			preparedStmt.setString(5, emailTemplateVO.getCreatedBy());
-			preparedStmt.setString(6, emailTemplateVO.getUpdatedDate());
-			preparedStmt.setString(7, emailTemplateVO.getUpdatedBy());
-			preparedStmt.setInt(8, emailTemplateVO.getStatus());
-			preparedStmt.setString(9, emailTemplateVO.getComments());
+			preparedStmt.setString(1, emailAPITemplateVO.getEmailTemplateId());
+			preparedStmt.setString(2, emailAPITemplateVO.getEmailTemplate());
+			preparedStmt.setString(3, emailAPITemplateVO.getEmailSubject());
+			preparedStmt.setString(4, emailAPITemplateVO.getCreatedDate());
+			preparedStmt.setString(5, emailAPITemplateVO.getCreatedBy());
+			preparedStmt.setString(6, emailAPITemplateVO.getUpdatedDate());
+			preparedStmt.setString(7, emailAPITemplateVO.getUpdatedBy());
+			preparedStmt.setInt(8, emailAPITemplateVO.getStatus());
+			preparedStmt.setString(9, emailAPITemplateVO.getComments());
 			
 			int i = preparedStmt.executeUpdate();
 			if(i!=0) {
@@ -69,11 +69,11 @@ public class EmailDao {
 	 * @param emailTemplateId
 	 * @return EmailTemplateVO
 	 */
-	public EmailTemplateVO getEmailTemplateByTemplateId(String emailTemplateId) {
+	public EmailAPITemplateVO getEmailTemplateByTemplateId(String emailTemplateId) {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		EmailTemplateVO vo = null;
+		EmailAPITemplateVO vo = null;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.sms.template.master.by.id"));
@@ -82,7 +82,7 @@ public class EmailDao {
 
 			if (rs != null) {
 				while (rs.next()) {
-					vo = new EmailTemplateVO();
+					vo = new EmailAPITemplateVO();
 					vo.setEmailTemplateId(rs.getString("EMAIL_TEMPLATE_ID"));
 					vo.setEmailTemplate(rs.getString("EMAIL_TEMPLATE"));
 					vo.setEmailSubject(rs.getString("EMAIL_SUBJECT"));
@@ -143,11 +143,11 @@ public class EmailDao {
 	 * @Desc method returns email config
 	 * @return EmailConfigVO
 	 */
-	public EmailConfigVO getEmailSMTPConfig() {
+	public EmailAPIConfigVO getEmailSMTPConfig() {
 		Connection connection=null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		EmailConfigVO vo = null;
+		EmailAPIConfigVO vo = null;
 		try {			
 			connection = DBConnectionHandler.getDBConnection();						
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.sms.template.master.by.id"));
@@ -155,7 +155,7 @@ public class EmailDao {
 						
 			if (rs != null) {
 				while (rs.next()) {
-					vo = new  EmailConfigVO();
+					vo = new  EmailAPIConfigVO();
 					vo.setHost(rs.getString("EMAIL_CONFIG_HOST"));
 					vo.setPassword(rs.getString("EMAIL_CONFIG_PASSWORD"));
 					vo.setPort(rs.getString("EMAIL_CONFIG_PORT"));

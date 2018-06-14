@@ -1,4 +1,4 @@
-package com.digitaladd.util.email;
+package com.digitaladd.util.emailAPI;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -19,7 +19,9 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-public class EmailService {
+public class EmailAPIService {
+	private static EmailAPIService instance;
+	
 	private String to;
 	private String from;
 
@@ -28,36 +30,42 @@ public class EmailService {
 	static private String host;
 	static private String port;
 	static private Properties props;
-	static private EmailDao emailDAO;
+	static private EmailAPIDao emailDAO;
 	
-	private EmailTemplateVO emailTemplateVO;
+	private EmailAPITemplateVO emailAPITemplateVO;
 	
 	static {
 		configurEmailSMTP();
 	}
 	
-	public EmailService() {
+	private EmailAPIService() {
 		super();
 	}
 	
+	public static synchronized EmailAPIService getInstance() {
+		if(instance==null)
+			instance=new EmailAPIService();
+		return instance;
+	}
+	
 	/**
-	 * @param emailTemplateVO
+	 * @param emailAPITemplateVO
 	 * @return
 	 */
-	public boolean changeEmailTemplate(EmailTemplateVO emailTemplateVO) {
-		return emailDAO.saveEmailTemplate(emailTemplateVO);
+	public boolean changeEmailTemplate(EmailAPITemplateVO emailAPITemplateVO) {
+		return emailDAO.saveEmailTemplate(emailAPITemplateVO);
 	}
 	
 	public static void configurEmailSMTP() {
 		
-		emailDAO=EmailDao.getInstance();
+		emailDAO=EmailAPIDao.getInstance();
 		
-		EmailConfigVO emailConfigVO = emailDAO.getEmailSMTPConfig();
+		EmailAPIConfigVO emailAPIConfigVO = emailDAO.getEmailSMTPConfig();
 		
-		userName = emailConfigVO.getUserName();
-		password = emailConfigVO.getPassword();
-		host = emailConfigVO.getHost();
-		port = emailConfigVO.getPort();
+		userName = emailAPIConfigVO.getUserName();
+		password = emailAPIConfigVO.getPassword();
+		host = emailAPIConfigVO.getHost();
+		port = emailAPIConfigVO.getPort();
 		
 		props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -72,7 +80,7 @@ public class EmailService {
 		Map<String, String> input = new HashMap<String, String>();
 		Properties emailContentKeywords = new Properties();
 		from=userName;
-		EmailTemplateVO emailTemplateVO=emailDAO.getEmailTemplateByTemplateId(templateId);
+		EmailAPITemplateVO emailAPITemplateVO=emailDAO.getEmailTemplateByTemplateId(templateId);
 		// Get the Session object.
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
@@ -91,14 +99,14 @@ public class EmailService {
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 
 			// Set Subject: header field
-			message.setSubject(emailTemplateVO.emailSubject);
+			message.setSubject(emailAPITemplateVO.emailSubject);
 
 			// start template
 				MimeMultipart _mulPart = new MimeMultipart();
 				BodyPart _bodyPart = new MimeBodyPart();
 				
 				// HTML mail content
-				String htmlText =this.getHtml(createFinalEmailKeywordsMap(emailTemplateVO.getEmailKewords(),realValues), emailTemplateVO);
+				String htmlText =this.getHtml(createFinalEmailKeywordsMap(emailAPITemplateVO.getEmailKewords(),realValues), emailAPITemplateVO);
 				_bodyPart.setContent(htmlText, "text/html");
 	
 				_mulPart.addBodyPart(_bodyPart);
@@ -123,12 +131,12 @@ public class EmailService {
 	/**
 	 * desc this method replace all the keywords with valid data
 	 * @param input
-	 * @param emailTemplateVO
+	 * @param emailAPITemplateVO
 	 * @return
 	 * @throws IOException
 	 */
-	protected static String getHtml(Map<String, String> input,EmailTemplateVO emailTemplateVO) throws IOException {
-		String msg=emailTemplateVO.emailTemplate;
+	protected static String getHtml(Map<String, String> input,EmailAPITemplateVO emailAPITemplateVO) throws IOException {
+		String msg=emailAPITemplateVO.emailTemplate;
 		
 		Set<Entry<String, String>> entries = input.entrySet();
 		for (Map.Entry<String, String> entry : entries) {
