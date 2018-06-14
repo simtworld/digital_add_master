@@ -60,6 +60,10 @@ public class RequestController {
 	public String registration(ModelMap model) {
 		return "registration.tiles";
 	}
+	@RequestMapping(value = { "/email-settings" }, method = RequestMethod.GET)
+	public String sendEmail(ModelMap model) {
+		return "email-settings.tiles";
+	}
 
 	@RequestMapping(path = "/getallcountries", method = RequestMethod.GET)
 	public @ResponseBody List<User> getAllCountries() {
