@@ -1,4 +1,4 @@
-package com.digitaladd.registration.dao;
+package com.digitaladd.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.digitaladd.common.DBConnectionHandler;
-import com.digitaladd.registration.model.User;
+import com.digitaladd.model.UserMO;
 import com.digitaladd.util.ResourceUtility;
 
 public class RegistrationDao {
@@ -27,11 +27,11 @@ public class RegistrationDao {
 		private static final RegistrationDao INSTANCE = new RegistrationDao();
 	}
 
-	public List<User> getCountreies() {
+	public List<UserMO> getCountreies() {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		List<User> list = new ArrayList<User>();
+		List<UserMO> list = new ArrayList<UserMO>();
 		try {
 			connection = DBConnectionHandler.getDBConnection();
 			// Class.forName("com.mysql.jdbc.Driver");
@@ -45,7 +45,7 @@ public class RegistrationDao {
 
 			if (rs != null) {
 				while (rs.next()) {
-					User user = new User();
+					UserMO user = new UserMO();
 
 					user.setCountryCode(rs.getString("id"));
 					user.setCountryName(rs.getString("name"));
@@ -63,11 +63,11 @@ public class RegistrationDao {
 		return list;
 	}
 
-	public List<User> getAllStates(String countryCode) {
+	public List<UserMO> getAllStates(String countryCode) {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		List<User> list = new ArrayList<User>();
+		List<UserMO> list = new ArrayList<UserMO>();
 		try {
 			connection = DBConnectionHandler.getDBConnection();
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.getAllStates"));
@@ -77,7 +77,7 @@ public class RegistrationDao {
 
 			if (rs != null) {
 				while (rs.next()) {
-					User user = new User();
+					UserMO user = new UserMO();
 
 					user.setStateCode(rs.getString("id"));
 					user.setStateName(rs.getString("name"));
@@ -95,11 +95,11 @@ public class RegistrationDao {
 		return list;
 	}
 
-	public List<User> getAllCities(String stateCode) {
+	public List<UserMO> getAllCities(String stateCode) {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		List<User> list = new ArrayList<User>();
+		List<UserMO> list = new ArrayList<UserMO>();
 		try {
 			connection = DBConnectionHandler.getDBConnection();
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.getAllCities"));
@@ -109,7 +109,7 @@ public class RegistrationDao {
 
 			if (rs != null) {
 				while (rs.next()) {
-					User user = new User();
+					UserMO user = new UserMO();
 
 					user.setCityCode(rs.getString("id"));
 					user.setCityName(rs.getString("name"));
@@ -127,11 +127,11 @@ public class RegistrationDao {
 		return list;
 	}
 
-	public User checkUserExistOrNot(String mobile) {
+	public UserMO checkUserExistOrNot(String mobile) {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		User retUser = null;
+		UserMO retUser = null;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.getUserDataWithMobile"));
@@ -141,7 +141,7 @@ public class RegistrationDao {
 
 			if (rs != null) {
 				while (rs.next()) {
-					retUser = new User();
+					retUser = new UserMO();
 
 					retUser.setCityCode(rs.getString("city_id"));
 					retUser.setCountryCode(rs.getString("country_id"));
@@ -174,7 +174,7 @@ public class RegistrationDao {
 		return retUser;
 	}
 
-	public boolean customerRegistration(User user) {
+	public boolean customerRegistration(UserMO user) {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
@@ -305,11 +305,11 @@ public class RegistrationDao {
 		return flag;
 	}
 
-	public User checkUserLogin(String userName, String password) {
+	public UserMO checkUserLogin(String userName, String password) {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		User retUser = null;
+		UserMO retUser = null;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
 			preparedStmt = connection
@@ -321,7 +321,7 @@ public class RegistrationDao {
 
 			if (rs != null) {
 				while (rs.next()) {
-					retUser = new User();
+					retUser = new UserMO();
 
 					retUser.setCityCode(rs.getString("city_id"));
 					retUser.setCountryCode(rs.getString("country_id"));
@@ -354,7 +354,7 @@ public class RegistrationDao {
 		return retUser;
 	}
 
-	public boolean updateProfile(User user) {
+	public boolean updateProfile(UserMO user) {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;

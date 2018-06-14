@@ -1,8 +1,8 @@
-package com.digitaladd.registration.model;
+package com.digitaladd.model;
 
 import java.util.Date;
 
-public class ProductDetails {
+public class ProductDetailsMO {
 
 	private String productUuid;
 	private String productName; 

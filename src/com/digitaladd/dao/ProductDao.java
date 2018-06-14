@@ -1,4 +1,4 @@
-package com.digitaladd.registration.dao;
+package com.digitaladd.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.digitaladd.common.DBConnectionHandler;
-import com.digitaladd.registration.model.ProductDetails;
+import com.digitaladd.model.ProductDetailsMO;
 import com.digitaladd.util.ResourceUtility;
 
 import net.sf.json.JSONArray;
@@ -28,7 +28,7 @@ public class ProductDao {
 		private static final ProductDao INSTANCE = new ProductDao();
 	}
 
-	public boolean addProductDetails(ProductDetails productDetails) {
+	public boolean addProductDetails(ProductDetailsMO productDetails) {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
@@ -136,7 +136,7 @@ public class ProductDao {
 		return products;
 	}
 	
-	public boolean updateProduct(ProductDetails productDetails) {
+	public boolean updateProduct(ProductDetailsMO productDetails) {
 		boolean flag=false;
 		
 		Connection connection=null;

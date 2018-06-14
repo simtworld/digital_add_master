@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.digitaladd.registration.dao.ProductDao;
-import com.digitaladd.registration.dao.RegistrationDao;
-import com.digitaladd.registration.model.ProductDetails;
-import com.digitaladd.registration.model.User;
+import com.digitaladd.dao.ProductDao;
+import com.digitaladd.dao.RegistrationDao;
+import com.digitaladd.model.ProductDetailsMO;
+import com.digitaladd.model.UserMO;
 import com.digitaladd.util.RandomGenerator;
 import com.digitaladd.util.ResourceUtility;
 import com.digitaladd.util.sms.SMSAuditingVO;
@@ -66,8 +66,8 @@ public class RequestController {
 	}
 
 	@RequestMapping(path = "/getallcountries", method = RequestMethod.GET)
-	public @ResponseBody List<User> getAllCountries() {
-		List<User> countriesList = null;
+	public @ResponseBody List<UserMO> getAllCountries() {
+		List<UserMO> countriesList = null;
 		try {
 			countriesList = RegistrationDao.getInstance().getCountreies();
 
@@ -78,8 +78,8 @@ public class RequestController {
 	}
 
 	@RequestMapping(path = "/getallstates", method = RequestMethod.GET)
-	public @ResponseBody List<User> getAllStates(HttpServletRequest request) {
-		List<User> countriesList = null;
+	public @ResponseBody List<UserMO> getAllStates(HttpServletRequest request) {
+		List<UserMO> countriesList = null;
 		String countryCode = request.getParameter("countryCode");
 		try {
 			countriesList = RegistrationDao.getInstance().getAllStates(countryCode);
@@ -91,8 +91,8 @@ public class RequestController {
 	}
 
 	@RequestMapping(path = "/getallcities", method = RequestMethod.GET)
-	public @ResponseBody List<User> getAllCities(HttpServletRequest request) {
-		List<User> countriesList = null;
+	public @ResponseBody List<UserMO> getAllCities(HttpServletRequest request) {
+		List<UserMO> countriesList = null;
 		String stateCode = request.getParameter("stateCode");
 		try {
 			countriesList = RegistrationDao.getInstance().getAllCities(stateCode);
@@ -116,7 +116,7 @@ public class RequestController {
 			String states = request.getParameter("states");
 			String cities = request.getParameter("cities");
 
-			User user = new User();
+			UserMO user = new UserMO();
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
 			user.setEmail(email);
@@ -126,7 +126,7 @@ public class RequestController {
 			user.setStateCode(states);
 			user.setCityCode(cities);
 
-			User retUser = RegistrationDao.getInstance().checkUserExistOrNot(user.getMobile());
+			UserMO retUser = RegistrationDao.getInstance().checkUserExistOrNot(user.getMobile());
 
 			if (retUser == null || "".equals(retUser)) {
 				// create user
@@ -171,6 +171,7 @@ public class RequestController {
 
 	@RequestMapping(path = "/check-otp", method = RequestMethod.GET)
 	public @ResponseBody JSONObject checkOtp(HttpServletRequest request) {
+		
 		JSONObject json = new JSONObject();
 		try {
 			String otp = request.getParameter("otp");
@@ -186,7 +187,7 @@ public class RequestController {
 					json.put("status", true);
 
 					if (doLogin != null && !"".equalsIgnoreCase(doLogin)) {
-						User user = RegistrationDao.getInstance().checkUserExistOrNot(mobile);
+						UserMO user = RegistrationDao.getInstance().checkUserExistOrNot(mobile);
 						HttpSession session = request.getSession();
 
 						session.setAttribute("bean", user);
@@ -247,7 +248,7 @@ public class RequestController {
 			String userName = request.getParameter("userName");
 			String password = request.getParameter("password");
 
-			User user = RegistrationDao.getInstance().checkUserLogin(userName, password);
+			UserMO user = RegistrationDao.getInstance().checkUserLogin(userName, password);
 
 			if (user == null) {
 				json.put("status", false);
@@ -301,7 +302,7 @@ public class RequestController {
 		try {
 			String mobile = request.getParameter("mobile");
 
-			User retUser = RegistrationDao.getInstance().checkUserExistOrNot(mobile);
+			UserMO retUser = RegistrationDao.getInstance().checkUserExistOrNot(mobile);
 
 			if (retUser != null && !"".equals(retUser)) {
 				SMSTemplateVO smsTemplateVO = new SMSTemplateVO();
@@ -400,7 +401,7 @@ public class RequestController {
 			HttpSession session = request.getSession();
 
 			if (session.getAttribute("bean") != null) {
-				User user = (User) session.getAttribute("bean");
+				UserMO user = (UserMO) session.getAttribute("bean");
 				// User user =
 				// RegistrationDao.getInstance().checkUserExistOrNot(usr.getMobile());
 				model.addAttribute("user", user);
@@ -416,7 +417,7 @@ public class RequestController {
 	}
 
 	@RequestMapping(path = "/update-profile", method = RequestMethod.GET)
-	public @ResponseBody JSONObject updateProfile(HttpServletRequest request, User user) {
+	public @ResponseBody JSONObject updateProfile(HttpServletRequest request, UserMO user) {
 		JSONObject json = new JSONObject();
 		try {
 			HttpSession session = request.getSession();
@@ -440,11 +441,10 @@ public class RequestController {
 				 * user.setCityCode(cities); user.setAddress(address);
 				 * user.setUuid(usr.getUuid());
 				 */
-
 				boolean flag = RegistrationDao.getInstance().updateProfile(user);
 
 				if (flag) {
-					User newUser = RegistrationDao.getInstance().checkUserExistOrNot(user.getMobile());// usr>>user
+					UserMO newUser = RegistrationDao.getInstance().checkUserExistOrNot(user.getMobile());// usr>>user
 					session.setAttribute("bean", newUser);
 
 					json.put("status", true);
@@ -476,7 +476,7 @@ public class RequestController {
 		JSONObject json = new JSONObject();
 		try {
 			HttpSession session = request.getSession();
-			User user = (User) session.getAttribute("bean");
+			UserMO user = (UserMO) session.getAttribute("bean");
 
 			String currentPassword = request.getParameter("currentPassword");
 			String newPassword = request.getParameter("newPassword");
@@ -507,7 +507,7 @@ public class RequestController {
 
 	@RequestMapping(value = "/savefiles", method = RequestMethod.POST)
 	public @ResponseBody boolean addProductDetails(@RequestParam MultipartFile file, HttpSession session,
-			ProductDetails productDetails) throws IllegalStateException, IOException {
+			ProductDetailsMO productDetails) throws IllegalStateException, IOException {
 		String path = session.getServletContext().getRealPath("/WEB-INF/assets/img/product/");
 		String filename = file.getOriginalFilename();
 		boolean flag = false;
@@ -554,7 +554,7 @@ public class RequestController {
 	 * this url used to update the product details avelabel i product table.
 	 * */
 	@RequestMapping(value = "/update-product-details", method = RequestMethod.POST)
-	public @ResponseBody boolean updateProduct(ProductDetails productDetails) {
+	public @ResponseBody boolean updateProduct(ProductDetailsMO productDetails) {
 		return ProductDao.getInstance().updateProduct(productDetails);
 	}
 
