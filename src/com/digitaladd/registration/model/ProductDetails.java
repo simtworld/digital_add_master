@@ -1,6 +1,5 @@
 package com.digitaladd.registration.model;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class ProductDetails {
