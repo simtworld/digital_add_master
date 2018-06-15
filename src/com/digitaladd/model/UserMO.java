@@ -1,6 +1,6 @@
-package com.digitaladd.registration.model;
+package com.digitaladd.model;
 
-public class User {
+public class UserMO {
 	private String firstName;
 	private String lastName;
 	private String email;

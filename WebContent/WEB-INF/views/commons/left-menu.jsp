@@ -1,15 +1,13 @@
-<%@page import="com.digitaladd.registration.model.User"%>
+<%@page import="com.digitaladd.model.UserMO"%>
  <script type="text/javascript">
  $(function(){
-	 <% 
-	 	User user = null;	 	
+	 <%UserMO user = null;	 	
 	 	
 	 	if(session != null){
-	 		user = (User)session.getAttribute("bean");	
+	 		user = (UserMO)session.getAttribute("bean");	
 	 	}else{
-	 		user = new User(); 
-	 	}
-	 %>
+	 		user = new UserMO(); 
+	 	}%>
  })
  </script>
 <!-- <div class="wrapper"> -->

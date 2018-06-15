@@ -1,4 +1,4 @@
-package com.digitaladd.registration.dao;
+package com.digitaladd.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,11 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.digitaladd.common.DBConnectionHandler;
-import com.digitaladd.registration.model.ProductDetails;
+import com.digitaladd.model.ProductDetailsMO;
 import com.digitaladd.util.ResourceUtility;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 public class ProductDao {
 	// singleton implementation
@@ -29,7 +26,7 @@ public class ProductDao {
 		private static final ProductDao INSTANCE = new ProductDao();
 	}
 
-	public boolean addProductDetails(ProductDetails productDetails) {
+	public boolean addProductDetails(ProductDetailsMO productDetails) {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
@@ -63,10 +60,11 @@ public class ProductDao {
 		}
 		return flag;
 	}
-	
+
 	/**
-	 * This method is for deleting product details from database 
-	 *it takes @param productUUID
+	 * This method is for deleting product details from database it takes @param
+	 * productUUID
+	 * 
 	 * @return boolean
 	 */
 	public boolean deletaProductDetails(String productUUID) {
@@ -79,7 +77,7 @@ public class ProductDao {
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("degitalAdd.deleteProduct"));
 			preparedStmt.setString(1, productUUID);
 			int i = preparedStmt.executeUpdate();
-			
+
 			if (i == 1) {
 				flag = true;
 			}
@@ -93,16 +91,17 @@ public class ProductDao {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}
 		return flag;
-		
+
 	}
 
 	/**
 	 * this method is being called by request controller when the request comes to
 	 * getProducts url and it fetch the products data returns to that method
 	 */
-	public ArrayList<ProductDetails> getProducts() {
-		ProductDetails productDetails=null;
-		ArrayList<ProductDetails> productDetailsList=new ArrayList<>();;
+	public ArrayList<ProductDetailsMO> getProducts() {
+		ProductDetailsMO productDetails = null;
+		ArrayList<ProductDetailsMO> productDetailsList = new ArrayList<>();
+		;
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -112,19 +111,19 @@ public class ProductDao {
 					.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.getAllProductData"));
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				
-				productDetails = new ProductDetails();
+
+				productDetails = new ProductDetailsMO();
 				productDetails.setProductUuid(resultSet.getString(1));
 				productDetails.setProductName(resultSet.getString(2));
-				productDetails.setProductUrl( resultSet.getString(3));
+				productDetails.setProductUrl(resultSet.getString(3));
 				productDetails.setProductDescriptionForSms(resultSet.getString(4));
 				productDetails.setProductDescriptionForEmail(resultSet.getString(5));
 				productDetails.setProductImageExtension(resultSet.getString(6));
 				productDetails.setCountry(resultSet.getString(7));
 				productDetails.setState(resultSet.getString(8));
-				productDetails.setCity( resultSet.getString(9));
+				productDetails.setCity(resultSet.getString(9));
 				productDetails.setCreatedAt(resultSet.getDate(10));
-				productDetails.setUpdatedAt( resultSet.getDate(11));
+				productDetails.setUpdatedAt(resultSet.getDate(11));
 				productDetailsList.add(productDetails);
 			}
 		} catch (SQLException sx) {
@@ -136,16 +135,16 @@ public class ProductDao {
 		}
 		return productDetailsList;
 	}
-	
-	public boolean updateProduct(ProductDetails productDetails) {
-		boolean flag=false;
-		
-		Connection connection=null;
-		PreparedStatement preparedStatement=null;
-		ResultSet rs=null;
+
+	public boolean updateProduct(ProductDetailsMO productDetails) {
+		boolean flag = false;
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
 		try {
-			connection=DBConnectionHandler.getDBConnection();
-			preparedStatement=connection.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.updateProduct"));
+			connection = DBConnectionHandler.getDBConnection();
+			preparedStatement = connection.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.updateProduct"));
 			preparedStatement.setString(0, productDetails.getProductName());
 			preparedStatement.setString(2, productDetails.getProductUrl());
 			preparedStatement.setString(3, productDetails.getProductDescriptionForSms());
@@ -156,20 +155,58 @@ public class ProductDao {
 			preparedStatement.setString(8, productDetails.getCity());
 			preparedStatement.setDate(9, new java.sql.Date(productDetails.getUpdatedAt().getTime()));
 			preparedStatement.setString(10, productDetails.getProductUuid());
-			int i=preparedStatement.executeUpdate();
-			
-			if(i==1) {
-				flag=true;
+			int i = preparedStatement.executeUpdate();
+
+			if (i == 1) {
+				flag = true;
 			}
-		}catch (SQLException sx) {
+		} catch (SQLException sx) {
 			System.out.println(sx);
 		} catch (Exception e) {
 			System.out.println("ProductDao > updateProductDetails() > exception >" + e);
 		} finally {
-			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStatement,rs);
+			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStatement, rs);
 		}
 		return flag;
-		
+
+	}
+
+	public ProductDetailsMO getProductDetailsById(String productUUID) {
+		ProductDetailsMO productDetailsMO = new ProductDetailsMO();
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			connection = DBConnectionHandler.getDBConnection();
+			preparedStatement = connection
+					.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.getAllProductDataById"));
+			preparedStatement.setString(1, productUUID);
+			System.out.println(productUUID);
+			resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				productDetailsMO.setProductUuid(resultSet.getString(1));
+				productDetailsMO.setProductName(resultSet.getString("product_name"));
+				productDetailsMO.setProductUrl(resultSet.getString("product_url"));
+				productDetailsMO.setProductDescriptionForSms(resultSet.getString("product_description_sms"));
+				productDetailsMO.setProductDescriptionForEmail(resultSet.getString("product_description_email"));
+				productDetailsMO.setProductImageExtension(resultSet.getString("product_image_extension"));
+				productDetailsMO.setCountry(resultSet.getString("product_country_id"));
+				productDetailsMO.setState(resultSet.getString("product_state_id"));
+				productDetailsMO.setCity(resultSet.getString("product_city_id"));
+				productDetailsMO.setCreatedAt(resultSet.getDate("created_at"));
+				// productDetailsMO.setUpdatedAt(resultSet.getDate("updated_at"));
+			}
+		} catch (SQLException sx) {
+			System.out.println(sx);
+		} catch (Exception e) {
+			System.out.println("ProductDao > getProductDetailsById() > exception >" + e);
+			e.printStackTrace();
+		} finally {
+			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStatement, resultSet);
+		}
+
+		return productDetailsMO;
 	}
 
 }

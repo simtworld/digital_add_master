@@ -388,7 +388,7 @@
             </div>
             </div> --%>
             
- <%@page import="com.digitaladd.registration.model.User"%>
+ <%@page import="com.digitaladd.model.UserMO"%>
  
  <style type="text/css">	
 	.error{
@@ -397,9 +397,7 @@
 </style> 
  <script type="text/javascript">
  $(function(){
-	 <% 
-	 	User user = (User)session.getAttribute("bean");
-	 %>
+	 <%UserMO user = (UserMO)session.getAttribute("bean");%>
 		/* var data = $("user");
 		
 		console.log("data--"+data.toString());

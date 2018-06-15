@@ -1,4 +1,4 @@
-package com.digitaladd.util.email;
+package com.digitaladd.util.emailAPI;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,43 +10,43 @@ import java.util.Map;
 import com.digitaladd.common.DBConnectionHandler;
 import com.digitaladd.util.ResourceUtility;
 
-public class EmailDao {
-	private static EmailDao instance;
+public class EmailAPIDao {
+	private static EmailAPIDao instance;
 	
-	public static synchronized EmailDao getInstance() {
+	public static synchronized EmailAPIDao getInstance() {
 		if(instance==null) {
-			instance = new EmailDao();
+			instance = new EmailAPIDao();
 		}
 		return instance;
 	}
 	
-	private EmailDao() {
+	private EmailAPIDao() {
 		super();
 		//no-op
 	}
 	
 	/**
-	 * @param emailTemplateVO
+	 * @param emailAPITemplateVO
 	 * @return
 	 */
-	public boolean saveEmailTemplate(EmailTemplateVO emailTemplateVO) {
+	public boolean saveEmailTemplate(EmailAPITemplateVO emailAPITemplateVO) {
 		boolean flag=false;
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		EmailTemplateVO vo = null;
+		EmailAPITemplateVO vo = null;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("save.email.template"));
-			preparedStmt.setString(1, emailTemplateVO.getEmailTemplateId());
-			preparedStmt.setString(2, emailTemplateVO.getEmailTemplate());
-			preparedStmt.setString(3, emailTemplateVO.getEmailSubject());
-			preparedStmt.setString(4, emailTemplateVO.getCreatedDate());
-			preparedStmt.setString(5, emailTemplateVO.getCreatedBy());
-			preparedStmt.setString(6, emailTemplateVO.getUpdatedDate());
-			preparedStmt.setString(7, emailTemplateVO.getUpdatedBy());
-			preparedStmt.setInt(8, emailTemplateVO.getStatus());
-			preparedStmt.setString(9, emailTemplateVO.getComments());
+			preparedStmt.setString(1, emailAPITemplateVO.getEmailTemplateId());
+			preparedStmt.setString(2, emailAPITemplateVO.getEmailTemplate());
+			preparedStmt.setString(3, emailAPITemplateVO.getEmailSubject());
+			preparedStmt.setString(4, emailAPITemplateVO.getCreatedDate());
+			preparedStmt.setString(5, emailAPITemplateVO.getCreatedBy());
+			preparedStmt.setString(6, emailAPITemplateVO.getUpdatedDate());
+			preparedStmt.setString(7, emailAPITemplateVO.getUpdatedBy());
+			preparedStmt.setInt(8, emailAPITemplateVO.getStatus());
+			preparedStmt.setString(9, emailAPITemplateVO.getComments());
 			
 			int i = preparedStmt.executeUpdate();
 			if(i!=0) {
@@ -66,27 +66,27 @@ public class EmailDao {
 	}
 
 	/**
-	 * @param emailTemplateId
+	 * @param emailTemplateTypeId
 	 * @return EmailTemplateVO
 	 */
-	public EmailTemplateVO getEmailTemplateByTemplateId(String emailTemplateId) {
+	public EmailAPITemplateVO getEmailTemplateDetailsByTemplateId(String emailTemplateTypeId) {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		EmailTemplateVO vo = null;
+		EmailAPITemplateVO vo = null;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.sms.template.master.by.id"));
-			preparedStmt.setString(1, emailTemplateId);
+			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.templatedetails.master.by.id"));
+			preparedStmt.setString(1, emailTemplateTypeId);
 			rs = preparedStmt.executeQuery();
-
+			
 			if (rs != null) {
-				while (rs.next()) {
-					vo = new EmailTemplateVO();
-					vo.setEmailTemplateId(rs.getString("EMAIL_TEMPLATE_ID"));
-					vo.setEmailTemplate(rs.getString("EMAIL_TEMPLATE"));
+				if (rs.next()) {
+					vo = new EmailAPITemplateVO();
+					vo.setEmailTemplateId(rs.getString("EMAIL_TEMPLATE_DETAILS_ID"));
+					vo.setEmailTemplate(rs.getString("EMAIL_TEMPLATE_TEXT"));
 					vo.setEmailSubject(rs.getString("EMAIL_SUBJECT"));
-					vo.setEmailKewords(this.getEmailTemplateKeywordsList(emailTemplateId));
+					vo.setEmailKewords(this.getEmailTemplateKeywordsList(emailTemplateTypeId));
 					vo.setCreatedDate(rs.getString("CREATED_DATE"));
 					vo.setCreatedBy(rs.getString("CREATED_BY"));
 					vo.setUpdatedDate(rs.getString("UPDATED_DATE"));
@@ -111,20 +111,20 @@ public class EmailDao {
 	 * @param emailTemplateId
 	 * @return
 	 */
-	private HashMap<String, String> getEmailTemplateKeywordsList(String emailTemplateId){
+	private HashMap<String, String> getEmailTemplateKeywordsList(String emailTemplateDetailsId){
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		Map<String,String> emailTemplateKeywordsList=new HashMap<String,String>();
+		Map<String,String> emailTemplateKeywordsMap=new HashMap<String,String>();
 		try {
 			connection = DBConnectionHandler.getDBConnection();
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.sms.template.master.by.id"));
-			preparedStmt.setString(1, emailTemplateId);
+			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.templatekeywords.by.id"));
+			preparedStmt.setString(1, emailTemplateDetailsId);
 			rs = preparedStmt.executeQuery();
 
 			if (rs != null) {
 				while (rs.next()) {
-					emailTemplateKeywordsList.put(rs.getString("EMAIL_TEMPLATE_KEYWORDS_ID"), rs.getString("EMAIL_TEMPLATE_KEYWORDS"));
+					emailTemplateKeywordsMap.put(rs.getString("EMAIL_TEMPLATE_KEYWORDS_ID"), rs.getString("EMAIL_TEMPLATE_KEYWORDS"));
 				}
 			}
 		}catch (SQLException sx) {
@@ -136,26 +136,27 @@ public class EmailDao {
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}
-		return (HashMap<String, String>) emailTemplateKeywordsList;
+		return (HashMap<String, String>) emailTemplateKeywordsMap;
 	}
 	
 	/**
 	 * @Desc method returns email config
 	 * @return EmailConfigVO
 	 */
-	public EmailConfigVO getEmailSMTPConfig() {
+	public EmailAPIConfigVO getEmailSMTPConfig() {
 		Connection connection=null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		EmailConfigVO vo = null;
+		EmailAPIConfigVO vo = null;
+		vo = new  EmailAPIConfigVO();
 		try {			
 			connection = DBConnectionHandler.getDBConnection();						
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.sms.template.master.by.id"));
+			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.SMTPConfig.master.by.id"));
 			rs = preparedStmt.executeQuery();
 						
 			if (rs != null) {
 				while (rs.next()) {
-					vo = new  EmailConfigVO();
+					
 					vo.setHost(rs.getString("EMAIL_CONFIG_HOST"));
 					vo.setPassword(rs.getString("EMAIL_CONFIG_PASSWORD"));
 					vo.setPort(rs.getString("EMAIL_CONFIG_PORT"));
@@ -172,6 +173,11 @@ public class EmailDao {
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}
+		
+		/*vo.setHost(ResourceUtility.getCommonConstant("email.smtp.host"));
+		vo.setPort(ResourceUtility.getCommonConstant("email.smtp.port"));
+		vo.setUserName(ResourceUtility.getCommonConstant("email.smtp.username"));
+		vo.setPassword(ResourceUtility.getCommonConstant("email.smtp.password"));*/
 		
 		return vo;
 	}

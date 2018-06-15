@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="ms-container-for-sharing-options">
 	<iframe
 						src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Fcodenerdssolutions.com%2F%23%2F&layout=button&size=large&mobile_iframe=true&width=73&height=28&appId"
@@ -49,3 +50,17 @@ window.fbAsyncInit = function() {
 		});
 	}
 </script> -->
+=======
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+hello
+</body>
+</html>
+>>>>>>> refs/remotes/origin/Satya

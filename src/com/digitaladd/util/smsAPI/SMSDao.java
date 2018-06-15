@@ -1,4 +1,4 @@
-package com.digitaladd.util.sms;
+package com.digitaladd.util.smsAPI;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

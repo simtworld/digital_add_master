@@ -1,4 +1,4 @@
-package com.digitaladd.util.sms;
+package com.digitaladd.util.smsAPI;
 
 public class SMSTemplateVO {
 	private String smsTemplateId = null;

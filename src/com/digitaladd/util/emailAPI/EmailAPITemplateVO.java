@@ -1,9 +1,9 @@
-package com.digitaladd.util.email;
+package com.digitaladd.util.emailAPI;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class EmailTemplateVO implements Serializable {
+public class EmailAPITemplateVO implements Serializable {
 	/**
 	 * 
 	 */
@@ -170,7 +170,7 @@ public class EmailTemplateVO implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EmailTemplateVO other = (EmailTemplateVO) obj;
+		EmailAPITemplateVO other = (EmailAPITemplateVO) obj;
 		if (comments == null) {
 			if (other.comments != null)
 				return false;

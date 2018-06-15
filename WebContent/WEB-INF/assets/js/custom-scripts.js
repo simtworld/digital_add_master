@@ -2,6 +2,7 @@
  *script for submitting the addProduct form 
  */
 $("form#addProductDetailsForm").submit(function(e) {
+	alert("test");
 		e.preventDefault();
 		var formData = new FormData(this);
 		$.ajax({
