@@ -64,6 +64,11 @@ public class RequestController {
 	public String sendEmail(ModelMap model) {
 		return "email-settings.tiles";
 	}
+	
+	@RequestMapping(value = { "/sharing-options" }, method = RequestMethod.GET)
+	public String shareToSocial(ModelMap model) {
+		return "sharing-options.tiles";
+	}
 
 	@RequestMapping(path = "/getallcountries", method = RequestMethod.GET)
 	public @ResponseBody List<User> getAllCountries() {
@@ -545,8 +550,29 @@ public class RequestController {
 	 * */
 	@RequestMapping(value = "/getProducts", method = RequestMethod.GET)
 	public @ResponseBody JSONArray getProducts() {
-		JSONArray products = (JSONArray) ProductDao.getInstance().getProducts();
+		JSONArray products=null;
+		JSONObject jsonObject=null;
+		products=new JSONArray();
+		ArrayList<ProductDetails> productDetailsList =new ArrayList<>();
+		productDetailsList= ProductDao.getInstance().getProducts();
+		for(ProductDetails productDetails:productDetailsList) {
+			jsonObject = new JSONObject();
+		    jsonObject.put("productId", productDetails.getProductUuid());
+		    jsonObject.put("productName", productDetails.getProductName());
+		    jsonObject.put("puoductUrl", productDetails.getProductUrl());
+		    jsonObject.put("smsDesc", productDetails.getProductDescriptionForSms());
+		    jsonObject.put("emailDesc", productDetails.getProductDescriptionForEmail());
+		    jsonObject.put("imageURL", productDetails.getProductImageExtension());
+		    jsonObject.put("countryId", productDetails.getCountry());
+		    jsonObject.put("stateId", productDetails.getState());
+		    jsonObject.put("cityId", productDetails.getCity());
+		    jsonObject.put("creationDate", productDetails.getCreatedAt().toString());
+		    jsonObject.put("updationDate", productDetails.getUpdatedAt().toString());
+		    products.add(jsonObject);
+		}
 		
+	    
+
 		return products;
 	}
 	

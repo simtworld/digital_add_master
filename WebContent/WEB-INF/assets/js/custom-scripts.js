@@ -89,7 +89,7 @@ $(document).ready(function () {
 				  $.ajax({
 						url : "delete-product-list",
 						type : 'POST',
-						/* data : {'productId':data.productId+"'"}, */
+						 data : {'productId':data.productId+"'"}, 
 						data : {
 							productID : param
 						},
