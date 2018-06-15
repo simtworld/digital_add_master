@@ -74,8 +74,9 @@ public class EmailAPIService {
 		props.put("mail.smtp.port", port);
 	}
 
-	public boolean sendMail(String templateId,Map<String,String> realValues) {
+	public boolean sendMail(String templateId,Map<String,String> realValues, String recipiant) {
 		boolean flag = false;
+		this.setTo(recipiant);
 		
 		Map<String, String> input = new HashMap<String, String>();
 		Properties emailContentKeywords = new Properties();
@@ -87,8 +88,10 @@ public class EmailAPIService {
 				return new PasswordAuthentication(userName, password);
 			}
 		});
-
+		
 		try {
+			String htmlText =this.getHtml(createFinalEmailKeywordsMap(emailAPITemplateVO.getEmailKewords(),realValues), emailAPITemplateVO);
+			System.out.println(htmlText);
 			// Create a default MimeMessage object.
 			Message message = new MimeMessage(session);
 
@@ -106,7 +109,8 @@ public class EmailAPIService {
 				BodyPart _bodyPart = new MimeBodyPart();
 				
 				// HTML mail content
-				String htmlText =this.getHtml(createFinalEmailKeywordsMap(emailAPITemplateVO.getEmailKewords(),realValues), emailAPITemplateVO);
+				
+				
 				_bodyPart.setContent(htmlText, "text/html");
 	
 				_mulPart.addBodyPart(_bodyPart);

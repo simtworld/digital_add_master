@@ -22,6 +22,7 @@ import com.digitaladd.dao.ProductDao;
 import com.digitaladd.dao.RegistrationDao;
 import com.digitaladd.model.ProductDetailsMO;
 import com.digitaladd.model.UserMO;
+
 import com.digitaladd.service.EmailService;
 import com.digitaladd.util.RandomGenerator;
 import com.digitaladd.util.ResourceUtility;
@@ -566,8 +567,8 @@ public class RequestController {
 	}
 	
 	@RequestMapping(value="/send-product-mail",method = RequestMethod.GET)
-	public @ResponseBody boolean sendProductMail(@RequestParam(value="emailTemplateId") String emailTemplateId) {
-		return EmailService.getInstance().sendProductMail(emailTemplateId);
+	public @ResponseBody boolean sendProductMail(@RequestParam(value="productUUID") String productUUID,@RequestParam(value="recipiant") String recipiant) {
+		return EmailService.getInstance().sendProductMail(productUUID,recipiant);
 	}
 	
 }

@@ -76,7 +76,7 @@ public class EmailAPIDao {
 		EmailAPITemplateVO vo = null;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.sms.template.master.by.id"));
+			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.template.master.by.id"));
 			preparedStmt.setString(1, emailTemplateId);
 			rs = preparedStmt.executeQuery();
 
@@ -115,16 +115,16 @@ public class EmailAPIDao {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		Map<String,String> emailTemplateKeywordsList=new HashMap<String,String>();
+		Map<String,String> emailTemplateKeywordsMap=new HashMap<String,String>();
 		try {
 			connection = DBConnectionHandler.getDBConnection();
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.sms.template.master.by.id"));
-			preparedStmt.setString(1, emailTemplateId);
+			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.templatekeywords.by.id"));
+			preparedStmt.setString(0, emailTemplateId);
 			rs = preparedStmt.executeQuery();
 
 			if (rs != null) {
 				while (rs.next()) {
-					emailTemplateKeywordsList.put(rs.getString("EMAIL_TEMPLATE_KEYWORDS_ID"), rs.getString("EMAIL_TEMPLATE_KEYWORDS"));
+					emailTemplateKeywordsMap.put(rs.getString("EMAIL_TEMPLATE_KEYWORDS_ID"), rs.getString("EMAIL_TEMPLATE_KEYWORDS"));
 				}
 			}
 		}catch (SQLException sx) {
@@ -136,7 +136,7 @@ public class EmailAPIDao {
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}
-		return (HashMap<String, String>) emailTemplateKeywordsList;
+		return (HashMap<String, String>) emailTemplateKeywordsMap;
 	}
 	
 	/**
@@ -150,7 +150,7 @@ public class EmailAPIDao {
 		EmailAPIConfigVO vo = null;
 		try {			
 			connection = DBConnectionHandler.getDBConnection();						
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.sms.template.master.by.id"));
+			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.SMTPConfig.master.by.id"));
 			rs = preparedStmt.executeQuery();
 						
 			if (rs != null) {

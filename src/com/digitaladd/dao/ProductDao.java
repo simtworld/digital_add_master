@@ -170,5 +170,43 @@ public class ProductDao {
 		return flag;
 		
 	}
+	
+	public ProductDetailsMO getProductDetailsById(String productUUID) {
+		ProductDetailsMO productDetailsMO=new ProductDetailsMO();
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			connection = DBConnectionHandler.getDBConnection();
+			preparedStatement = connection
+					.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.getAllProductDataById"));
+			preparedStatement.setString(1, productUUID);
+			System.out.println(productUUID);
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()) {
+				productDetailsMO.setProductUuid(resultSet.getString(1));
+				productDetailsMO.setProductName(resultSet.getString("product_name"));
+				productDetailsMO.setProductUrl(resultSet.getString("product_url"));
+				productDetailsMO.setProductDescriptionForSms(resultSet.getString("product_description_sms"));
+				productDetailsMO.setProductDescriptionForEmail(resultSet.getString("product_description_email"));
+				productDetailsMO.setProductImageExtension(resultSet.getString("product_image_extension"));
+				productDetailsMO.setCountry(resultSet.getString("product_country_id"));
+				productDetailsMO.setState(resultSet.getString("product_state_id"));
+				productDetailsMO.setCity(resultSet.getString("product_city_id"));
+				productDetailsMO.setCreatedAt(resultSet.getDate("created_at"));
+				//productDetailsMO.setUpdatedAt(resultSet.getDate("updated_at"));
+			}
+		} catch (SQLException sx) {
+			System.out.println(sx);
+		} catch (Exception e) {
+			System.out.println("ProductDao > getProductDetailsById() > exception >" + e);
+			e.printStackTrace();
+		} finally {
+			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStatement, resultSet);
+		}
+		
+		return productDetailsMO;
+	}
 
 }
