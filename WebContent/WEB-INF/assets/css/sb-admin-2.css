@@ -510,7 +510,10 @@ table.dataTable thead .sorting:after {
 		border-left-width: 0;
 	}
 }
-
+.ms-container-for-sharing-options{
+	padding-top: 10px;
+	padding-left: 400px;
+}
 .ms-container {
 	padding-top: 10px;
 	padding-left: 175px;
