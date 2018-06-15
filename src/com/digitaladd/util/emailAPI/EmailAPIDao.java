@@ -76,15 +76,17 @@ public class EmailAPIDao {
 		EmailAPITemplateVO vo = null;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
+			System.out.println(ResourceUtility.getSqlQuery("get.email.template.master.by.id"));
+			System.out.println(emailTemplateId);
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.template.master.by.id"));
 			preparedStmt.setString(1, emailTemplateId);
 			rs = preparedStmt.executeQuery();
-
+			
 			if (rs != null) {
 				while (rs.next()) {
 					vo = new EmailAPITemplateVO();
-					vo.setEmailTemplateId(rs.getString("EMAIL_TEMPLATE_ID"));
-					vo.setEmailTemplate(rs.getString("EMAIL_TEMPLATE"));
+					vo.setEmailTemplateId(rs.getString("EMAIL_TEMPLATE_DETAILS_ID"));
+					vo.setEmailTemplate(rs.getString("EMAIL_TEMPLATE_TEXT"));
 					vo.setEmailSubject(rs.getString("EMAIL_SUBJECT"));
 					vo.setEmailKewords(this.getEmailTemplateKeywordsList(emailTemplateId));
 					vo.setCreatedDate(rs.getString("CREATED_DATE"));
@@ -119,7 +121,7 @@ public class EmailAPIDao {
 		try {
 			connection = DBConnectionHandler.getDBConnection();
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.templatekeywords.by.id"));
-			preparedStmt.setString(0, emailTemplateId);
+			preparedStmt.setString(1, emailTemplateId);
 			rs = preparedStmt.executeQuery();
 
 			if (rs != null) {
@@ -148,14 +150,15 @@ public class EmailAPIDao {
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
 		EmailAPIConfigVO vo = null;
-		try {			
+		vo = new  EmailAPIConfigVO();
+		/*try {			
 			connection = DBConnectionHandler.getDBConnection();						
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.SMTPConfig.master.by.id"));
 			rs = preparedStmt.executeQuery();
 						
 			if (rs != null) {
 				while (rs.next()) {
-					vo = new  EmailAPIConfigVO();
+					
 					vo.setHost(rs.getString("EMAIL_CONFIG_HOST"));
 					vo.setPassword(rs.getString("EMAIL_CONFIG_PASSWORD"));
 					vo.setPort(rs.getString("EMAIL_CONFIG_PORT"));
@@ -171,7 +174,12 @@ public class EmailAPIDao {
 			e.printStackTrace();
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
-		}
+		}*/
+		
+		vo.setHost(ResourceUtility.getCommonConstant("email.smtp.host"));
+		vo.setPort(ResourceUtility.getCommonConstant("email.smtp.port"));
+		vo.setUserName(ResourceUtility.getCommonConstant("email.smtp.username"));
+		vo.setPassword(ResourceUtility.getCommonConstant("email.smtp.password"));
 		
 		return vo;
 	}

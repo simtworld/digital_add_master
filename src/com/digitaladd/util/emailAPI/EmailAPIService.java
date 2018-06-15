@@ -81,6 +81,7 @@ public class EmailAPIService {
 		Map<String, String> input = new HashMap<String, String>();
 		Properties emailContentKeywords = new Properties();
 		from=userName;
+		System.out.println("sendMail > "+ templateId);
 		EmailAPITemplateVO emailAPITemplateVO=emailDAO.getEmailTemplateByTemplateId(templateId);
 		// Get the Session object.
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
@@ -90,8 +91,7 @@ public class EmailAPIService {
 		});
 		
 		try {
-			String htmlText =this.getHtml(createFinalEmailKeywordsMap(emailAPITemplateVO.getEmailKewords(),realValues), emailAPITemplateVO);
-			System.out.println(htmlText);
+			
 			// Create a default MimeMessage object.
 			Message message = new MimeMessage(session);
 
@@ -109,7 +109,8 @@ public class EmailAPIService {
 				BodyPart _bodyPart = new MimeBodyPart();
 				
 				// HTML mail content
-				
+				String htmlText =this.getHtml(createFinalEmailKeywordsMap(emailAPITemplateVO.getEmailKewords(),realValues), emailAPITemplateVO);
+				System.out.println(htmlText);
 				
 				_bodyPart.setContent(htmlText, "text/html");
 	
@@ -139,11 +140,13 @@ public class EmailAPIService {
 	 * @return
 	 * @throws IOException
 	 */
-	protected static String getHtml(Map<String, String> input,EmailAPITemplateVO emailAPITemplateVO) throws IOException {
+	protected String getHtml(Map<String, String> input,EmailAPITemplateVO emailAPITemplateVO) throws IOException {
 		String msg=emailAPITemplateVO.emailTemplate;
 		
+		System.out.println("getHtml test::>> "+ input + " :: " + input.keySet());
 		Set<Entry<String, String>> entries = input.entrySet();
 		for (Map.Entry<String, String> entry : entries) {
+			System.out.println("getHtml :: "+ entry.getKey().trim() + " >> "+ entry.getValue().trim());
 			msg = msg.replace(entry.getKey().trim(), entry.getValue().trim());
 		}
 		return msg;
@@ -160,6 +163,7 @@ public class EmailAPIService {
 		for (String emailKeywordskey : emailKeywords.keySet()){
 			finalEmailKeywordsMap.put(emailKeywords.get(emailKeywordskey), realValues.get(emailKeywordskey));
 		}
+		System.out.println("createFinalEmailKeywordsMap :: "+ finalEmailKeywordsMap);
 		return finalEmailKeywordsMap;
 	}
 	

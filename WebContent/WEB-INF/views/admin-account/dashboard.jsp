@@ -423,8 +423,8 @@
 									</div>
 									<div class="row">
 										<div class="col-lg-12 ">
-											<form action="savefiles" contentType="multipart/form-data"
-												id="addProductDetailsForm">
+											<form  contentType="multipart/form-data"
+												id="addProductDetailsForm" >
 												<div class="form-group">
 													<label>Product Name</label> <input id="productName"
 														type="text" name="productName" class="form-control">

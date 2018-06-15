@@ -509,7 +509,7 @@ public class RequestController {
 	}
 
 	@RequestMapping(value = "/savefiles", method = RequestMethod.POST)
-	public @ResponseBody boolean addProductDetails(@RequestParam MultipartFile file, HttpSession session,
+	public @ResponseBody boolean addProductDetails(@RequestParam(value = "file") MultipartFile file, HttpSession session,
 			ProductDetailsMO productDetails) throws IllegalStateException, IOException {
 		String path = session.getServletContext().getRealPath("/WEB-INF/assets/img/product/");
 		String filename = file.getOriginalFilename();

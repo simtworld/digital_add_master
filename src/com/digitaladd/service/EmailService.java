@@ -43,9 +43,9 @@ public class EmailService {
 		realValues.put("Country", productDetailsMO.getCountry());
 		realValues.put("State", productDetailsMO.getState());
 		realValues.put("City", productDetailsMO.getCity());
-		
-		EmailAPIService.getInstance().sendMail("ProductEmail", realValues, recipiant);
-		return false;
+		System.out.println("sendProductMail >> " + realValues);
+		return EmailAPIService.getInstance().sendMail("ProductEmail", realValues, recipiant);
+		 
 	}
 	
 	
