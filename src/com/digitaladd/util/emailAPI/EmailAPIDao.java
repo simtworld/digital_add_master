@@ -66,29 +66,27 @@ public class EmailAPIDao {
 	}
 
 	/**
-	 * @param emailTemplateId
+	 * @param emailTemplateTypeId
 	 * @return EmailTemplateVO
 	 */
-	public EmailAPITemplateVO getEmailTemplateByTemplateId(String emailTemplateId) {
+	public EmailAPITemplateVO getEmailTemplateDetailsByTemplateId(String emailTemplateTypeId) {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
 		EmailAPITemplateVO vo = null;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
-			System.out.println(ResourceUtility.getSqlQuery("get.email.template.master.by.id"));
-			System.out.println(emailTemplateId);
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.template.master.by.id"));
-			preparedStmt.setString(1, emailTemplateId);
+			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.templatedetails.master.by.id"));
+			preparedStmt.setString(1, emailTemplateTypeId);
 			rs = preparedStmt.executeQuery();
 			
 			if (rs != null) {
-				while (rs.next()) {
+				if (rs.next()) {
 					vo = new EmailAPITemplateVO();
 					vo.setEmailTemplateId(rs.getString("EMAIL_TEMPLATE_DETAILS_ID"));
 					vo.setEmailTemplate(rs.getString("EMAIL_TEMPLATE_TEXT"));
 					vo.setEmailSubject(rs.getString("EMAIL_SUBJECT"));
-					vo.setEmailKewords(this.getEmailTemplateKeywordsList(emailTemplateId));
+					vo.setEmailKewords(this.getEmailTemplateKeywordsList(emailTemplateTypeId));
 					vo.setCreatedDate(rs.getString("CREATED_DATE"));
 					vo.setCreatedBy(rs.getString("CREATED_BY"));
 					vo.setUpdatedDate(rs.getString("UPDATED_DATE"));
@@ -113,7 +111,7 @@ public class EmailAPIDao {
 	 * @param emailTemplateId
 	 * @return
 	 */
-	private HashMap<String, String> getEmailTemplateKeywordsList(String emailTemplateId){
+	private HashMap<String, String> getEmailTemplateKeywordsList(String emailTemplateDetailsId){
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
@@ -121,7 +119,7 @@ public class EmailAPIDao {
 		try {
 			connection = DBConnectionHandler.getDBConnection();
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.templatekeywords.by.id"));
-			preparedStmt.setString(1, emailTemplateId);
+			preparedStmt.setString(1, emailTemplateDetailsId);
 			rs = preparedStmt.executeQuery();
 
 			if (rs != null) {
@@ -151,7 +149,7 @@ public class EmailAPIDao {
 		PreparedStatement preparedStmt = null;
 		EmailAPIConfigVO vo = null;
 		vo = new  EmailAPIConfigVO();
-		/*try {			
+		try {			
 			connection = DBConnectionHandler.getDBConnection();						
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.SMTPConfig.master.by.id"));
 			rs = preparedStmt.executeQuery();
@@ -174,12 +172,12 @@ public class EmailAPIDao {
 			e.printStackTrace();
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
-		}*/
+		}
 		
-		vo.setHost(ResourceUtility.getCommonConstant("email.smtp.host"));
+		/*vo.setHost(ResourceUtility.getCommonConstant("email.smtp.host"));
 		vo.setPort(ResourceUtility.getCommonConstant("email.smtp.port"));
 		vo.setUserName(ResourceUtility.getCommonConstant("email.smtp.username"));
-		vo.setPassword(ResourceUtility.getCommonConstant("email.smtp.password"));
+		vo.setPassword(ResourceUtility.getCommonConstant("email.smtp.password"));*/
 		
 		return vo;
 	}

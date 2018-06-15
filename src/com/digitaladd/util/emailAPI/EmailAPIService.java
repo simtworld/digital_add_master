@@ -74,15 +74,14 @@ public class EmailAPIService {
 		props.put("mail.smtp.port", port);
 	}
 
-	public boolean sendMail(String templateId,Map<String,String> realValues, String recipiant) {
+	public boolean sendMail(String templateTypeId,Map<String,String> realValues, String recipiant) {
 		boolean flag = false;
 		this.setTo(recipiant);
 		
 		Map<String, String> input = new HashMap<String, String>();
 		Properties emailContentKeywords = new Properties();
 		from=userName;
-		System.out.println("sendMail > "+ templateId);
-		EmailAPITemplateVO emailAPITemplateVO=emailDAO.getEmailTemplateByTemplateId(templateId);
+		EmailAPITemplateVO emailAPITemplateVO=emailDAO.getEmailTemplateDetailsByTemplateId(templateTypeId);
 		// Get the Session object.
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
@@ -143,7 +142,6 @@ public class EmailAPIService {
 	protected String getHtml(Map<String, String> input,EmailAPITemplateVO emailAPITemplateVO) throws IOException {
 		String msg=emailAPITemplateVO.emailTemplate;
 		
-		System.out.println("getHtml test::>> "+ input + " :: " + input.keySet());
 		Set<Entry<String, String>> entries = input.entrySet();
 		for (Map.Entry<String, String> entry : entries) {
 			System.out.println("getHtml :: "+ entry.getKey().trim() + " >> "+ entry.getValue().trim());
