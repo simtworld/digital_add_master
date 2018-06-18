@@ -3,13 +3,13 @@ package com.digitaladd.util.emailAPI;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class EmailAPITemplateVO implements Serializable {
+public class EmailAPITemplateDetailsVO implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6389346890160877587L;
-	protected String emailTemplateId = null;
-	protected String emailTemplate = null;
+	protected String emailTemplateDetailsId = null;
+	protected String emailTemplateText = null;
 	protected String emailSubject = null;
 	protected HashMap<String, String> emailKewords = null;
 	protected String createdDate = null;
@@ -20,33 +20,50 @@ public class EmailAPITemplateVO implements Serializable {
 	protected String comments = null;
 
 	/**
-	 * @return the emailTemplateId
+	 * @return the emailTemplateDetailsId
 	 */
-	public String getEmailTemplateId() {
-		return emailTemplateId;
+	public String getEmailTemplateDetailsId() {
+		return emailTemplateDetailsId;
 	}
 
 	/**
-	 * @param emailTemplateId
-	 *            the emailTemplateId to set
+	 * @param emailTemplateDetailsId
+	 *            the emailTemplateDetailsId to set
 	 */
-	public void setEmailTemplateId(String emailTemplateId) {
-		this.emailTemplateId = emailTemplateId;
+	public void setEmailTemplateDetailsId(String emailTemplateId) {
+		this.emailTemplateDetailsId = emailTemplateId;
 	}
 
 	/**
 	 * @return the emailTemplate
+	 * @deprecated Use {@link #getEmailTemplateText()} instead
 	 */
 	public String getEmailTemplate() {
-		return emailTemplate;
+		return getEmailTemplateText();
+	}
+
+	/**
+	 * @return the emailTemplateText
+	 */
+	public String getEmailTemplateText() {
+		return emailTemplateText;
 	}
 
 	/**
 	 * @param emailTemplate
 	 *            the emailTemplate to set
+	 * @deprecated Use {@link #setEmailTemplateText(String)} instead
 	 */
 	public void setEmailTemplate(String emailTemplate) {
-		this.emailTemplate = emailTemplate;
+		setEmailTemplateText(emailTemplate);
+	}
+
+	/**
+	 * @param emailTemplateText
+	 *            the emailTemplateText to set
+	 */
+	public void setEmailTemplateText(String emailTemplate) {
+		this.emailTemplateText = emailTemplate;
 	}
 
 	/**
@@ -151,8 +168,8 @@ public class EmailAPITemplateVO implements Serializable {
 		result = prime * result + ((createdDate == null) ? 0 : createdDate.hashCode());
 		result = prime * result + ((emailKewords == null) ? 0 : emailKewords.hashCode());
 		result = prime * result + ((emailSubject == null) ? 0 : emailSubject.hashCode());
-		result = prime * result + ((emailTemplate == null) ? 0 : emailTemplate.hashCode());
-		result = prime * result + ((emailTemplateId == null) ? 0 : emailTemplateId.hashCode());
+		result = prime * result + ((emailTemplateText == null) ? 0 : emailTemplateText.hashCode());
+		result = prime * result + ((emailTemplateDetailsId == null) ? 0 : emailTemplateDetailsId.hashCode());
 		result = prime * result + status;
 		result = prime * result + ((updatedBy == null) ? 0 : updatedBy.hashCode());
 		result = prime * result + ((updatedDate == null) ? 0 : updatedDate.hashCode());
@@ -170,7 +187,7 @@ public class EmailAPITemplateVO implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EmailAPITemplateVO other = (EmailAPITemplateVO) obj;
+		EmailAPITemplateDetailsVO other = (EmailAPITemplateDetailsVO) obj;
 		if (comments == null) {
 			if (other.comments != null)
 				return false;
@@ -196,15 +213,15 @@ public class EmailAPITemplateVO implements Serializable {
 				return false;
 		} else if (!emailSubject.equals(other.emailSubject))
 			return false;
-		if (emailTemplate == null) {
-			if (other.emailTemplate != null)
+		if (emailTemplateText == null) {
+			if (other.emailTemplateText != null)
 				return false;
-		} else if (!emailTemplate.equals(other.emailTemplate))
+		} else if (!emailTemplateText.equals(other.emailTemplateText))
 			return false;
-		if (emailTemplateId == null) {
-			if (other.emailTemplateId != null)
+		if (emailTemplateDetailsId == null) {
+			if (other.emailTemplateDetailsId != null)
 				return false;
-		} else if (!emailTemplateId.equals(other.emailTemplateId))
+		} else if (!emailTemplateDetailsId.equals(other.emailTemplateDetailsId))
 			return false;
 		if (status != other.status)
 			return false;
