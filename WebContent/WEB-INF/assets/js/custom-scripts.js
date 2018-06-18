@@ -1,8 +1,10 @@
 /*
  *script for submitting the addProduct form 
  */
-$("form#addProductDetailsForm").submit(function(e) {
-	alert("test");
+$(document).ready(function () {
+	
+
+$('form#addProductDetailsForm').submit(function(e) {
 		e.preventDefault();
 		var formData = new FormData(this);
 		$.ajax({
@@ -31,8 +33,6 @@ $("form#addProductDetailsForm").submit(function(e) {
 
 var table;
 
-$(document).ready(function () {
-	
 	table=$('#product_table')
 			.DataTable(
 					{

@@ -299,6 +299,7 @@ public class RegistrationDao {
 			System.out.println("RegistrationDao > changeUserStatus() > sqlexception >" + sx);
 		} catch (Exception e) {
 			System.out.println("RegistrationDao > changeUserStatus() > exception >" + e);
+			e.printStackTrace();
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}
@@ -312,6 +313,7 @@ public class RegistrationDao {
 		UserMO retUser = null;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
+			System.out.println("RegistrationDao > checkUserLogin() >> "+ connection);
 			preparedStmt = connection
 					.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.getUserDataWithMobileAndPassword"));
 			preparedStmt.setString(1, userName);
@@ -345,9 +347,10 @@ public class RegistrationDao {
 				}
 			}
 		} catch (SQLException sx) {
-			System.out.println("RegistrationDao > changeUserStatus() > sqlexception >" + sx);
+			System.out.println("RegistrationDao > checkUserLogin() > sqlexception >" + sx);
 		} catch (Exception e) {
-			System.out.println("RegistrationDao > changeUserStatus() > exception >" + e);
+			System.out.println("RegistrationDao > checkUserLogin() > exception >" + e);
+			e.printStackTrace();
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}
