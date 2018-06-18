@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 
 
-=======
 <<<<<<< HEAD
 <div class="ms-container-for-sharing-options">
 	<iframe
@@ -63,7 +61,6 @@ window.fbAsyncInit = function() {
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 </head>
->>>>>>> refs/remotes/origin/Satya
 <body>
 	<div class="ms-container-for-sharing-options">
 		<!-- <p id="button">Share</p> -->
