@@ -10,6 +10,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +28,8 @@ import com.digitaladd.model.UserMO;
 import com.digitaladd.service.EmailService;
 import com.digitaladd.util.RandomGenerator;
 import com.digitaladd.util.ResourceUtility;
-import com.digitaladd.util.emailAPI.EmailAPITemplateVO;
+import com.digitaladd.util.emailAPI.EmailAPIConfigVO;
+import com.digitaladd.util.emailAPI.EmailAPITemplateDetailsVO;
 import com.digitaladd.util.smsAPI.SMSAuditingVO;
 import com.digitaladd.util.smsAPI.SMSService;
 import com.digitaladd.util.smsAPI.SMSTemplateVO;
@@ -53,6 +56,14 @@ public class RequestController {
 	 * return "Response!"+request.getParameter("name"); }
 	 */
 
+	//Dependency management
+	@Autowired
+	EmailService emailService;
+	
+	
+	
+	
+	
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public String test(ModelMap model) {
 		model.addAttribute("name", "Melcow");
@@ -587,14 +598,19 @@ public class RequestController {
 		return ProductDao.getInstance().updateProduct(productDetails);
 	}
 
-	@RequestMapping(value = "/change-email-template", method= RequestMethod.POST)
-	public @ResponseBody boolean changeEmailTemplate(EmailAPITemplateVO emailAPITemplateVO) {
-		return EmailService.getInstance().changeEmailTemplateService(emailAPITemplateVO);
+	@RequestMapping(value = "/change-email-template", method= RequestMethod.PUT)
+	public @ResponseBody boolean changeEmailTemplate(EmailAPITemplateDetailsVO emailAPITemplateDetailsVO) {
+		return emailService.changeEmailTemplateService(emailAPITemplateDetailsVO);
 	}
 	
 	@RequestMapping(value="/send-product-mail",method = RequestMethod.GET)
 	public @ResponseBody boolean sendProductMail(@RequestParam(value="productUUID") String productUUID,@RequestParam(value="recipiant") String recipiant) {
-		return EmailService.getInstance().sendProductMail(productUUID,recipiant);
+		return emailService.sendProductMail(productUUID,recipiant);
+	}
+	
+	@RequestMapping(value = "/change-email-config", method= RequestMethod.PUT)
+	public @ResponseBody boolean changeEmailConfig(EmailAPIConfigVO emailAPIConfigVO) {
+		return emailService.changeEmailConfigService(emailAPIConfigVO);
 	}
 	
 }

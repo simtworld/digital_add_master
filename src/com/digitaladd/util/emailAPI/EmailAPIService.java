@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.inject.Inject;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -18,6 +19,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class EmailAPIService {
 	private static EmailAPIService instance;
@@ -30,9 +33,11 @@ public class EmailAPIService {
 	static private String host;
 	static private String port;
 	static private Properties props;
-	static private EmailAPIDao emailDAO;
 	
-	private EmailAPITemplateVO emailAPITemplateVO;
+	
+	static private EmailAPIDao emailAPIDao;
+	
+	private EmailAPITemplateDetailsVO emailAPITemplateDetailsVO;
 	
 	static {
 		configurEmailSMTP();
@@ -49,31 +54,44 @@ public class EmailAPIService {
 	}
 	
 	/**
-	 * @param emailAPITemplateVO
+	 * @param emailAPITemplateDetailsVO
 	 * @return
 	 */
-	public boolean changeEmailTemplate(EmailAPITemplateVO emailAPITemplateVO) {
-		return emailDAO.saveEmailTemplate(emailAPITemplateVO);
+	public boolean changeEmailTemplate(EmailAPITemplateDetailsVO emailAPITemplateDetailsVO) {
+		return emailAPIDao.saveEmailTemplate(emailAPITemplateDetailsVO);
 	}
 	
 	public static void configurEmailSMTP() {
 		
-		emailDAO=EmailAPIDao.getInstance();
+		emailAPIDao=EmailAPIDao.getInstance();
 		
-		EmailAPIConfigVO emailAPIConfigVO = emailDAO.getEmailSMTPConfig();
+		EmailAPIConfigVO emailAPIConfigVO = emailAPIDao.getEmailSMTPConfig();
 		
 		userName = emailAPIConfigVO.getUserName();
 		password = emailAPIConfigVO.getPassword();
 		host = emailAPIConfigVO.getHost();
 		port = emailAPIConfigVO.getPort();
 		
+		System.out.println(userName);
+		System.out.println(password);
+		System.out.println(host);
+		System.out.println(port);
+		
 		props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", host);
 		props.put("mail.smtp.port", port);
+		props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
 	}
 
+	/**
+	 * This method takes the input and send the mail to the respected recipaiant
+	 * @param templateTypeId
+	 * @param realValues
+	 * @param recipiant
+	 * @return boolean
+	 */
 	public boolean sendMail(String templateTypeId,Map<String,String> realValues, String recipiant) {
 		boolean flag = false;
 		this.setTo(recipiant);
@@ -81,7 +99,7 @@ public class EmailAPIService {
 		Map<String, String> input = new HashMap<String, String>();
 		Properties emailContentKeywords = new Properties();
 		from=userName;
-		EmailAPITemplateVO emailAPITemplateVO=emailDAO.getEmailTemplateDetailsByTemplateId(templateTypeId);
+		EmailAPITemplateDetailsVO emailAPITemplateDetailsVO=emailAPIDao.getEmailTemplateDetailsByTemplateId(templateTypeId);
 		// Get the Session object.
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
@@ -101,14 +119,14 @@ public class EmailAPIService {
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 
 			// Set Subject: header field
-			message.setSubject(emailAPITemplateVO.emailSubject);
+			message.setSubject(emailAPITemplateDetailsVO.emailSubject);
 
 			// start template
 				MimeMultipart _mulPart = new MimeMultipart();
 				BodyPart _bodyPart = new MimeBodyPart();
 				
 				// HTML mail content
-				String htmlText =this.getHtml(createFinalEmailKeywordsMap(emailAPITemplateVO.getEmailKewords(),realValues), emailAPITemplateVO);
+				String htmlText =this.getHtml(createFinalEmailKeywordsMap(emailAPITemplateDetailsVO.getEmailKewords(),realValues), emailAPITemplateDetailsVO);
 				System.out.println(htmlText);
 				
 				_bodyPart.setContent(htmlText, "text/html");
@@ -133,14 +151,14 @@ public class EmailAPIService {
 	
 	
 	/**
-	 * desc this method replace all the keywords with valid data
+	 * desc this method replace all the keywords with valid data from the template
 	 * @param input
-	 * @param emailAPITemplateVO
+	 * @param emailAPITemplateDetailsVO
 	 * @return
 	 * @throws IOException
 	 */
-	protected String getHtml(Map<String, String> input,EmailAPITemplateVO emailAPITemplateVO) throws IOException {
-		String msg=emailAPITemplateVO.emailTemplate;
+	protected String getHtml(Map<String, String> input,EmailAPITemplateDetailsVO emailAPITemplateDetailsVO) throws IOException {
+		String msg=emailAPITemplateDetailsVO.emailTemplateText;
 		
 		Set<Entry<String, String>> entries = input.entrySet();
 		for (Map.Entry<String, String> entry : entries) {
@@ -165,10 +183,15 @@ public class EmailAPIService {
 		return finalEmailKeywordsMap;
 	}
 	
+	public boolean changeEmailConfig(EmailAPIConfigVO emailAPIConfigVO) {
+		return emailAPIDao.changeEmailConfig(emailAPIConfigVO);
+	}
+	
 	public void setTo(String to) {
 		this.to = to;
 	}
-
+	
+	
 	public void setFrom(String from) {
 		this.from = from;
 	}
