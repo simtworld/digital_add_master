@@ -319,8 +319,8 @@
 							</c:when>
 
 							<c:when test="${bean.userTypeId==admin}">
-								<li><a href="tables.html"><i class="fa fa-table fa-fw"></i>
-										Admin Tables</a></li>
+								<li><a href="sharing-options"><i class="fa fa-table fa-fw"></i>
+										Sharing Options</a></li>
 
 								<li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
 										Settings<span class="fa arrow"></span></a>

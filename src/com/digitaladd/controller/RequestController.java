@@ -10,6 +10,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +24,16 @@ import com.digitaladd.dao.ProductDao;
 import com.digitaladd.dao.RegistrationDao;
 import com.digitaladd.model.ProductDetailsMO;
 import com.digitaladd.model.UserMO;
+
+import com.digitaladd.service.EmailService;
 import com.digitaladd.util.RandomGenerator;
 import com.digitaladd.util.ResourceUtility;
-import com.digitaladd.util.sms.SMSAuditingVO;
-import com.digitaladd.util.sms.SMSService;
-import com.digitaladd.util.sms.SMSTemplateVO;
-import com.digitaladd.util.sms.SMSVO;
+import com.digitaladd.util.emailAPI.EmailAPIConfigVO;
+import com.digitaladd.util.emailAPI.EmailAPITemplateDetailsVO;
+import com.digitaladd.util.smsAPI.SMSAuditingVO;
+import com.digitaladd.util.smsAPI.SMSService;
+import com.digitaladd.util.smsAPI.SMSTemplateVO;
+import com.digitaladd.util.smsAPI.SMSVO;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -50,6 +56,14 @@ public class RequestController {
 	 * return "Response!"+request.getParameter("name"); }
 	 */
 
+	//Dependency management
+	@Autowired
+	EmailService emailService;
+	
+	
+	
+	
+	
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public String test(ModelMap model) {
 		model.addAttribute("name", "Melcow");
@@ -63,6 +77,11 @@ public class RequestController {
 	@RequestMapping(value = { "/email-settings" }, method = RequestMethod.GET)
 	public String sendEmail(ModelMap model) {
 		return "email-settings.tiles";
+	}
+	
+	@RequestMapping(value = { "/sharing-options" }, method = RequestMethod.GET)
+	public String shareToSocial(ModelMap model) {
+		return "sharing-options.tiles";
 	}
 
 	@RequestMapping(path = "/getallcountries", method = RequestMethod.GET)
@@ -506,7 +525,7 @@ public class RequestController {
 	}
 
 	@RequestMapping(value = "/savefiles", method = RequestMethod.POST)
-	public @ResponseBody boolean addProductDetails(@RequestParam MultipartFile file, HttpSession session,
+	public @ResponseBody boolean addProductDetails(@RequestParam(value = "file") MultipartFile file, HttpSession session,
 			ProductDetailsMO productDetails) throws IllegalStateException, IOException {
 		String path = session.getServletContext().getRealPath("/WEB-INF/assets/img/product/");
 		String filename = file.getOriginalFilename();
@@ -545,8 +564,29 @@ public class RequestController {
 	 * */
 	@RequestMapping(value = "/getProducts", method = RequestMethod.GET)
 	public @ResponseBody JSONArray getProducts() {
-		JSONArray products = (JSONArray) ProductDao.getInstance().getProducts();
+		JSONArray products=null;
+		JSONObject jsonObject=null;
+		products=new JSONArray();
+		ArrayList<ProductDetailsMO> productDetailsList =new ArrayList<>();
+		productDetailsList= ProductDao.getInstance().getProducts();
+		for(ProductDetailsMO productDetails:productDetailsList) {
+			jsonObject = new JSONObject();
+		    jsonObject.put("productId", productDetails.getProductUuid());
+		    jsonObject.put("productName", productDetails.getProductName());
+		    jsonObject.put("puoductUrl", productDetails.getProductUrl());
+		    jsonObject.put("smsDesc", productDetails.getProductDescriptionForSms());
+		    jsonObject.put("emailDesc", productDetails.getProductDescriptionForEmail());
+		    jsonObject.put("imageURL", productDetails.getProductImageExtension());
+		    jsonObject.put("countryId", productDetails.getCountry());
+		    jsonObject.put("stateId", productDetails.getState());
+		    jsonObject.put("cityId", productDetails.getCity());
+		    jsonObject.put("creationDate", productDetails.getCreatedAt().toString());
+		    jsonObject.put("updationDate", productDetails.getUpdatedAt().toString());
+		    products.add(jsonObject);
+		}
 		
+	    
+
 		return products;
 	}
 	
@@ -558,4 +598,19 @@ public class RequestController {
 		return ProductDao.getInstance().updateProduct(productDetails);
 	}
 
+	@RequestMapping(value = "/change-email-template", method= RequestMethod.PUT)
+	public @ResponseBody boolean changeEmailTemplate(EmailAPITemplateDetailsVO emailAPITemplateDetailsVO) {
+		return emailService.changeEmailTemplateService(emailAPITemplateDetailsVO);
+	}
+	
+	@RequestMapping(value="/send-product-mail",method = RequestMethod.GET)
+	public @ResponseBody boolean sendProductMail(@RequestParam(value="productUUID") String productUUID,@RequestParam(value="recipiant") String recipiant) {
+		return emailService.sendProductMail(productUUID,recipiant);
+	}
+	
+	@RequestMapping(value = "/change-email-config", method= RequestMethod.PUT)
+	public @ResponseBody boolean changeEmailConfig(EmailAPIConfigVO emailAPIConfigVO) {
+		return emailService.changeEmailConfigService(emailAPIConfigVO);
+	}
+	
 }

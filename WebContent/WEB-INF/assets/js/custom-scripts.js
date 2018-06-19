@@ -2,6 +2,7 @@
  *script for submitting the addProduct form 
  */
 $("form#addProductDetailsForm").submit(function(e) {
+	alert("test");
 		e.preventDefault();
 		var formData = new FormData(this);
 		$.ajax({
@@ -89,7 +90,7 @@ $(document).ready(function () {
 				  $.ajax({
 						url : "delete-product-list",
 						type : 'POST',
-						/* data : {'productId':data.productId+"'"}, */
+						 data : {'productId':data.productId+"'"}, 
 						data : {
 							productID : param
 						},
