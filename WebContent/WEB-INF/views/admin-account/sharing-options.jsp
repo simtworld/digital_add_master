@@ -1,72 +1,27 @@
 
-
-<<<<<<< HEAD
 <div class="ms-container-for-sharing-options">
 	<iframe
-						src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Fcodenerdssolutions.com%2F%23%2F&layout=button&size=large&mobile_iframe=true&width=73&height=28&appId"
-						width="73" height="28" style="border: none; overflow: hidden"
-						scrolling="no" frameborder="0" allowTransparency="true"
-						allow="encrypted-media"></iframe>
-	
-</div>
- 
- <script src="//platform-api.sharethis.com/js/sharethis.js#property=5b2382882337c30011a5b74f&product=inline-share-buttons"></script>
-<div class="sharethis-inline-share-buttons"></div> 
-<!-- div class="ms-container-for-sharing-options">
-	<p>Click the button below to trigger a Share Dialog</p>
+		src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Famzn.to%2F2I2UeHS%2F%23%2F&layout=button&size=large&mobile_iframe=true&width=73&height=28&appId"
+		width="73" height="28" style="border: none; overflow: hidden"
+		scrolling="no" frameborder="0" allowTransparency="true"
+		allow="encrypted-media"></iframe>
+	<iframe
+		src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Famzn.to%2F2I2UeHS&layout=button_count&size=small&mobile_iframe=true&appId=185524568774474&width=86&height=20"
+		width="86" height="20" style="border: none; overflow: hidden"
+		scrolling="no" frameborder="0" allowTransparency="true"
+		allow="encrypted-media"></iframe>
 
-	<div id="shareBtn" class="btn btn-success clearfix">Share</div>
-
-	<p style="margin-top: 50px">
-	<hr />
-	<a class="btn btn-small"
-		href="https://developers.facebook.com/docs/sharing/reference/share-dialog">Share
-		Dialog Documentation</a>
-	</p>
 </div>
 
+<script
+	src="//platform-api.sharethis.com/js/sharethis.js#property=5b2382882337c30011a5b74f&product=inline-share-buttons"></script>
+<div class="sharethis-inline-share-buttons"></div>
 
-<script>
-window.fbAsyncInit = function() {
-    FB.init({
-      appId            : '185524568774474',
-      autoLogAppEvents : true,
-      xfbml            : true,
-      version          : 'v3.0'
-    });
-  };
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-	document.getElementById('shareBtn').onclick = function() {
-		FB.ui({
-			method : 'share',
-			display : 'popup',
-			href : 'codenerdssolutions.com',
-		}, function(response) {
-		});
-	}
-</script> -->
-=======
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
 <body>
 	<div class="ms-container-for-sharing-options">
 		<!-- <p id="button">Share</p> -->
-		<button id="button" class="btn btn-primary">
-			<i class="fa fa-facebook-f" style="color: white; padding-right: 7px"></i>Share
-		</button>
+
 		<blockquote class="instagram-media"
 			data-instgrm-permalink="https://www.instagram.com/p/BhqTqHNA1RY/"
 			data-instgrm-version="8"
@@ -91,15 +46,11 @@ window.fbAsyncInit = function() {
 			</div>
 		</blockquote>
 
-		<a href="https://twitter.com/share?ref_src=twsrc%5Etfw"
-			class="twitter-share-button" data-show-count="true">Tweet</a> <a
-			class="twitter-share-button" href="https://twitter.com/share"
-			data-size="small" data-url="http://knoldus.com" data-text="Hello"
-			data-count="none">Tweet</a>
-		<script async src="https://platform.twitter.com/widgets.js"
-			charset="utf-8"></script>
-		<script async defer src="//www.instagram.com/embed.js"></script>
-		<script>
+
+		<a class="btn twitter"
+			href="https://twitter.com/intent/tweet?url=https://amzn.to/2I2UeHS &status=This%20photo%20is%20awesome!%20Check%20it%20out:%20pic.twitter.com/9Ee63f7aVp">Share
+			on Twitter</a>
+		<script type="text/javascript">
 			window.twttr = (function(d, s, id) {
 				var js, fjs = d.getElementsByTagName(s)[0], t = window.twttr
 						|| {};
@@ -109,18 +60,66 @@ window.fbAsyncInit = function() {
 				js.id = id;
 				js.src = "https://platform.twitter.com/widgets.js";
 				fjs.parentNode.insertBefore(js, fjs);
+
 				t._e = [];
 				t.ready = function(f) {
 					t._e.push(f);
 				};
+
 				return t;
 			}(document, "script", "twitter-wjs"));
-			twttr.events.bind('tweet', function(event) {
-				// do somethings here
-				alert("Tweet has been successfully posted");
+
+		
+
+			function tweetIntentToAnalytics(intentEvent) {
+				if (!intentEvent)
+					return;
+				alert("hello tweeter--pass>");
+				var label = "tweet";
+				pageTracker._trackEvent('twitter_web_intents',
+						intentEvent.type, label);
+			}
+
+		
+			// Wait for the asynchronous resources to load
+			twttr.ready(function(twttr) {
+				// Now bind our custom intent events
+				twttr.events.bind('click', clickEventToAnalytics);
+				twttr.events.bind('tweet', tweetIntentToAnalytics);
+				twttr.events.bind('retweet', retweetIntentToAnalytics);
+				twttr.events.bind('like', likeIntentToAnalytics);
+				twttr.events.bind('follow', followIntentToAnalytics);
 			});
 		</script>
 
+
+
+		<script async defer src="//www.instagram.com/embed.js"></script>
+
+
+		<!-- pinterest -->
+		<script async defer src="//assets.pinterest.com/js/pinit.js">
+			
+		</script>
+
+	<!-- script for uri encoding of pinterest to be used in ajax call of next product add button in share product modal -->
+		<!-- <script>
+			function myFunction() {
+				var uri = "https://hniesfp.imgix.net/8/images/detailed/69/Y3V76EAABU_01.jpg";
+				var res = encodeURIComponent(uri);
+				document.getElementById("demo").innerHTML = res;
+			}
+		</script> -->
+
+		<a data-pin-do="buttonBookmark"
+			href="https://www.pinterest.com/pin/create/button/?url=https%3A%2F%2Famzn.to%2F2I2UeHS&media=https%3A%2F%2Fhniesfp.imgix.net%2F8%2Fimages%2Fdetailed%2F69%2FY3V76EAABU_01.jpg&description=SB%20welcometomysite target="
+			blank" class="pinterest-anchorpinterest-hidden"></a>
+
+
+
+		<button id="button" class="btn btn-primary">
+			<i class="fa fa-facebook-f" style="color: white; padding-right: 7px"></i>Share
+		</button>
 
 		<script>
 			(function(d, s, id) {
@@ -135,7 +134,7 @@ window.fbAsyncInit = function() {
 			}(document, 'script', 'facebook-jssdk'));
 			window.fbAsyncInit = function() {
 				FB.init({
-					appId : '12345676890',
+					appId : '1704765292925226',
 					status : true,
 					xfbml : true,
 					version : 'v2.1'
@@ -145,7 +144,7 @@ window.fbAsyncInit = function() {
 
 					var options = ({
 						method : 'share',
-						href : 'url goes here'
+						href : 'https://amzn.to/2I2UeHS'
 					}), status = '';
 
 					FB.ui(options, function(response) {
