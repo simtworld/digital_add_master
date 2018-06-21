@@ -30,7 +30,7 @@
                                     <div class="card-header card-header-text" data-background-color="rose">
                                         <h4 class="card-title">My Profile</h4>
                                     </div>
-                                    <div class="card-content">
+                                    <%-- <div class="card-content">
                                    		<div class="row">
                                             <label class="col-sm-2 label-on-left" style="padding-top: 17px;">First Name</label>
                                             <div class="col-sm-10">
@@ -106,7 +106,7 @@
 	                                        <label class="col-sm-2 label-on-left" style="padding-top: 17px;"></label>
 	                                        <button type="button" class="btn btn-fill btn-rose" onclick="showEdit()">Edit<div class="ripple-container"></div></button>
                                         </div>
-                                    </div>
+                                    </div> --%>
                                     </div>
                                 <!-- </form> -->
                                 <form id="profileForm" name="profileForm" method="POST" action="#">
