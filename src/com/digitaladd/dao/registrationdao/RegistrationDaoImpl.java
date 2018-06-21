@@ -1,4 +1,4 @@
-package com.digitaladd.dao;
+package com.digitaladd.dao.registrationdao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,13 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.digitaladd.common.DBConnectionHandler;
 import com.digitaladd.model.UserMO;
 import com.digitaladd.util.ResourceUtility;
 
-public class RegistrationDao {
-	// singleton implementation
-	private RegistrationDao() {
+@Repository("registrationDao")
+public class RegistrationDaoImpl implements RegistrationDao {
+	/*// singleton implementation
+	private RegistrationDaoImpl() {
 		// super(DataSources.DEFAULT);
 	}
 
@@ -25,7 +28,7 @@ public class RegistrationDao {
 	// singleton implementation
 	private static class RegistrationDaoHolder {
 		private static final RegistrationDao INSTANCE = new RegistrationDao();
-	}
+	}*/
 
 	public List<UserMO> getCountreies() {
 		Connection connection = null;
@@ -175,6 +178,7 @@ public class RegistrationDao {
 	}
 
 	public boolean customerRegistration(UserMO user) {
+		System.out.println(user);
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
@@ -212,72 +216,6 @@ public class RegistrationDao {
 		return flag;
 	}
 
-	public boolean saveOtp(String mobile, String otp) {
-		Connection connection = null;
-		ResultSet rs = null;
-		PreparedStatement preparedStmt = null;
-		boolean flag = false;
-		try {
-			connection = DBConnectionHandler.getDBConnection();
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.insertOTP"));
-
-			// StringBuffer buffer = new
-			// StringBuffer(ResourceUtility.getCommonConstant("user.uuid.starts.with"));
-			// buffer.append(RandomGenerator.generateNumericRandom(Integer.parseInt(ResourceUtility.getCommonConstant("user.uuid.length"))));
-
-			preparedStmt.setString(1, mobile);
-			preparedStmt.setString(2, otp);
-
-			int i = preparedStmt.executeUpdate();
-
-			if (i > 0) {
-				flag = true;
-			}
-		} catch (SQLException sx) {
-			System.out.println("RegistrationDao > saveOtp() > sqlexception >" + sx);
-		} catch (Exception e) {
-			System.out.println("RegistrationDao > saveOtp() > exception >" + e);
-		} finally {
-			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
-		}
-		return flag;
-	}
-
-	public boolean deleteOtp(String otp, String mobile) {
-		Connection connection = null;
-		ResultSet rs = null;
-		PreparedStatement preparedStmt = null;
-		boolean flag = false;
-		try {
-			connection = DBConnectionHandler.getDBConnection();
-
-			String query = ResourceUtility.getSqlQuery("digitalAdd.deleteOTP");
-
-			if (otp != null && !"".equalsIgnoreCase(otp)) {
-				query += " and otp = ?";
-			}
-
-			preparedStmt = connection.prepareStatement(query);
-			preparedStmt.setString(1, mobile);
-			if (otp != null && !"".equalsIgnoreCase(otp)) {
-				preparedStmt.setString(2, otp);
-			}
-
-			int i = preparedStmt.executeUpdate();
-
-			if (i > 0) {
-				flag = true;
-			}
-		} catch (SQLException sx) {
-			System.out.println("RegistrationDao > deleteOtp() > sqlexception >" + sx);
-		} catch (Exception e) {
-			System.out.println("RegistrationDao > deleteOtp() > exception >" + e);
-		} finally {
-			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
-		}
-		return flag;
-	}
-
 	public boolean changeUserStatus(String mobile) {
 		Connection connection = null;
 		ResultSet rs = null;
@@ -299,6 +237,7 @@ public class RegistrationDao {
 			System.out.println("RegistrationDao > changeUserStatus() > sqlexception >" + sx);
 		} catch (Exception e) {
 			System.out.println("RegistrationDao > changeUserStatus() > exception >" + e);
+			e.printStackTrace();
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}
@@ -312,6 +251,7 @@ public class RegistrationDao {
 		UserMO retUser = null;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
+			System.out.println("RegistrationDao > checkUserLogin() >> "+ connection);
 			preparedStmt = connection
 					.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.getUserDataWithMobileAndPassword"));
 			preparedStmt.setString(1, userName);
@@ -345,32 +285,34 @@ public class RegistrationDao {
 				}
 			}
 		} catch (SQLException sx) {
-			System.out.println("RegistrationDao > changeUserStatus() > sqlexception >" + sx);
+			System.out.println("RegistrationDao > checkUserLogin() > sqlexception >" + sx);
 		} catch (Exception e) {
-			System.out.println("RegistrationDao > changeUserStatus() > exception >" + e);
+			System.out.println("RegistrationDao > checkUserLogin() > exception >" + e);
+			e.printStackTrace();
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}
 		return retUser;
 	}
 
-	public boolean updateProfile(UserMO user) {
+	public boolean updateProfile(UserMO userMO) {
+		//System.out.println("RegistrationDao > updateProfile() >> "+userMO);//for testing
+
+		
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
 		boolean flag = false;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
-
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.updateProifle"));
-			preparedStmt.setString(1, user.getFirstName());
-			preparedStmt.setString(2, user.getLastName());
-			preparedStmt.setString(3, user.getEmail());
-			preparedStmt.setString(4, user.getCountryCode());
-			preparedStmt.setString(5, user.getStateCode());
-			preparedStmt.setString(6, user.getCityCode());
-			preparedStmt.setString(7, user.getAddress());
-			preparedStmt.setString(8, user.getUuid());
+			preparedStmt.setString(1, userMO.getFirstName());
+			preparedStmt.setString(2, userMO.getLastName());
+			preparedStmt.setString(3, userMO.getEmail());
+			preparedStmt.setString(4, userMO.getCountryCode());
+			preparedStmt.setString(5, userMO.getStateCode());
+			preparedStmt.setString(6, userMO.getCityCode());
+			preparedStmt.setString(7, userMO.getUuid());
 
 			int i = preparedStmt.executeUpdate();
 
@@ -381,65 +323,6 @@ public class RegistrationDao {
 			System.out.println("RegistrationDao > updateProfile() > sqlexception >" + sx);
 		} catch (Exception e) {
 			System.out.println("RegistrationDao > updateProfile() > exception >" + e);
-		} finally {
-			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
-		}
-		return flag;
-	}
-
-	public boolean checkPassword(String uuid, String password) {
-		Connection connection = null;
-		ResultSet rs = null;
-		PreparedStatement preparedStmt = null;
-		boolean flag = false;
-		try {
-			connection = DBConnectionHandler.getDBConnection();
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.checkPassword"));
-			preparedStmt.setString(1, uuid);
-			preparedStmt.setString(2, password);
-
-			rs = preparedStmt.executeQuery();
-
-			if (rs != null) {
-				while (rs.next()) {
-					int val = rs.getInt("count");
-
-					if (val > 0) {
-						flag = true;
-					}
-				}
-			}
-		} catch (SQLException sx) {
-			System.out.println("RegistrationDao > checkPassword() > sqlexception >" + sx);
-		} catch (Exception e) {
-			System.out.println("RegistrationDao > checkPassword() > exception >" + e);
-		} finally {
-			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
-		}
-		return flag;
-	}
-
-	public boolean updatePassword(String uuid, String passowrd) {
-		Connection connection = null;
-		ResultSet rs = null;
-		PreparedStatement preparedStmt = null;
-		boolean flag = false;
-		try {
-			connection = DBConnectionHandler.getDBConnection();
-
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.updatePassword"));
-			preparedStmt.setString(1, passowrd);
-			preparedStmt.setString(2, uuid);
-
-			int i = preparedStmt.executeUpdate();
-
-			if (i > 0) {
-				flag = true;
-			}
-		} catch (SQLException sx) {
-			System.out.println("RegistrationDao > updatePassword() > sqlexception >" + sx);
-		} catch (Exception e) {
-			System.out.println("RegistrationDao > updatePassword() > exception >" + e);
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}

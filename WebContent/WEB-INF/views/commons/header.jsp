@@ -15,6 +15,9 @@
     
     <!-- Bootstrap core CSS     -->
     <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Morris Charts CSS -->
+<link href="<%=request.getContextPath() %>/assets/css/morris.css"
+	rel="stylesheet">
     <!--  Material Dashboard CSS    -->
     <link href="<%=request.getContextPath()%>/assets/css/material-dashboard5438.css?v=1.2.0" rel="stylesheet" />
     <!--  CSS for Demo Purpose, don't include it in your project     -->

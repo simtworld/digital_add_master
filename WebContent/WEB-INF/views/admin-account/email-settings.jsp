@@ -19,36 +19,36 @@
 						</div>
 						<div class="form-group align">
 							<label>Server Type</label> <br> <label class="radio-inline">
-								<input type="radio" name="optradio">SMTP Server
+								<input type="radio" name="serverType">SMTP Server
 							</label> <label class="radio-inline"> <input type="radio"
-								name="optradio">Server Mail (default)
+								name="serverType">Server Mail (default)
 							</label>
 						</div>
 						<div class="form-group align">
-							<label for="inputAddress">SMTP Host</label> <input type="text"
-								class="form-control" id="inputAddress"
+							<label for="smtp_host">SMTP Host</label> <input name="host" type="text"
+								class="form-control" id="smtp_host"
 								placeholder="mail.digitaladds.com">
 						</div>
 						<div class="form-group align">
-							<label for="inputAddress2">SMTP Username</label> <input
+							<label for="smtp_username">SMTP Username</label> <input	name="userName" 
 								type="text" class="form-control" id="smtp_username"
 								placeholder="support@digitaladds.com">
 						</div>
 						<div class="form-group align">
-							<label for="inputAddress2">SMTP Password</label> <input
+							<label for="smtp_password">SMTP Password</label> <input name="password"
 								type="password" class="form-control" id="smtp_password"
-								placeholder="........">
+								placeholder="*******">
 						</div>
 						<div class="form-group align">
-							<label for="inputAddress2">SMTP Port</label> <input type="number"
-								class="form-control" id="inputAddress2" placeholder="1234">
+							<label for="smtp_port">SMTP Port</label> <input name="port" type="number"
+								class="form-control" id="smtp_port" placeholder="1234">
 						</div>
 						<div class="form-group align">
 							<label>SMTP Encryption</label> <br> <label>Server
 								Type</label> <br> <label class="radio-inline"> <input
-								type="radio" name="optradio">TLS
+								type="radio" name="configType">TLS
 							</label> <label class="radio-inline"> <input type="radio"
-								name="optradio">SSL
+								name="configType">SSL
 							</label>
 						</div>
 						<div class="form-group align">After clicking "Test message",
@@ -77,8 +77,8 @@
 								onChange="getTemplateList()">
 								<option>Select Template Type...</option>
 								<option>Products</option>
-								<option>3</option>
-								<option>4</option>
+								<!-- <option>3</option>
+								<option>4</option> -->
 							</select>
 						</div>
 

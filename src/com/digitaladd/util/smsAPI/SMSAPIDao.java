@@ -8,25 +8,25 @@ import java.sql.SQLException;
 import com.digitaladd.common.DBConnectionHandler;
 import com.digitaladd.util.ResourceUtility;
 
-public class SMSDao {
+public class SMSAPIDao {
 	//singleton implementation
-	private SMSDao() {
+	private SMSAPIDao() {
 		//super(DataSources.DEFAULT);
 	}
 	//singleton implementation
-	 public static SMSDao getInstance() {
+	 public static SMSAPIDao getInstance() {
 	    return SMSDaoHolder.INSTANCE;
 	 }
 	//singleton implementation
     private static class SMSDaoHolder {
-       private static final SMSDao INSTANCE = new SMSDao();
+       private static final SMSAPIDao INSTANCE = new SMSAPIDao();
     }
 	    
-	public SMSTemplateVO getSmsTemplateByTemplateId(String templateId){
+	public SMSAPITemplateVO getSmsTemplateByTemplateId(String templateId){
 		Connection connection=null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		SMSTemplateVO vo = null;
+		SMSAPITemplateVO vo = null;
 		try {			
 			connection = DBConnectionHandler.getDBConnection();						
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.sms.template.master.by.id"));
@@ -35,7 +35,7 @@ public class SMSDao {
 						
 			if (rs != null) {
 				while (rs.next()) {
-					vo = new SMSTemplateVO();
+					vo = new SMSAPITemplateVO();
 					
 					vo.setSmsTemplateId(rs.getString("SMS_TEMPLATE_ID"));
 					vo.setSmsTemplate(rs.getString("SMS_TEMPLATE"));
@@ -48,16 +48,16 @@ public class SMSDao {
 				}
 			} 
 		}catch (SQLException sx) {
-			System.out.println("SMSDao > getSmsTemplateByTemplateId() > sqlexception >"+sx);
+			System.out.println("SMSAPIDao > getSmsTemplateByTemplateId() > sqlexception >"+sx);
 		}catch (Exception e) {
-			System.out.println("SMSDao > getSmsTemplateByTemplateId() > exception >"+e);
+			System.out.println("SMSAPIDao > getSmsTemplateByTemplateId() > exception >"+e);
 		}finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}
 		return vo;
 	}
 	
-	public int saveSmsAuditing(SMSAuditingVO smsauditingVO){
+	public int saveSmsAuditing(SMSAPIAuditingVO smsauditingVO){
 		Connection connection=null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
@@ -70,9 +70,9 @@ public class SMSDao {
 			preparedStmt.setString(3, smsauditingVO.getUuid());
 			i = preparedStmt.executeUpdate(); 
 		}catch (SQLException sx) {
-			System.out.println("SMSDao > saveSmsAuditing() > sqlexception >"+sx);
+			System.out.println("SMSAPIDao > saveSmsAuditing() > sqlexception >"+sx);
 		}catch (Exception e) {
-			System.out.println("SMSDao > saveSmsAuditing() > exception >"+e);
+			System.out.println("SMSAPIDao > saveSmsAuditing() > exception >"+e);
 		}finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}

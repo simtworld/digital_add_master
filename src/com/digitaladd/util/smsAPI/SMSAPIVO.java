@@ -2,7 +2,7 @@ package com.digitaladd.util.smsAPI;
 
 import java.util.List;
 
-public class SMSVO {
+public class SMSAPIVO {
 	//SMS Template Id
 			private String smsTemplateId = null;
 

@@ -11,6 +11,7 @@ public class EmailAPIConfigVO implements Serializable {
 	protected String password;
 	protected String host;
 	protected String port;
+	protected String configType;
 	
 	
 	/**
@@ -68,6 +69,7 @@ public class EmailAPIConfigVO implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((configType == null) ? 0 : configType.hashCode());
 		result = prime * result + ((host == null) ? 0 : host.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((port == null) ? 0 : port.hashCode());
@@ -86,6 +88,11 @@ public class EmailAPIConfigVO implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		EmailAPIConfigVO other = (EmailAPIConfigVO) obj;
+		if (configType == null) {
+			if (other.configType != null)
+				return false;
+		} else if (!configType.equals(other.configType))
+			return false;
 		if (host == null) {
 			if (other.host != null)
 				return false;
@@ -111,6 +118,18 @@ public class EmailAPIConfigVO implements Serializable {
 	public EmailAPIConfigVO() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	/**
+	 * @return the configType
+	 */
+	public String getConfigType() {
+		return configType;
+	}
+	/**
+	 * @param configType the configType to set
+	 */
+	public void setConfigType(String configType) {
+		this.configType = configType;
 	}
 	
 	

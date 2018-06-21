@@ -1,4 +1,4 @@
-package com.digitaladd.dao;
+package com.digitaladd.dao.productdao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,25 +6,29 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.springframework.stereotype.Repository;
+
 import com.digitaladd.common.DBConnectionHandler;
 import com.digitaladd.model.ProductDetailsMO;
 import com.digitaladd.util.ResourceUtility;
 
-public class ProductDao {
-	// singleton implementation
-	private ProductDao() {
+
+@Repository
+public class ProductDaoImpl implements ProductDao {
+	/*// singleton implementation
+	private ProductDaoImpl() {
 		// no op.
 	}
 
 	// singleton implementation
-	public static ProductDao getInstance() {
+	public ProductDao getInstance() {
 		return ProductDaoHolder.INSTANCE;
 	}
 
 	// singleton implementation
 	private static class ProductDaoHolder {
-		private static final ProductDao INSTANCE = new ProductDao();
-	}
+		private static final ProductDao INSTANCE = new ProductDaoImpl();
+	}*/
 
 	public boolean addProductDetails(ProductDetailsMO productDetails) {
 		Connection connection = null;
@@ -67,7 +71,7 @@ public class ProductDao {
 	 * 
 	 * @return boolean
 	 */
-	public boolean deletaProductDetails(String productUUID) {
+	public boolean deleteProductDetails(String productUUID) {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;

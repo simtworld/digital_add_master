@@ -1,6 +1,6 @@
 package com.digitaladd.util.smsAPI;
 
-public class SMSTemplateVO {
+public class SMSAPITemplateVO {
 	private String smsTemplateId = null;
 	private String smsTemplate = null;
 	private String createdDate = null;
