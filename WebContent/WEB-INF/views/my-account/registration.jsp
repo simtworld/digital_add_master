@@ -116,7 +116,7 @@
 											<div class="input-group">
 											<span class="input-group-addon"> <i class="material-icons">email</i></span>
 											<div class="row" style="padding-left: 20px;">
-												<select id="countries" name="countries" class="selectpicker" onchange="getStates()" data-style="btn btn-primary btn-round" title="Single Select" data-size="7" required="true">
+												<select id="countries" name="countryCode" class="selectpicker" onchange="getStates()" data-style="btn btn-primary btn-round" title="Single Select" data-size="7" required="true">
 													<option value="" disabled selected>Select Country</option>													
 												</select>
 												<span style="color: red" id="countriesError"></span>
@@ -125,7 +125,7 @@
 											<div class="input-group">
 											<span class="input-group-addon"> <i class="material-icons">email</i></span>
 											<div class="row" style="padding-left: 20px;">
-												<select id="states" name="states" class="selectpicker" onchange="getCities()" data-style="btn btn-primary btn-round" title="Single Select" data-size="7" required="true">
+												<select id="states" name="stateCode" class="selectpicker" onchange="getCities()" data-style="btn btn-primary btn-round" title="Single Select" data-size="7" required="true">
 													<option value="" disabled selected>Select State</option>
 												</select>
 												<span style="color: red" id="statesError"></span>
@@ -134,7 +134,7 @@
 											<div class="input-group" >
 											<span class="input-group-addon"> <i class="material-icons">email</i></span>
 											<div class="row" style="padding-left: 20px;">
-												<select id="cities" name="cities" class="selectpicker" data-style="btn btn-primary btn-round" title="Single Select" data-size="7" >
+												<select id="cities" name="cityCode" class="selectpicker" data-style="btn btn-primary btn-round" title="Single Select" data-size="7" >
 													<option value="" disabled selected>Select City</option>
 												</select>
 												<span style="color: red" id="citiesError"></span>
@@ -228,6 +228,7 @@ function getCities(){
 
 function registration(){
 	var check = $('#registrationForm').valid();
+	alert(check);
 	if(check){		
 		$.ajax({url : "<%=request.getContextPath()%>/customer-registration",
 			data : $("#registrationForm").serialize(),success : function(data){

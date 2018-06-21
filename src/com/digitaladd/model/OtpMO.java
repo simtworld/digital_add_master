@@ -22,6 +22,13 @@ public class OtpMO {
 	public void setDoLogin(String doLogin) {
 		this.doLogin = doLogin;
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "OtpMO [otp=" + otp + ", mobile=" + mobile + ", doLogin=" + doLogin + "]";
+	}
 	
 	
 }

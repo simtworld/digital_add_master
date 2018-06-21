@@ -144,5 +144,17 @@ public class UserMO {
 	}
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "UserMO [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", mobile=" + mobile
+				+ ", countryCode=" + countryCode + ", countryName=" + countryName + ", stateCode=" + stateCode
+				+ ", stateName=" + stateName + ", cityCode=" + cityCode + ", cityName=" + cityName + ", password="
+				+ password + ", emailStatus=" + emailStatus + ", mobileStatus=" + mobileStatus + ", createdOn="
+				+ createdOn + ", createdBy=" + createdBy + ", modifiedOn=" + modifiedOn + ", modifiedBy=" + modifiedBy
+				+ ", userTypeId=" + userTypeId + ", uuid=" + uuid + ", address=" + address + "]";
 	}	
 }

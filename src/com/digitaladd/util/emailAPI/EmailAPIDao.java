@@ -15,25 +15,25 @@ import com.digitaladd.util.ResourceUtility;
 @Component
 public class EmailAPIDao {
 	private static EmailAPIDao instance;
-	
+
 	protected static synchronized EmailAPIDao getInstance() {
-		if(instance==null) {
+		if (instance == null) {
 			instance = new EmailAPIDao();
 		}
 		return instance;
 	}
-	
+
 	private EmailAPIDao() {
 		super();
-		//no-op
+		// no-op
 	}
-	
+
 	/**
 	 * @param emailAPITemplateDetailsVO
 	 * @return
 	 */
 	protected boolean saveEmailTemplate(EmailAPITemplateDetailsVO emailAPITemplateDetailsVO) {
-		boolean flag=false;
+		boolean flag = false;
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
@@ -49,12 +49,12 @@ public class EmailAPIDao {
 			preparedStmt.setString(7, emailAPITemplateDetailsVO.getUpdatedBy());
 			preparedStmt.setInt(8, emailAPITemplateDetailsVO.getStatus());
 			preparedStmt.setString(9, emailAPITemplateDetailsVO.getComments());
-			
+
 			int i = preparedStmt.executeUpdate();
-			if(i!=0) {
-				flag=true;
+			if (i != 0) {
+				flag = true;
 			}
-			
+
 		} catch (SQLException sx) {
 			System.out.println("EmailDao > saveEmailTemplate() > sqlexception >" + sx);
 			sx.printStackTrace();
@@ -78,10 +78,11 @@ public class EmailAPIDao {
 		EmailAPITemplateDetailsVO vo = null;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.templatedetails.master.by.id"));
+			preparedStmt = connection
+					.prepareStatement(ResourceUtility.getSqlQuery("get.email.templatedetails.master.by.id"));
 			preparedStmt.setString(1, emailTemplateTypeId);
 			rs = preparedStmt.executeQuery();
-			
+
 			if (rs != null) {
 				if (rs.next()) {
 					vo = new EmailAPITemplateDetailsVO();
@@ -113,11 +114,11 @@ public class EmailAPIDao {
 	 * @param emailTemplateDetailsId
 	 * @return
 	 */
-	private HashMap<String, String> getEmailTemplateKeywordsList(String emailTemplateDetailsId){
+	private HashMap<String, String> getEmailTemplateKeywordsList(String emailTemplateDetailsId) {
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
-		Map<String,String> emailTemplateKeywordsMap=new HashMap<String,String>();
+		Map<String, String> emailTemplateKeywordsMap = new HashMap<String, String>();
 		try {
 			connection = DBConnectionHandler.getDBConnection();
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.templatekeywords.by.id"));
@@ -126,10 +127,11 @@ public class EmailAPIDao {
 
 			if (rs != null) {
 				while (rs.next()) {
-					emailTemplateKeywordsMap.put(rs.getString("EMAIL_TEMPLATE_KEYWORDS_ID"), rs.getString("EMAIL_TEMPLATE_KEYWORDS"));
+					emailTemplateKeywordsMap.put(rs.getString("EMAIL_TEMPLATE_KEYWORDS_ID"),
+							rs.getString("EMAIL_TEMPLATE_KEYWORDS"));
 				}
 			}
-		}catch (SQLException sx) {
+		} catch (SQLException sx) {
 			System.out.println("EmailDao > getEmailTemplateKeywordsList() > sqlexception >" + sx);
 			sx.printStackTrace();
 		} catch (Exception e) {
@@ -140,33 +142,34 @@ public class EmailAPIDao {
 		}
 		return (HashMap<String, String>) emailTemplateKeywordsMap;
 	}
-	
+
 	/**
 	 * @Desc method returns email config
 	 * @return EmailConfigVO
 	 */
 	protected EmailAPIConfigVO getEmailSMTPConfig() {
-		Connection connection=null;
+		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
 		EmailAPIConfigVO vo = null;
-		vo = new  EmailAPIConfigVO();
-		try {			
-			connection = DBConnectionHandler.getDBConnection();						
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.SMTPConfig.master.by.id"));
+		vo = new EmailAPIConfigVO();
+		try {
+			connection = DBConnectionHandler.getDBConnection();
+			preparedStmt = connection
+					.prepareStatement(ResourceUtility.getSqlQuery("get.email.SMTPConfig.master.by.id"));
 			rs = preparedStmt.executeQuery();
-						
+
 			if (rs != null) {
 				if (rs.next()) {
-					
+
 					vo.setHost(rs.getString("HOST"));
 					vo.setPassword(rs.getString("PASSWORD"));
 					vo.setPort(rs.getString("PORT"));
 					vo.setUserName(rs.getString("USER_NAME"));
-					
+
 				}
 			}
-		}catch (SQLException sx) {
+		} catch (SQLException sx) {
 			System.out.println("EmailDao > getEmailSMTPConfig() > sqlexception >" + sx);
 			sx.printStackTrace();
 		} catch (Exception e) {
@@ -175,18 +178,47 @@ public class EmailAPIDao {
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}
-		
-		/*vo.setHost(ResourceUtility.getCommonConstant("email.smtp.host"));
-		vo.setPort(ResourceUtility.getCommonConstant("email.smtp.port"));
-		vo.setUserName(ResourceUtility.getCommonConstant("email.smtp.username"));
-		vo.setPassword(ResourceUtility.getCommonConstant("email.smtp.password"));*/
-		
+
+		/*
+		 * vo.setHost(ResourceUtility.getCommonConstant("email.smtp.host"));
+		 * vo.setPort(ResourceUtility.getCommonConstant("email.smtp.port"));
+		 * vo.setUserName(ResourceUtility.getCommonConstant("email.smtp.username"));
+		 * vo.setPassword(ResourceUtility.getCommonConstant("email.smtp.password"));
+		 */
+
 		return vo;
 	}
 
 	protected boolean changeEmailConfig(EmailAPIConfigVO emailAPIConfigVO) {
-		
-		
-		return false;
+		boolean flag = false;
+		Connection connection = null;
+		ResultSet rs = null;
+		PreparedStatement preparedStmt = null;
+		try {
+			connection = DBConnectionHandler.getDBConnection();
+			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("save.email.SMTPConfig.master.by.type"));
+
+			preparedStmt.setString(1, emailAPIConfigVO.getUserName());
+			preparedStmt.setString(2, emailAPIConfigVO.getPassword());
+			preparedStmt.setString(3, emailAPIConfigVO.getHost());
+			preparedStmt.setString(4, emailAPIConfigVO.getPort());
+			preparedStmt.setString(4, emailAPIConfigVO.getConfigType());
+
+			int i = preparedStmt.executeUpdate();
+			if (i != 0) {
+				flag = true;
+			}
+
+		} catch (SQLException sx) {
+			System.out.println("EmailDao > saveEmailTemplate() > sqlexception >" + sx);
+			sx.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("EmailDao > saveEmailTemplate() > exception >" + e);
+			e.printStackTrace();
+		} finally {
+			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
+		}
+		return flag;
+
 	}
 }

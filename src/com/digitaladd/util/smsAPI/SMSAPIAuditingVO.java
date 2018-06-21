@@ -1,6 +1,6 @@
 package com.digitaladd.util.smsAPI;
 
-public class SMSAuditingVO {
+public class SMSAPIAuditingVO {
 	private int smsId;
 	private String smsTemplateId=null;
 	private String sms=null;
