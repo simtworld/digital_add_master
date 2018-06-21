@@ -228,13 +228,15 @@ function getCities(){
 
 function registration(){
 	var check = $('#registrationForm').valid();
-	alert(check);
 	if(check){		
 		$.ajax({url : "<%=request.getContextPath()%>/customer-registration",
 			data : $("#registrationForm").serialize(),success : function(data){
-				//data = JSON.parse(data);
+				//alert("test>> "+JSON.stringify(data));
+				data = JSON.stringify(data);
+				data = JSON.parse(data);
 				
-				if(data.status == true){
+				if(data.status == "true"){
+					alert(data.status)
 					if(data.uuid != null && data.uuid != undefined){
 						$("#uuid").val(data.uuid);
 					}
@@ -251,9 +253,9 @@ function registration(){
 		                dismissible:false,
 		                showConfirmButton: false
 		            }).then(function(result){
-		            	//checkOTP();	
+		            	checkOTP();	
 		            			            
-		                /* swal({
+		                 swal({
 		                    type: 'success',
 		                    html: 'You entered: <strong>' +
 		                        $('#input-field').val() +
@@ -261,24 +263,24 @@ function registration(){
 		                    confirmButtonClass: 'btn btn-success',
 		                    buttonsStyling: false
 
-		                }) */
+		                }) 
 					
 					
-					/* swal({
+					 swal({
 		                title: "OK",
 		                text: "Registration ",
 		                buttonsStyling: false,
 		                confirmButtonClass: "btn btn-success",
 		                type: "success"
-		            }); */
+		            }); 
 				});
-				}else if(data.status == false){
+				}else if(data.status == "false"){
 					swal({
 		                title: "Oops !!!",
 		                text: "Some Error Occured, Please Try Again",
 		                buttonsStyling: false,
 		                confirmButtonClass: "btn btn-success",
-		                type: "success",
+		                type: "error",
 		                dismissible:false
 		            });
 				}else if(data.status == "mobileExists"){
@@ -287,7 +289,7 @@ function registration(){
 		                text: "Mobile Number Already Existed. Try To Login Or Use Forgot Password",
 		                buttonsStyling: false,
 		                confirmButtonClass: "btn btn-success",
-		                type: "success",
+		                type: "info",
 		                dismissible:false
 		            });
 				}

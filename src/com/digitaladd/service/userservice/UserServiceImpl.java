@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
 	OtpDao otpDao;
 	
 	
+	@SuppressWarnings({ "unused", "unlikely-arg-type" })
 	@Override
 	public Map<String,String> customerRegistrationService(UserMO userMO) {
 		
@@ -81,6 +82,7 @@ public class UserServiceImpl implements UserService {
 	public Map<String, Object> checkUserLoginService(String userName, String password) {
 		Map<String, Object> result= new HashMap<>();
 		Map<String, Object> jsonMap=new HashMap<>();
+		result.put("status", false);
 		try {
 
 			UserMO user = registrationDao.checkUserLogin(userName, password);
@@ -100,7 +102,6 @@ public class UserServiceImpl implements UserService {
 				} else {
 					jsonMap.put("status", "mobileNeedToVerify");
 					jsonMap.put("uuid", user.getUuid());
-					result.put("status", false);
 				}
 			}
 		} catch (Exception e) {
@@ -109,6 +110,7 @@ public class UserServiceImpl implements UserService {
 			jsonMap.put("status", "exception");
 		}
 		result.put("jsonMap", jsonMap);
+		System.out.println(result);
 		return result;
 	}
 
@@ -122,6 +124,12 @@ public class UserServiceImpl implements UserService {
 		}
 		result.put("flag", flag);
 		return result;
+	}
+
+
+	@Override
+	public UserMO checkUserExistOrNot(String mobile) {
+		return registrationDao.checkUserExistOrNot(mobile);
 	}
 
 }
