@@ -133,7 +133,7 @@ public class RequestController {
 			if (userMO.getUserTypeId().equals("USER_05")) {
 				return "dashboard.tiles";
 			} else {
-				return "my-profile.tiles";
+				return "user-pannel.tiles";
 			}
 		} else {
 			return "login.tiles";
