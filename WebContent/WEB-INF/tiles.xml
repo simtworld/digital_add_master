@@ -54,5 +54,18 @@
 	<put-attribute name="Body" value="/WEB-INF/views/my-account/change-password.jsp"></put-attribute>
 	<put-attribute name="Left" value="/WEB-INF/views/commons/left-menu.jsp"></put-attribute>	
 </definition>
+
+
+<!-- definitions for user -->
+
+<definition name="user-pannel" template="/WEB-INF/views/commons/layout.jsp">
+	<put-attribute name="Body" value="/WEB-INF/views/my-account/user-add-page.jsp"></put-attribute>
+	<put-attribute name="Header" value="/WEB-INF/views/commons/dash_header.jsp"></put-attribute>
+	<put-attribute name="Left" value=""></put-attribute>
+	<put-attribute name="Footer" value=""></put-attribute>
+</definition>
+<definition name="user-pannel.tiles" extends="user-pannel">
+	<put-attribute name="Body" value="/WEB-INF/views/my-account/user-add-page.jsp"></put-attribute>
+</definition>
  
 </tiles-definitions>

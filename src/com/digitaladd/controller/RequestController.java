@@ -1,10 +1,7 @@
 package com.digitaladd.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -25,20 +22,14 @@ import com.digitaladd.dao.registrationdao.RegistrationDao;
 import com.digitaladd.model.OtpMO;
 import com.digitaladd.model.ProductDetailsMO;
 import com.digitaladd.model.UserMO;
+import com.digitaladd.service.emailservice.EmailService;
 import com.digitaladd.service.otpservice.OtpService;
 import com.digitaladd.service.password.PasswordService;
 import com.digitaladd.service.product.ProductService;
 import com.digitaladd.service.smsservice.SmsService;
 import com.digitaladd.service.userservice.UserService;
-import com.digitaladd.service.emailservice.EmailService;
-import com.digitaladd.util.RandomGenerator;
-import com.digitaladd.util.ResourceUtility;
 import com.digitaladd.util.emailAPI.EmailAPIConfigVO;
 import com.digitaladd.util.emailAPI.EmailAPITemplateDetailsVO;
-import com.digitaladd.util.smsAPI.SMSAPIAuditingVO;
-import com.digitaladd.util.smsAPI.SMSAPIService;
-import com.digitaladd.util.smsAPI.SMSAPITemplateVO;
-import com.digitaladd.util.smsAPI.SMSAPIVO;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -142,7 +133,7 @@ public class RequestController {
 			if (userMO.getUserTypeId().equals("USER_05")) {
 				return "dashboard.tiles";
 			} else {
-				return "my-profile.tiles";
+				return "user-pannel.tiles";
 			}
 		} else {
 			return "login.tiles";
