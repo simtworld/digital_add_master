@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.digitaladd.dao.productdao.ProductDao;
-import com.digitaladd.dao.registrationdao.RegistrationDao;
+import com.digitaladd.model.CityMO;
+import com.digitaladd.model.CountryMO;
 import com.digitaladd.model.OtpMO;
 import com.digitaladd.model.ProductDetailsMO;
+import com.digitaladd.model.StateMO;
 import com.digitaladd.model.UserMO;
+import com.digitaladd.service.addressservice.AddressService;
 import com.digitaladd.service.emailservice.EmailService;
 import com.digitaladd.service.otpservice.OtpService;
 import com.digitaladd.service.password.PasswordService;
@@ -70,13 +72,11 @@ public class RequestController {
 	
 	@Autowired
 	ProductService productService;
-
+	
 	@Autowired
-	ProductDao productDao;
+	AddressService addressService;
 
-	@Autowired
-	RegistrationDao registrationDao;
-
+	
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public String homePageView(ModelMap model) {
 		model.addAttribute("name", "Melcow");
@@ -162,10 +162,10 @@ public class RequestController {
 	}
 	
 	@RequestMapping(path = "/getallcountries", method = RequestMethod.GET)
-	public @ResponseBody List<UserMO> getAllCountries() {
-		List<UserMO> countriesList = null;
+	public @ResponseBody List<CountryMO> getAllCountries() {
+		List<CountryMO> countriesList = null;
 		try {
-			countriesList = registrationDao.getCountreies();
+			countriesList = addressService.getCountreies();
 
 		} catch (Exception e) {
 			System.out.println("RequestController > getAllCountries() > exception >" + e);
@@ -174,11 +174,11 @@ public class RequestController {
 	}
 
 	@RequestMapping(path = "/getallstates", method = RequestMethod.GET)
-	public @ResponseBody List<UserMO> getAllStates(@RequestParam(value = "countryCode") String countryCode) {
-		List<UserMO> countriesList = null;
+	public @ResponseBody List<StateMO> getAllStates(@RequestParam(value = "countryCode") String countryCode) {
+		List<StateMO> countriesList = null;
 
 		try {
-			countriesList = registrationDao.getAllStates(countryCode);
+			countriesList = addressService.getAllStates(countryCode);
 
 		} catch (Exception e) {
 			System.out.println("RequestController > getAllStates() > exception >" + e);
@@ -187,11 +187,10 @@ public class RequestController {
 	}
 
 	@RequestMapping(path = "/getallcities", method = RequestMethod.GET)
-	public @ResponseBody List<UserMO> getAllCities(HttpServletRequest request) {
-		List<UserMO> countriesList = null;
-		String stateCode = request.getParameter("stateCode");
+	public @ResponseBody List<CityMO> getAllCities(HttpServletRequest request,@RequestParam(value="stateCode")String stateCode) {
+		List<CityMO> countriesList = null;
 		try {
-			countriesList = registrationDao.getAllCities(stateCode);
+			countriesList = addressService.getAllCities(stateCode);
 
 		} catch (Exception e) {
 			System.out.println("RequestController > getAllCities() > exception >" + e);
@@ -217,7 +216,8 @@ public class RequestController {
 		}
 
 		// json.putAll((Map) map.get("jsonMap"));
-		return (JSONObject) map.get("jsonMap");
+		json = (JSONObject) map.get("jsonMap");
+		return	json;
 
 		/*
 		 * try { String otp = request.getParameter("otp"); String mobile =
@@ -272,12 +272,14 @@ public class RequestController {
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(path = "/check-user-login", method = RequestMethod.GET)
 	public @ResponseBody JSONObject checkUserLogin(HttpServletRequest request,@RequestParam(value="userName") String userName,@RequestParam(value="password")String password) {
 		JSONObject json = new JSONObject();
 		
 		Map<String, Object> map= userService.checkUserLoginService(userName, password);
-		if((boolean)map.get("status")) {
+		System.out.println(map.get("status"));
+		if((boolean) map.get("status")) {
 			HttpSession session = request.getSession();
 			session.setAttribute("bean", map.get("user"));
 		}
@@ -324,7 +326,7 @@ public class RequestController {
 		return json;
 		
 		
-		//TODO Remove this code in final release.
+		//FIXME Remove this code in final release.
 		/*try {
 			String mobile = request.getParameter("mobile");
 
@@ -394,7 +396,7 @@ public class RequestController {
 				Map<String,Object> map=userService.updateProfileService(user);
 				
 				if ((boolean) map.get("flag")) {
-					UserMO newUser = registrationDao.checkUserExistOrNot(user.getMobile());// usr>>user
+					UserMO newUser = userService.checkUserExistOrNot(user.getMobile());// usr>>user
 					session.setAttribute("bean", newUser);
 
 					json.put("status", true);
@@ -410,7 +412,7 @@ public class RequestController {
 		return json;
 	}
 
-	//TODO check before building
+	//FIXME check before building
 	@RequestMapping(path = "/update-password", method = RequestMethod.GET)
 	public @ResponseBody JSONObject updatePassword(HttpServletRequest request,@RequestParam(value="currentPassword")String currentPassword,@RequestParam(value="newPassword")String newPassword) {
 		JSONObject json = new JSONObject();

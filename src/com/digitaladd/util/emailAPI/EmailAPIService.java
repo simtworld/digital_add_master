@@ -1,14 +1,12 @@
 package com.digitaladd.util.emailAPI;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.inject.Inject;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -19,8 +17,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class EmailAPIService {
 	private static EmailAPIService instance;
@@ -36,8 +32,6 @@ public class EmailAPIService {
 	
 	
 	static private EmailAPIDao emailAPIDao;
-	
-	private EmailAPITemplateDetailsVO emailAPITemplateDetailsVO;
 	
 	static {
 		configurEmailSMTP();
@@ -96,8 +90,6 @@ public class EmailAPIService {
 		boolean flag = false;
 		this.setTo(recipiant);
 		
-		Map<String, String> input = new HashMap<String, String>();
-		Properties emailContentKeywords = new Properties();
 		from=userName;
 		EmailAPITemplateDetailsVO emailAPITemplateDetailsVO=emailAPIDao.getEmailTemplateDetailsByTemplateId(templateTypeId);
 		// Get the Session object.

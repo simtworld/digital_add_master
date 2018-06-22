@@ -8,5 +8,5 @@ public interface UserService {
 	Map<String,String> customerRegistrationService(UserMO userMO);
 	Map<String,Object> checkUserLoginService(String userName, String password);
 	Map<String,Object> updateProfileService(UserMO userMO);
-	
+	UserMO checkUserExistOrNot(String mobile);
 }
