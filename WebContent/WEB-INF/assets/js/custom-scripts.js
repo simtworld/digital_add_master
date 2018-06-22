@@ -2,13 +2,13 @@
  *script for submitting the addProduct form 
  */
 $(document).ready(function () {
-	$(document).ajaxStart(function(){
+	/*$(document).ajaxStart(function(){
 	    $("#wait").css("display", "block");
 	});
 
 	$(document).ajaxComplete(function(){
 	    $("#wait").css("display", "none");
-	});
+	});*/
 
 $('form#addProductDetailsForm').submit(function(e) {
 		e.preventDefault();
