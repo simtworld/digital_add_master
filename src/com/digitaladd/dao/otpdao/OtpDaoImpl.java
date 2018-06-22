@@ -82,4 +82,11 @@ public class OtpDaoImpl implements OtpDao {
 		return flag;
 	}
 
+
+	@Override
+	public String getOtp(String mobile) {
+		
+		return null;
+	}
+
 }

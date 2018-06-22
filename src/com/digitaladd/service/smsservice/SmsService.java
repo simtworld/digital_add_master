@@ -1,15 +1,6 @@
 package com.digitaladd.service.smsservice;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.stereotype.Component;
-
-import com.digitaladd.util.ResourceUtility;
-import com.digitaladd.util.smsAPI.SMSAPIService;
-import com.digitaladd.util.smsAPI.SMSAPIAuditingVO;
-import com.digitaladd.util.smsAPI.SMSAPITemplateVO;
-import com.digitaladd.util.smsAPI.SMSAPIVO;
 
 
 @Component
@@ -22,7 +13,7 @@ public class SmsService {
 	 * @date 6-19-2018
 	 */
 	public boolean sendOtpSMS(String mobile, String verificationCode, String uuid) {
-		try {
+		/*try {
 			SMSAPIService service = new SMSAPIService();
 			SMSAPIVO smsapivo = new SMSAPIVO();
 			SMSAPITemplateVO smsApiTemplateVO = new SMSAPITemplateVO();
@@ -55,7 +46,7 @@ public class SmsService {
 			service.sendSMS(smsapivo);
 		} catch (Exception e) {
 			System.out.println("SmsService > sendOtpSMS() > exception >" + e);
-		}
+		}*/
 		return true;
 	}
 

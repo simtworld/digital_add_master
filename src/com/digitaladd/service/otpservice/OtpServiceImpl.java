@@ -60,6 +60,7 @@ public class OtpServiceImpl implements OtpService {
 		return result;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public Map<String, Object> resendOtpService(OtpMO otpMO, String uuid) {
 		Map<String, Object> result = new HashMap<>();

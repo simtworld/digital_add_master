@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -29,106 +27,6 @@ public class RegistrationDaoImpl implements RegistrationDao {
 	private static class RegistrationDaoHolder {
 		private static final RegistrationDao INSTANCE = new RegistrationDao();
 	}*/
-
-	public List<UserMO> getCountreies() {
-		Connection connection = null;
-		ResultSet rs = null;
-		PreparedStatement preparedStmt = null;
-		List<UserMO> list = new ArrayList<UserMO>();
-		try {
-			connection = DBConnectionHandler.getDBConnection();
-			// Class.forName("com.mysql.jdbc.Driver");
-			// connection =
-			// DriverManager.getConnection("jdbc:mysql://localhost:3306/digitaladd","root",
-			// "");
-
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.getAllCountries"));
-
-			rs = preparedStmt.executeQuery();
-
-			if (rs != null) {
-				while (rs.next()) {
-					UserMO user = new UserMO();
-
-					user.setCountryCode(rs.getString("id"));
-					user.setCountryName(rs.getString("name"));
-
-					list.add(user);
-				}
-			}
-		} catch (SQLException sx) {
-			System.out.println("RegistrationDao > getCountreies() > sqlexception >" + sx);
-		} catch (Exception e) {
-			System.out.println("RegistrationDao > getCountreies() > exception >" + e);
-		} finally {
-			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
-		}
-		return list;
-	}
-
-	public List<UserMO> getAllStates(String countryCode) {
-		Connection connection = null;
-		ResultSet rs = null;
-		PreparedStatement preparedStmt = null;
-		List<UserMO> list = new ArrayList<UserMO>();
-		try {
-			connection = DBConnectionHandler.getDBConnection();
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.getAllStates"));
-			preparedStmt.setString(1, countryCode);
-
-			rs = preparedStmt.executeQuery();
-
-			if (rs != null) {
-				while (rs.next()) {
-					UserMO user = new UserMO();
-
-					user.setStateCode(rs.getString("id"));
-					user.setStateName(rs.getString("name"));
-
-					list.add(user);
-				}
-			}
-		} catch (SQLException sx) {
-			System.out.println("RegistrationDao > getAllStates() > sqlexception >" + sx);
-		} catch (Exception e) {
-			System.out.println("RegistrationDao > getAllStates() > exception >" + e);
-		} finally {
-			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
-		}
-		return list;
-	}
-
-	public List<UserMO> getAllCities(String stateCode) {
-		Connection connection = null;
-		ResultSet rs = null;
-		PreparedStatement preparedStmt = null;
-		List<UserMO> list = new ArrayList<UserMO>();
-		try {
-			connection = DBConnectionHandler.getDBConnection();
-			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("digitalAdd.getAllCities"));
-			preparedStmt.setString(1, stateCode);
-
-			rs = preparedStmt.executeQuery();
-
-			if (rs != null) {
-				while (rs.next()) {
-					UserMO user = new UserMO();
-
-					user.setCityCode(rs.getString("id"));
-					user.setCityName(rs.getString("name"));
-
-					list.add(user);
-				}
-			}
-		} catch (SQLException sx) {
-			System.out.println("RegistrationDao > getAllCities() > sqlexception >" + sx);
-		} catch (Exception e) {
-			System.out.println("RegistrationDao > getAllCities() > exception >" + e);
-		} finally {
-			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
-		}
-		return list;
-	}
 
 	public UserMO checkUserExistOrNot(String mobile) {
 		Connection connection = null;

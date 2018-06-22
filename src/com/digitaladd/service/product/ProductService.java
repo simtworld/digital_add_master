@@ -1,6 +1,5 @@
 package com.digitaladd.service.product;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import org.springframework.web.multipart.MultipartFile;

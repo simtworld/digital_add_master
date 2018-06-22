@@ -5,11 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
 
 import org.springframework.stereotype.Component;
-
-import com.digitaladd.util.ResourceUtility;
 
 @Component
 public class SMSAPIService {
@@ -56,7 +53,9 @@ public class SMSAPIService {
 	 * @return true | false
 	 */
 	public boolean sendSMS(SMSAPIVO smsapivo) throws Exception {
-		String isSMSRequired = ResourceUtility.getCommonConstant("flag.is.sms.required");
+		return true;
+		//FIXME remove return and coment in last build
+		/*String isSMSRequired = ResourceUtility.getCommonConstant("flag.is.sms.required");
 		boolean result = false;
 
 		if (smsapivo == null) {
@@ -97,7 +96,7 @@ public class SMSAPIService {
 			result = true;
 		}
 
-		return result;
+		return result;*/
 	}
 
 	public String sendSMS(String strURL) {

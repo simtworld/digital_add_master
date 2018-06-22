@@ -33,7 +33,7 @@ public class PasswordServiceImpl implements PasswordService {
 		try {
 			UserMO retUser = registrationDao.checkUserExistOrNot(mobile);
 
-			if (retUser != null && !"".equals(retUser)) {
+			if (retUser != null) {
 				SMSAPITemplateVO smsTemplateVO = new SMSAPITemplateVO();
 				SMSAPIService service = new SMSAPIService();
 				SMSAPIAuditingVO smsAuditingVO = new SMSAPIAuditingVO();
