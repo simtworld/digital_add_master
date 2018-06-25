@@ -8,6 +8,7 @@
 	}
 </style>
 
+
 <body class="off-canvas-sidebar">
     <div class="wrapper wrapper-full-page">
         <div class="full-page login-page" filter-color="black" data-image="<%=request.getContextPath() %>/assets/img/login.jpg">

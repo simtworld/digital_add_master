@@ -4,15 +4,28 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jstl/core_rt" prefix="ce"%> --%>
 <html>
-<head></head>
+<head>
+
+<tiles:insertAttribute name="Header"></tiles:insertAttribute>
+
+<script src="<%=request.getContextPath()%>/assets/js/pace/pace.js" ></script>
+	
+<link href="<%=request.getContextPath()%>/assets/css/pace/pace.css" rel="stylesheet" />
+    <script type="text/javascript">
+    	paceOptions = {
+				  ajax: false, // Monitors all ajax requests on the page
+				  document: false, // Checks for the existance of specific elements on the page
+				  eventLag: false, // Checks the document readyState
+				  elements: {
+				    selectors: ['.my-page'] // Checks for event loop lag signaling that javascript is being executed
+				  }
+				};
+    </script>
+</head>
 <%-- <fmt:setBundle basename="resources/ApplicationResources" var="bndl"/> --%>
 <body>
 
-	<div id="wait" style="display:none;margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
-		<img src='assets/img/loading.gif'  style="position: absolute; top: 30%; left: 40%;"/><br>Loading..
-	</div>
-	<tiles:insertAttribute name="Header"></tiles:insertAttribute>
-
+	
 	<tiles:insertAttribute name="Left"></tiles:insertAttribute>
 
 	<tiles:insertAttribute name="Body"></tiles:insertAttribute>
@@ -22,6 +35,7 @@
 	<tiles:insertAttribute name="Footer"></tiles:insertAttribute>
 	
 	
+<script src="<%=request.getContextPath()%>/assets/js/pace/pace.js" type="text/javascript" />
 	
 </body>
 
