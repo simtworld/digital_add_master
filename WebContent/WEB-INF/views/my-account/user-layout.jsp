@@ -40,6 +40,11 @@
 <!-- Custom CSS -->
 <link href="<%=request.getContextPath() %>/assets/css/sb-admin-2.css"
 	rel="stylesheet">
+	<!-- progressbar CSS -->
+    <link rel="stylesheet" href="/digital_add_master/assets/css/progressbar-style.css">
+    <script src="<%=request.getContextPath()%>/assets/js/jquery.js" type="text/javascript" ></script>
+<script src="<%=request.getContextPath()%>/assets/js/jQuery-plugin-progressbar.js" type="text/javascript"></script>
+<script src="<%=request.getContextPath()%>/assets/js/pace/pace.js" type="text/javascript"></script>
     
 </head>
 <%-- <fmt:setBundle basename="resources/ApplicationResources" var="bndl"/> --%>
@@ -54,9 +59,9 @@
 
 	<tiles:insertAttribute name="Footer"></tiles:insertAttribute>
 	
-	
-<script src="<%=request.getContextPath()%>/assets/js/pace/pace.js" type="text/javascript" />
-	
+<script>
+$(".progress-bar1").loading();  
+</script>
 </body>
 
 </html>
