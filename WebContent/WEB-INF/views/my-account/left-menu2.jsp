@@ -1,6 +1,5 @@
 <%@page import="com.digitaladd.model.UserMO"%>
- <script type="text/javascript">
- $(function(){
+
 	 <%UserMO user = null;	 	
 	 	
 	 	if(session != null){
@@ -8,10 +7,10 @@
 	 	}else{
 	 		user = new UserMO(); 
 	 	}%>
- })
- </script>
+
+ 
 <!-- <div class="wrapper"> -->
-<div class="sidebar" data-active-color="rose" data-background-color="black" data-image="<%=request.getContextPath() %>/assets/img/sidebar-1.jpg">
+<div id="mySidenav" class="sidenav sidebar" data-active-color="rose" data-background-color="black" data-image="<%=request.getContextPath() %>/assets/img/sidebar-1.jpg">
             <!--
         Tip 1: You can change the color of active element of the sidebar using: data-active-color="purple | blue | green | orange | red | rose"
         Tip 2: you can also add an image using data-image tag
@@ -160,5 +159,8 @@
                 </ul>
             </div>
         </div>
+        
+        
+	
         
         
