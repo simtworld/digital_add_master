@@ -153,7 +153,7 @@ $(document).ready(function() {
 
 });
 
-$(document).on('click', '.navbar-toggle', function() {
+$(document).on('click', '.navbar-sidebar-toggle', function() {
     $toggle = $(this);
 
     if (mobile_menu_visible == 1) {
@@ -363,7 +363,7 @@ md = {
     //         // append it to the body, so it will come from the right side of the screen
     //         $('body').append($navbar);
     //
-    //         $toggle = $('.navbar-toggle');
+    //         $toggle = $('.navbar-sidebar-toggle');
     //
     //         $navbar.find('a').removeClass('btn btn-round btn-default');
     //         $navbar.find('button').removeClass('btn-round btn-fill btn-info btn-primary btn-success btn-danger btn-warning btn-neutral');

@@ -8,6 +8,10 @@
 bin/
 
 *.class
+<<<<<<< HEAD
 
 /bin/
 
+=======
+/bin/
+>>>>>>> refs/remotes/origin/Satya
