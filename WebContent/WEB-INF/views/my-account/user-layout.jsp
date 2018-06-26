@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%-- <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -78,6 +79,14 @@
 
 	<script src="/digital_add_master/assets/js/jquery-3.2.1.min.js"
 		type="text/javascript"></script>
+	<!-- progressbar CSS -->
+	<link rel="stylesheet"
+		href="/digital_add_master/assets/css/progressbar-style.css">
+	
+	<script
+		src="<%=request.getContextPath()%>/assets/js/jQuery-plugin-progressbar.js"
+		type="text/javascript"></script>
+
 	<script src="/digital_add_master/assets/js/bootstrap.min.js"
 		type="text/javascript"></script>
 	<script src="/digital_add_master/assets/js/jquery.bootpag.min.js"
@@ -90,7 +99,7 @@
 	<!-- script for pagination -->
 	<script type="text/javascript">
 		pageSize = 5;
-
+		$(".progress-bar1").loading();
 		showPage = function(page) {
 			$(".adds").hide();
 			$(".adds").each(function(n) {
@@ -106,7 +115,7 @@
 			page : 1,
 			maxVisible : 5
 		}).on('page', function(event, num) {
-			 // or some ajax content loading...
+			// or some ajax content loading...
 
 			//dynamic pagination
 
