@@ -41,6 +41,10 @@
 	<put-attribute name="Body" value="/WEB-INF/views/admin-account/email-settings.jsp"></put-attribute>
 </definition>
 
+<definition name="sharing-options.tiles" extends="dashboard">
+	<put-attribute name="Body" value="/WEB-INF/views/admin-account/sharing-options.jsp"></put-attribute>
+</definition>
+
 <definition name="my-profile.tiles"  extends="home">
 	<put-attribute name="Body" value="/WEB-INF/views/my-account/my-profile.jsp"></put-attribute>
 	<put-attribute name="Left" value="/WEB-INF/views/commons/left-menu.jsp"></put-attribute>	
@@ -49,6 +53,19 @@
 <definition name="changePassword.tiles"  extends="home">
 	<put-attribute name="Body" value="/WEB-INF/views/my-account/change-password.jsp"></put-attribute>
 	<put-attribute name="Left" value="/WEB-INF/views/commons/left-menu.jsp"></put-attribute>	
+</definition>
+
+
+<!-- definitions for user -->
+
+<definition name="user-pannel" template="/WEB-INF/views/my-account/user-layout.jsp">
+	<put-attribute name="Body" value="/WEB-INF/views/my-account/user-add-page.jsp"></put-attribute>
+	<put-attribute name="Header" value="/WEB-INF/views/my-account/user-header.jsp"></put-attribute>
+	<put-attribute name="Left" value="/WEB-INF/views/my-account/left-menu.jsp"></put-attribute>
+	<put-attribute name="Footer" value="/WEB-INF/views/commons/footer.jsp"></put-attribute>
+</definition>
+<definition name="user-pannel.tiles" extends="user-pannel">
+	<put-attribute name="Body" value="/WEB-INF/views/my-account/user-add-page.jsp"></put-attribute>
 </definition>
  
 </tiles-definitions>

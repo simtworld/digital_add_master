@@ -1,15 +1,14 @@
 package com.digitaladd.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,16 +17,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.digitaladd.registration.dao.ProductDao;
-import com.digitaladd.registration.dao.RegistrationDao;
-import com.digitaladd.registration.model.ProductDetails;
-import com.digitaladd.registration.model.User;
-import com.digitaladd.util.RandomGenerator;
-import com.digitaladd.util.ResourceUtility;
-import com.digitaladd.util.sms.SMSAuditingVO;
-import com.digitaladd.util.sms.SMSService;
-import com.digitaladd.util.sms.SMSTemplateVO;
-import com.digitaladd.util.sms.SMSVO;
+import com.digitaladd.model.CityMO;
+import com.digitaladd.model.CountryMO;
+import com.digitaladd.model.OtpMO;
+import com.digitaladd.model.ProductDetailsMO;
+import com.digitaladd.model.StateMO;
+import com.digitaladd.model.UserMO;
+import com.digitaladd.service.addressservice.AddressService;
+import com.digitaladd.service.emailservice.EmailService;
+import com.digitaladd.service.otpservice.OtpService;
+import com.digitaladd.service.password.PasswordService;
+import com.digitaladd.service.product.ProductService;
+import com.digitaladd.service.smsservice.SmsService;
+import com.digitaladd.service.userservice.UserService;
+import com.digitaladd.util.emailAPI.EmailAPIConfigVO;
+import com.digitaladd.util.emailAPI.EmailAPITemplateDetailsVO;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -50,26 +54,118 @@ public class RequestController {
 	 * return "Response!"+request.getParameter("name"); }
 	 */
 
+	// Dependency management
+	@Autowired
+	EmailService emailService;
+
+	@Autowired
+	SmsService smsService;
+
+	@Autowired
+	UserService userService;
+
+	@Autowired
+	OtpService otpService;
+	
+	@Autowired
+	PasswordService passwordService;
+	
+	@Autowired
+	ProductService productService;
+	
+	@Autowired
+	AddressService addressService;
+
+	
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
-	public String test(ModelMap model) {
+	public String homePageView(ModelMap model) {
 		model.addAttribute("name", "Melcow");
 		return "home.tiles";
 	}
 
 	@RequestMapping(value = { "/registration" }, method = RequestMethod.GET)
-	public String registration(ModelMap model) {
+	public String registrationView(ModelMap model) {
 		return "registration.tiles";
 	}
+
 	@RequestMapping(value = { "/email-settings" }, method = RequestMethod.GET)
-	public String sendEmail(ModelMap model) {
+	public String emailSettingsView(ModelMap model) {
 		return "email-settings.tiles";
 	}
 
-	@RequestMapping(path = "/getallcountries", method = RequestMethod.GET)
-	public @ResponseBody List<User> getAllCountries() {
-		List<User> countriesList = null;
+	@RequestMapping(value = { "/sharing-options" }, method = RequestMethod.GET)
+	public String shareToSocialView(ModelMap model) {
+		return "sharing-options.tiles";
+	}
+
+	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
+	public String loginView(ModelMap model) {
+		return "login.tiles";
+	}
+
+	@RequestMapping(value = { "/my-profile" }, method = RequestMethod.GET)
+	public String myProfileView(HttpServletRequest request, ModelMap model) {
+		String returnVal = "login.tiles";
 		try {
-			countriesList = RegistrationDao.getInstance().getCountreies();
+			HttpSession session = request.getSession();
+
+			if (session.getAttribute("bean") != null) {
+				UserMO user = (UserMO) session.getAttribute("bean");
+				
+				model.addAttribute("user", user);
+
+				returnVal = "my-profile.tiles";
+			} else {
+				returnVal = "login.tiles";
+			}
+		} catch (Exception e) {
+			System.out.println("RequestController > myProfile() > exception >" + e);
+		}
+		return returnVal;
+	}
+	
+	@RequestMapping(value = { "/dashboard" }, method = RequestMethod.GET)
+	public String dashboardView(HttpServletRequest request, ModelMap model) {
+		HttpSession session = request.getSession();
+
+		if (session.getAttribute("bean") != null) {
+			UserMO userMO = (UserMO) session.getAttribute("bean");
+			if (userMO.getUserTypeId().equals("USER_05")) {
+				return "dashboard.tiles";
+			} else {
+				return "user-pannel.tiles";
+			}
+		} else {
+			return "login.tiles";
+		}
+	}
+
+	@RequestMapping(value = { "/change-password" }, method = RequestMethod.GET)
+	public String changePasswordView(HttpServletRequest request, ModelMap model) {
+		HttpSession session = request.getSession();
+
+		if (session.getAttribute("bean") != null) {
+			return "changePassword.tiles";
+		} else {
+			return "login.tiles";
+		}
+	}
+	
+	@RequestMapping(value = { "/logout" }, method = RequestMethod.GET)
+	public String logout(HttpServletRequest request, ModelMap model) {
+		HttpSession session = request.getSession();
+
+		if (session.getAttribute("bean") != null) {
+			session.removeAttribute("bean");
+		}
+		return "home.tiles";
+	}
+	
+	@RequestMapping(path = "/getallcountries", method = RequestMethod.GET)
+	public @ResponseBody List<CountryMO> getAllCountries() {
+		List<CountryMO> countriesList = null;
+		try {
+			countriesList = addressService.getCountreies();
 
 		} catch (Exception e) {
 			System.out.println("RequestController > getAllCountries() > exception >" + e);
@@ -78,11 +174,11 @@ public class RequestController {
 	}
 
 	@RequestMapping(path = "/getallstates", method = RequestMethod.GET)
-	public @ResponseBody List<User> getAllStates(HttpServletRequest request) {
-		List<User> countriesList = null;
-		String countryCode = request.getParameter("countryCode");
+	public @ResponseBody List<StateMO> getAllStates(@RequestParam(value = "countryCode") String countryCode) {
+		List<StateMO> countriesList = null;
+
 		try {
-			countriesList = RegistrationDao.getInstance().getAllStates(countryCode);
+			countriesList = addressService.getAllStates(countryCode);
 
 		} catch (Exception e) {
 			System.out.println("RequestController > getAllStates() > exception >" + e);
@@ -91,11 +187,10 @@ public class RequestController {
 	}
 
 	@RequestMapping(path = "/getallcities", method = RequestMethod.GET)
-	public @ResponseBody List<User> getAllCities(HttpServletRequest request) {
-		List<User> countriesList = null;
-		String stateCode = request.getParameter("stateCode");
+	public @ResponseBody List<CityMO> getAllCities(HttpServletRequest request,@RequestParam(value="stateCode")String stateCode) {
+		List<CityMO> countriesList = null;
 		try {
-			countriesList = RegistrationDao.getInstance().getAllCities(stateCode);
+			countriesList = addressService.getAllCities(stateCode);
 
 		} catch (Exception e) {
 			System.out.println("RequestController > getAllCities() > exception >" + e);
@@ -104,150 +199,99 @@ public class RequestController {
 	}
 
 	@RequestMapping(path = "/customer-registration", method = RequestMethod.GET)
-	public @ResponseBody JSONObject customerRegistration(HttpServletRequest request) {
+	public @ResponseBody JSONObject customerRegistration(UserMO userMO) {
 		JSONObject json = new JSONObject();
-		try {
-			String firstName = request.getParameter("firstName");
-			String lastName = request.getParameter("lastName");
-			String email = request.getParameter("email");
-			String mobile = request.getParameter("mobile");
-			String password = request.getParameter("password");
-			String countries = request.getParameter("countries");
-			String states = request.getParameter("states");
-			String cities = request.getParameter("cities");
-
-			User user = new User();
-			user.setFirstName(firstName);
-			user.setLastName(lastName);
-			user.setEmail(email);
-			user.setMobile(mobile);
-			user.setPassword(password);
-			user.setCountryCode(countries);
-			user.setStateCode(states);
-			user.setCityCode(cities);
-
-			User retUser = RegistrationDao.getInstance().checkUserExistOrNot(user.getMobile());
-
-			if (retUser == null || "".equals(retUser)) {
-				// create user
-				StringBuffer buffer = new StringBuffer(ResourceUtility.getCommonConstant("user.uuid.starts.with"));
-				buffer.append(RandomGenerator.generateNumericRandom(
-						Integer.parseInt(ResourceUtility.getCommonConstant("user.uuid.length"))));
-
-				user.setUuid(buffer.toString());
-				// System.out.println("inside request controller" + buffer.toString());
-				boolean flag = RegistrationDao.getInstance().customerRegistration(user);
-
-				if (flag) {
-					boolean deleteOtp = RegistrationDao.getInstance().deleteOtp(null, user.getMobile());
-
-					String otp = RandomGenerator.generateNumericRandom(
-							Integer.parseInt(ResourceUtility.getCommonConstant("user.otp.length")));
-					boolean saveOtp = RegistrationDao.getInstance().saveOtp(user.getMobile(), otp);
-					if (saveOtp) {
-						boolean sendSms = sendOtpSMS(user.getMobile(), otp, user.getUuid());
-					}
-
-					json.put("status", true);
-					json.put("uuid", user.getUuid());
-				} else {
-					json.put("status", false);
-				}
-			} else {
-				// user exists
-				/*
-				 * String mobStatus = retUser.getMobileStatus();
-				 * 
-				 * if(mobStatus != null && "1".equalsIgnoreCase(mobStatus)){ returnVal =
-				 * "mobileEsixts"; }else{ returnVal = "mobileNeedToVerify"; }
-				 */
-				json.put("status", "mobileExists");
-			}
-		} catch (Exception e) {
-			System.out.println("RequestController > customerRegistration() > exception >" + e);
-		}
+		json.putAll(userService.customerRegistrationService(userMO));
 		return json;
 	}
 
 	@RequestMapping(path = "/check-otp", method = RequestMethod.GET)
-	public @ResponseBody JSONObject checkOtp(HttpServletRequest request) {
+	public @ResponseBody JSONObject checkOtp(HttpServletRequest request, OtpMO otpMO) {
+
 		JSONObject json = new JSONObject();
-		try {
-			String otp = request.getParameter("otp");
-			String mobile = request.getParameter("mobile");
-			String doLogin = request.getParameter("doLogin");
-
-			boolean flag = RegistrationDao.getInstance().deleteOtp(otp, mobile);
-
-			if (flag) {
-				boolean statusChange = RegistrationDao.getInstance().changeUserStatus(mobile);
-
-				if (statusChange) {
-					json.put("status", true);
-
-					if (doLogin != null && !"".equalsIgnoreCase(doLogin)) {
-						User user = RegistrationDao.getInstance().checkUserExistOrNot(mobile);
-						HttpSession session = request.getSession();
-
-						session.setAttribute("bean", user);
-					}
-				} else {
-					json.put("status", "exception");
-				}
-			} else {
-				json.put("status", false);
-			}
-		} catch (Exception e) {
-			System.out.println("RequestController > customerRegistration() > exception >" + e);
+		Map<String, Object> map = otpService.checkOtpService(otpMO);
+		if ((boolean) map.get("status")) {
+			HttpSession session = request.getSession();
+			session.setAttribute("bean", map.get("user"));
 		}
-		return json;
+
+		// json.putAll((Map) map.get("jsonMap"));
+		json = (JSONObject) map.get("jsonMap");
+		return	json;
+
+		/*
+		 * try { String otp = request.getParameter("otp"); String mobile =
+		 * request.getParameter("mobile"); String doLogin =
+		 * request.getParameter("doLogin");
+		 * 
+		 * boolean flag = registrationDao.deleteOtp(otp, mobile);
+		 * 
+		 * if (flag) { boolean statusChange = registrationDao.changeUserStatus(mobile);
+		 * 
+		 * if (statusChange) { json.put("status", true);
+		 * 
+		 * if (doLogin != null && !"".equalsIgnoreCase(doLogin)) { UserMO user =
+		 * registrationDao.checkUserExistOrNot(mobile); HttpSession session =
+		 * request.getSession();
+		 * 
+		 * session.setAttribute("bean", user); } } else { json.put("status",
+		 * "exception"); } } else { json.put("status", false); } } catch (Exception e) {
+		 * System.out.println("RequestController > customerRegistration() > exception >"
+		 * + e); }
+		 */
+
 	}
 
 	@RequestMapping(path = "/resend-otp", method = RequestMethod.GET)
-	public @ResponseBody JSONObject resendOtp(HttpServletRequest request) {
+	public @ResponseBody JSONObject resendOtp(HttpServletRequest request, OtpMO otpMO,
+			@RequestParam(value = "uuid") String uuid) {
 		JSONObject json = new JSONObject();
-		try {
-			String mobile = request.getParameter("mobile");
-			String uuid = request.getParameter("uuid");
-
-			boolean flag = RegistrationDao.getInstance().deleteOtp(null, mobile);
-
-			// if(flag){
-			String otp = RandomGenerator
-					.generateNumericRandom(Integer.parseInt(ResourceUtility.getCommonConstant("user.otp.length")));
-			boolean saveOtp = RegistrationDao.getInstance().saveOtp(mobile, otp);
-			if (saveOtp) {
-				boolean sendSms = sendOtpSMS(mobile, otp, uuid);
-			}
-
-			if (saveOtp) {
-				json.put("status", true);
-			} else {
-				json.put("status", "exception");
-			}
-			/*
-			 * }else{ json.put("status", false); }
-			 */
-		} catch (Exception e) {
-			System.out.println("RequestController > customerRegistration() > exception >" + e);
-			json.put("status", "exception");
-		}
+		json.putAll(otpService.resendOtpService(otpMO, uuid));
 		return json;
+
+		/*
+		 * try { String mobile = request.getParameter("mobile"); String uuid =
+		 * request.getParameter("uuid");
+		 * 
+		 * boolean flag = registrationDao.deleteOtp(null, mobile);
+		 * 
+		 * // if(flag){ String otp = RandomGenerator
+		 * .generateNumericRandom(Integer.parseInt(ResourceUtility.getCommonConstant(
+		 * "user.otp.length"))); boolean saveOtp = registrationDao.saveOtp(mobile, otp);
+		 * if (saveOtp) { boolean sendSms = smsService.sendOtpSMS(mobile, otp, uuid); }
+		 * 
+		 * if (saveOtp) { json.put("status", true); } else { json.put("status",
+		 * "exception"); }
+		 * 
+		 * }else{ json.put("status", false); }
+		 * 
+		 * } catch (Exception e) {
+		 * System.out.println("RequestController > customerRegistration() > exception >"
+		 * + e); json.put("status", "exception"); }
+		 */
+
 	}
 
-	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
-	public String login(ModelMap model) {
-		return "login.tiles";
-	}
-
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(path = "/check-user-login", method = RequestMethod.GET)
-	public @ResponseBody JSONObject checkUserLogin(HttpServletRequest request) {
+	public @ResponseBody JSONObject checkUserLogin(HttpServletRequest request,@RequestParam(value="userName") String userName,@RequestParam(value="password")String password) {
 		JSONObject json = new JSONObject();
-		try {
+		
+		Map<String, Object> map= userService.checkUserLoginService(userName, password);
+		System.out.println(map.get("status"));
+		if((boolean) map.get("status")) {
+			HttpSession session = request.getSession();
+			session.setAttribute("bean", map.get("user"));
+		}
+		json.putAll((Map) map.get("jsonMap"));
+		System.out.println(json.toString());
+		return json;
+		
+		/*try {
 			String userName = request.getParameter("userName");
 			String password = request.getParameter("password");
 
-			User user = RegistrationDao.getInstance().checkUserLogin(userName, password);
+			UserMO user = registrationDao.checkUserLogin(userName, password);
 
 			if (user == null) {
 				json.put("status", false);
@@ -269,45 +313,30 @@ public class RequestController {
 		} catch (Exception e) {
 			System.out.println("RequestController > checkUserLogin() > exception >" + e);
 			json.put("status", "exception");
-		}
-		System.out.println(json.toString());
-		return json;
-	}
-
-	@RequestMapping(value = { "/dashboard" }, method = RequestMethod.GET)
-	public String dashboard(HttpServletRequest request, ModelMap model) {
-		HttpSession session = request.getSession();
-
-		if (session.getAttribute("bean") != null) {
-			return "dashboard.tiles";
-		} else {
-			return "login.tiles";
-		}
-	}
-
-	@RequestMapping(value = { "/logout" }, method = RequestMethod.GET)
-	public String logout(HttpServletRequest request, ModelMap model) {
-		HttpSession session = request.getSession();
-
-		if (session.getAttribute("bean") != null) {
-			session.removeAttribute("bean");
-		}
-		return "home.tiles";
+		}*/
+		
+		
 	}
 
 	@RequestMapping(path = "/forgot-password", method = RequestMethod.GET)
-	public @ResponseBody JSONObject forgotPassword(HttpServletRequest request) {
+	public @ResponseBody JSONObject forgotPassword(HttpServletRequest request,@RequestParam(value="mobile")String mobile) {
 		JSONObject json = new JSONObject();
-		try {
+		
+		json.putAll(passwordService.forgotPassword(mobile));
+		return json;
+		
+		
+		//FIXME Remove this code in final release.
+		/*try {
 			String mobile = request.getParameter("mobile");
 
-			User retUser = RegistrationDao.getInstance().checkUserExistOrNot(mobile);
+			UserMO retUser = registrationDao.checkUserExistOrNot(mobile);
 
 			if (retUser != null && !"".equals(retUser)) {
-				SMSTemplateVO smsTemplateVO = new SMSTemplateVO();
-				SMSService service = new SMSService();
-				SMSAuditingVO smsAuditingVO = new SMSAuditingVO();
-				SMSVO smsvo = new SMSVO();
+				SMSAPITemplateVO smsTemplateVO = new SMSAPITemplateVO();
+				SMSAPIService service = new SMSAPIService();
+				SMSAPIAuditingVO smsAuditingVO = new SMSAPIAuditingVO();
+				SMSAPIVO smsapivo = new SMSAPIVO();
 				smsTemplateVO = service.getSmsTemplateByTemplateId(
 						ResourceUtility.getCommonConstant("sms.template.id.forgot.password"));
 
@@ -315,7 +344,7 @@ public class RequestController {
 
 				if (smsTemplateId != null && !"".equals(smsTemplateId)) {
 					smsAuditingVO.setSmsTemplateId(smsTemplateId);
-					smsvo.setSmsTemplateId(smsTemplateId);
+					smsapivo.setSmsTemplateId(smsTemplateId);
 				}
 				String smsbody = smsTemplateVO.getSmsTemplate();
 				if (smsbody != null && !"".equals(smsbody)) {
@@ -337,10 +366,10 @@ public class RequestController {
 				vCode.add(retUser.getPassword());
 				mNumber.add(retUser.getMobile());
 
-				smsvo.setSmsTo(mNumber);
-				smsvo.setParameters(vCode);
+				smsapivo.setSmsTo(mNumber);
+				smsapivo.setParameters(vCode);
 
-				boolean flag = service.sendSMS(smsvo);
+				boolean flag = service.sendSMS(smsapivo);
 
 				json.put("status", flag);
 
@@ -351,100 +380,23 @@ public class RequestController {
 		} catch (Exception e) {
 			System.out.println("RequestController > forgotPassword() > exception >" + e);
 			json.put("status", "exception");
-		}
-		return json;
-	}
-
-	public boolean sendOtpSMS(String mobile, String verificationCode, String uuid) {
-		try {
-			SMSService service = new SMSService();
-			SMSVO smsvo = new SMSVO();
-			SMSTemplateVO smsTemplateVO = new SMSTemplateVO();
-			SMSAuditingVO smsAuditingVO = new SMSAuditingVO();
-
-			smsTemplateVO = service
-					.getSmsTemplateByTemplateId(ResourceUtility.getCommonConstant("sms.template.id.send.otp"));
-
-			String smsTemplateId = smsTemplateVO.getSmsTemplateId();
-			if (smsTemplateId != null && !"".equals(smsTemplateId)) {
-				smsAuditingVO.setSmsTemplateId(smsTemplateId);
-				smsvo.setSmsTemplateId(smsTemplateId);
-			}
-			String smsBody = smsTemplateVO.getSmsTemplate();
-			if (smsBody != null && !"".equals(smsBody)) {
-				smsBody = smsBody.replace("{0}", verificationCode);
-			}
-			smsAuditingVO.setSms(smsBody);
-			smsAuditingVO.setUuid(uuid);
-			service.saveSmsAuditing(smsAuditingVO);
-
-			List<String> vCode = new ArrayList<String>();
-			List<String> mNumber = new ArrayList<String>();
-
-			vCode.add(verificationCode);
-			mNumber.add(mobile);
-
-			smsvo.setSmsTo(mNumber);
-			smsvo.setParameters(vCode);
-			service.sendSMS(smsvo);
-		} catch (Exception e) {
-			System.out.println("RequestController > sendOtpSMS() > exception >" + e);
-		}
-		return true;
-	}
-
-	@RequestMapping(value = { "/my-profile" }, method = RequestMethod.GET)
-	public String myProfile(HttpServletRequest request, ModelMap model) {
-		String returnVal = "login.tiles";
-		try {
-			HttpSession session = request.getSession();
-
-			if (session.getAttribute("bean") != null) {
-				User user = (User) session.getAttribute("bean");
-				// User user =
-				// RegistrationDao.getInstance().checkUserExistOrNot(usr.getMobile());
-				model.addAttribute("user", user);
-
-				returnVal = "my-profile.tiles";
-			} else {
-				returnVal = "login.tiles";
-			}
-		} catch (Exception e) {
-			System.out.println("RequestController > myProfile() > exception >" + e);
-		}
-		return returnVal;
+		}*/
+		
+		
 	}
 
 	@RequestMapping(path = "/update-profile", method = RequestMethod.GET)
-	public @ResponseBody JSONObject updateProfile(HttpServletRequest request, User user) {
+	public @ResponseBody JSONObject updateProfile(HttpServletRequest request, UserMO user) {
 		JSONObject json = new JSONObject();
 		try {
 			HttpSession session = request.getSession();
 
 			if (session != null) {
-				/*
-				 * User usr = (User) session.getAttribute("bean");
-				 * 
-				 * String firstName = request.getParameter("firstName"); String lastName =
-				 * request.getParameter("lastName"); String email =
-				 * request.getParameter("email"); String mobile =
-				 * request.getParameter("mobile"); String countries =
-				 * request.getParameter("countries"); String states =
-				 * request.getParameter("states"); String cities =
-				 * request.getParameter("cities"); String address =
-				 * request.getParameter("address");
-				 * 
-				 * User user = new User(); user.setFirstName(firstName);
-				 * user.setLastName(lastName); user.setEmail(email); user.setMobile(mobile);
-				 * user.setCountryCode(countries); user.setStateCode(states);
-				 * user.setCityCode(cities); user.setAddress(address);
-				 * user.setUuid(usr.getUuid());
-				 */
-
-				boolean flag = RegistrationDao.getInstance().updateProfile(user);
-
-				if (flag) {
-					User newUser = RegistrationDao.getInstance().checkUserExistOrNot(user.getMobile());// usr>>user
+				
+				Map<String,Object> map=userService.updateProfileService(user);
+				
+				if ((boolean) map.get("flag")) {
+					UserMO newUser = userService.checkUserExistOrNot(user.getMobile());// usr>>user
 					session.setAttribute("bean", newUser);
 
 					json.put("status", true);
@@ -460,31 +412,18 @@ public class RequestController {
 		return json;
 	}
 
-	@RequestMapping(value = { "/change-password" }, method = RequestMethod.GET)
-	public String changePassword(HttpServletRequest request, ModelMap model) {
-		HttpSession session = request.getSession();
-
-		if (session.getAttribute("bean") != null) {
-			return "changePassword.tiles";
-		} else {
-			return "login.tiles";
-		}
-	}
-
+	//FIXME check before building
 	@RequestMapping(path = "/update-password", method = RequestMethod.GET)
-	public @ResponseBody JSONObject updatePassword(HttpServletRequest request) {
+	public @ResponseBody JSONObject updatePassword(HttpServletRequest request,@RequestParam(value="currentPassword")String currentPassword,@RequestParam(value="newPassword")String newPassword) {
 		JSONObject json = new JSONObject();
 		try {
 			HttpSession session = request.getSession();
-			User user = (User) session.getAttribute("bean");
+			UserMO user = (UserMO) session.getAttribute("bean");
 
-			String currentPassword = request.getParameter("currentPassword");
-			String newPassword = request.getParameter("newPassword");
-
-			boolean flag = RegistrationDao.getInstance().checkPassword(user.getUuid(), currentPassword);
+			boolean flag = passwordService.checkPassword(user.getUuid(), currentPassword);
 
 			if (flag) {
-				boolean updatePwd = RegistrationDao.getInstance().updatePassword(user.getUuid(), newPassword);
+				boolean updatePwd = passwordService.updatePassword(user.getUuid(), newPassword);
 
 				if (updatePwd) {
 					json.put("status", true);
@@ -506,56 +445,74 @@ public class RequestController {
 	}
 
 	@RequestMapping(value = "/savefiles", method = RequestMethod.POST)
-	public @ResponseBody boolean addProductDetails(@RequestParam MultipartFile file, HttpSession session,
-			ProductDetails productDetails) throws IllegalStateException, IOException {
-		String path = session.getServletContext().getRealPath("/WEB-INF/assets/img/product/");
-		String filename = file.getOriginalFilename();
+	public @ResponseBody boolean addProductDetails(@RequestParam(value = "file") MultipartFile file,
+			HttpSession session, ProductDetailsMO productDetails) throws IllegalStateException, IOException {
+		String filePath = session.getServletContext().getRealPath("/WEB-INF/assets/img/product/");
+		String fileName = file.getOriginalFilename();
 		boolean flag = false;
-		try {
-			byte barr[] = file.getBytes();
-			BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(path + filename));
-
-			StringBuffer buffer = new StringBuffer(ResourceUtility.getCommonConstant("user.uuid.starts.with"));
-			buffer.append(RandomGenerator
-					.generateNumericRandom(Integer.parseInt(ResourceUtility.getCommonConstant("user.uuid.length"))));
-			productDetails.setCreatedAt(Calendar.getInstance().getTime());
-			productDetails.setUpdatedAt(Calendar.getInstance().getTime());
-			productDetails.setProductUuid(buffer.toString());
-			productDetails.setProductImageExtension(path + filename);
-			flag = ProductDao.getInstance().addProductDetails(productDetails);
-			bout.write(barr);
-			bout.flush();
-			bout.close();
-
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		
+		flag=productService.addProductDetails(fileName, filePath, file, productDetails);
+		
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/delete-product-list", method = RequestMethod.POST)
-	public @ResponseBody boolean deleteProduct(@RequestParam("productID") String productUUID){
-		return ProductDao.getInstance().deletaProductDetails(productUUID);
+	public @ResponseBody boolean deleteProduct(@RequestParam("productID") String productUUID) {
+		return productService.deleteProductDetails(productUUID);
 	}
 
-	
 	/**
-	 * when this url is requested,
-	 * the 'getProducts' method of 'productDao' is called and get the JSONArray of products
-	 * */
+	 * when this url is requested, the 'getProducts' method of 'productDao' is
+	 * called and get the JSONArray of products
+	 */
 	@RequestMapping(value = "/getProducts", method = RequestMethod.GET)
 	public @ResponseBody JSONArray getProducts() {
-		JSONArray products = (JSONArray) ProductDao.getInstance().getProducts();
-		
+		JSONArray products = null;
+		JSONObject jsonObject = null;
+		products = new JSONArray();
+		ArrayList<ProductDetailsMO> productDetailsList = new ArrayList<>();
+		productDetailsList = productService.getProducts();
+		for (ProductDetailsMO productDetails : productDetailsList) {
+			jsonObject = new JSONObject();
+			jsonObject.put("productId", productDetails.getProductUuid());
+			jsonObject.put("productName", productDetails.getProductName());
+			jsonObject.put("puoductUrl", productDetails.getProductUrl());
+			jsonObject.put("smsDesc", productDetails.getProductDescriptionForSms());
+			jsonObject.put("emailDesc", productDetails.getProductDescriptionForEmail());
+			jsonObject.put("imageURL", productDetails.getProductImageExtension());
+			jsonObject.put("countryId", productDetails.getCountry());
+			jsonObject.put("stateId", productDetails.getState());
+			jsonObject.put("cityId", productDetails.getCity());
+			jsonObject.put("creationDate", productDetails.getCreatedAt().toString());
+			jsonObject.put("updationDate", productDetails.getUpdatedAt().toString());
+			products.add(jsonObject);
+		}
+
 		return products;
 	}
-	
+
 	/**
 	 * this url used to update the product details avelabel i product table.
-	 * */
+	 */
 	@RequestMapping(value = "/update-product-details", method = RequestMethod.POST)
-	public @ResponseBody boolean updateProduct(ProductDetails productDetails) {
-		return ProductDao.getInstance().updateProduct(productDetails);
+	public @ResponseBody boolean updateProduct(ProductDetailsMO productDetails) {
+		return productService.updateProduct(productDetails);
+	}
+
+	@RequestMapping(value = "/change-email-template", method = RequestMethod.PUT)
+	public @ResponseBody boolean changeEmailTemplate(EmailAPITemplateDetailsVO emailAPITemplateDetailsVO) {
+		return emailService.changeEmailTemplateService(emailAPITemplateDetailsVO);
+	}
+
+	@RequestMapping(value = "/send-product-mail", method = RequestMethod.GET)
+	public @ResponseBody boolean sendProductMail(@RequestParam(value = "productUUID") String productUUID,
+			@RequestParam(value = "recipiant") String recipiant) {
+		return emailService.sendProductMail(productUUID, recipiant);
+	}
+
+	@RequestMapping(value = "/change-email-config", method = RequestMethod.PUT)
+	public @ResponseBody boolean changeEmailConfig(EmailAPIConfigVO emailAPIConfigVO) {
+		return emailService.changeEmailConfigService(emailAPIConfigVO);
 	}
 
 }

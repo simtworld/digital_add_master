@@ -13,8 +13,13 @@
     <!-- Canonical SEO -->
     
     
+    
+    
     <!-- Bootstrap core CSS     -->
     <link href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Morris Charts CSS -->
+<link href="<%=request.getContextPath() %>/assets/css/morris.css"
+	rel="stylesheet">
     <!--  Material Dashboard CSS    -->
     <link href="<%=request.getContextPath()%>/assets/css/material-dashboard5438.css?v=1.2.0" rel="stylesheet" />
     <!--  CSS for Demo Purpose, don't include it in your project     -->
@@ -90,10 +95,11 @@
 	src="<%=request.getContextPath()%>/assets/js/material-dashboard5438.js?v=1.2.0"></script>
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="<%=request.getContextPath()%>/assets/js/demo.js"></script>
+	
 <script type="text/javascript">
 	$().ready(function() {
 		demo.checkFullPageBackgroundImage();
-
+		
 		var testUser = '<%= session.getAttribute("bean") %>';
 		
 		if(testUser == null || testUser == "null" || testUser == ""){	
@@ -205,5 +211,6 @@
         </ul>
     </div>
 </div>
+	
     </body>
 </head>

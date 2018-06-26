@@ -5,6 +5,7 @@
 <html>
 <head>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
 
@@ -319,8 +320,8 @@
 							</c:when>
 
 							<c:when test="${bean.userTypeId==admin}">
-								<li><a href="tables.html"><i class="fa fa-table fa-fw"></i>
-										Admin Tables</a></li>
+								<li><a href="sharing-options"><i class="fa fa-table fa-fw"></i>
+										Sharing Options</a></li>
 
 								<li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
 										Settings<span class="fa arrow"></span></a>
@@ -358,36 +359,5 @@
 			<!-- /.navbar-static-side -->
 		</nav>
 		
-<script src="<%=request.getContextPath()%>/assets/js/jquery.min.js"></script>
-
-	<!-- Bootstrap Core JavaScript -->
-	<script src="<%=request.getContextPath()%>/assets/js/bootstrap.min.js"></script>
-
-	<!-- Bootstrap Core JavaScript -->
-	<script src="<%=request.getContextPath()%>/assets/js/metisMenu.min.js"></script>
-
-	<!-- Morris Charts JavaScript -->
-	<script src="<%=request.getContextPath()%>/assets/js/raphael.min.js"></script>
-	<script src="<%=request.getContextPath()%>/assets/js/morris.min.js"></script>
-	<script src="<%=request.getContextPath()%>/assets/js/morris-data.js"></script>
-
-	<!-- Custom Theme JavaScript -->
-	<script src="<%=request.getContextPath()%>/assets/js/sb-admin-2.js"></script>
-
-	<!-- Custom Bootstrap Script -->
-	<script src="<%=request.getContextPath()%>/assets/js/custom-scripts.js"></script>
-
-	<!--  DataTables.net Plugin, full documentation here: https://datatables.net/    -->
-	<script
-		src="<%=request.getContextPath()%>/assets/js/jquery.datatables.js"></script>
-
-	<!--  DataTables.net Plugin, full documentation here: https://datatables.net/    -->
-	<script
-		src="<%=request.getContextPath()%>/assets/js/dataTables.bootstrap.js"></script>
-
-	<!-- Sweet Alert plugin, full documentation here:https://sweetalert.js.org/guides/ -->
-	<script src="<%=request.getContextPath()%>/assets/js/sweetalert.min.js"></script>
-
-<script src="<%=request.getContextPath()%>/assets/js/fileinput.min.js"></script>		
 
 </body>

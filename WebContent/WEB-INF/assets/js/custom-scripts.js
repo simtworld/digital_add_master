@@ -1,9 +1,19 @@
 /*
  *script for submitting the addProduct form 
  */
-$("form#addProductDetailsForm").submit(function(e) {
+$(document).ready(function () {
+	/*$(document).ajaxStart(function(){
+	    $("#wait").css("display", "block");
+	});
+
+	$(document).ajaxComplete(function(){
+	    $("#wait").css("display", "none");
+	});*/
+
+$('form#addProductDetailsForm').submit(function(e) {
 		e.preventDefault();
 		var formData = new FormData(this);
+		$('#myModal').modal('hide');
 		$.ajax({
 			url : "savefiles",
 			type : 'POST',
@@ -11,12 +21,12 @@ $("form#addProductDetailsForm").submit(function(e) {
 			success : function(data) {
 
 				if (data) {
-					$('#myModal').modal('hide');
+					
 					swal("Done!", "Product successfully added!", "success");
 					table.ajax.reload();
 					$(this).trigger('reset');
 				} else {
-					$('#myModal').modal('hide');
+					//$('#myModal').modal('hide');
 					swal("OOPS!", "Something went wrong, try again!", "error");
 				}
 			},
@@ -30,8 +40,6 @@ $("form#addProductDetailsForm").submit(function(e) {
 
 var table;
 
-$(document).ready(function () {
-	
 	table=$('#product_table')
 			.DataTable(
 					{
@@ -89,7 +97,7 @@ $(document).ready(function () {
 				  $.ajax({
 						url : "delete-product-list",
 						type : 'POST',
-						/* data : {'productId':data.productId+"'"}, */
+						 data : {'productId':data.productId+"'"}, 
 						data : {
 							productID : param
 						},

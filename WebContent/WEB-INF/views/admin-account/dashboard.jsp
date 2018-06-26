@@ -1,10 +1,7 @@
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
-<body>
-
-	<div id="wrapper">
+<div id="wrapper">
 
 		<%-- <!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
@@ -423,8 +420,8 @@
 									</div>
 									<div class="row">
 										<div class="col-lg-12 ">
-											<form action="savefiles" contentType="multipart/form-data"
-												id="addProductDetailsForm">
+											<form  contentType="multipart/form-data"
+												id="addProductDetailsForm" >
 												<div class="form-group">
 													<label>Product Name</label> <input id="productName"
 														type="text" name="productName" class="form-control">
@@ -529,8 +526,36 @@
 	<!-- /#wrapper -->
 
 	<!-- jQuery -->
+	<script src="<%=request.getContextPath()%>/assets/js/jquery.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="<%=request.getContextPath()%>/assets/js/bootstrap.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="<%=request.getContextPath()%>/assets/js/metisMenu.min.js"></script>
+
+	<!-- Morris Charts JavaScript -->
+	<script src="<%=request.getContextPath()%>/assets/js/raphael.min.js"></script>
+	<script src="<%=request.getContextPath()%>/assets/js/morris.min.js"></script>
+	<script src="<%=request.getContextPath()%>/assets/js/morris-data.js"></script>
+
+	<!-- Custom Theme JavaScript -->
+	<script src="<%=request.getContextPath()%>/assets/js/sb-admin-2.js"></script>
+
+	<!-- Custom Bootstrap Script -->
+	<script src="<%=request.getContextPath()%>/assets/js/custom-scripts.js"></script>
+
+	<!--  DataTables.net Plugin, full documentation here: https://datatables.net/    -->
+	<script
+		src="<%=request.getContextPath()%>/assets/js/jquery.datatables.js"></script>
+
+	<!--  DataTables.net Plugin, full documentation here: https://datatables.net/    -->
+	<script
+		src="<%=request.getContextPath()%>/assets/js/dataTables.bootstrap.js"></script>
+
+	<!-- Sweet Alert plugin, full documentation here:https://sweetalert.js.org/guides/ -->
+	<script src="<%=request.getContextPath()%>/assets/js/sweetalert.min.js"></script>
+
+<script src="<%=request.getContextPath()%>/assets/js/fileinput.min.js"></script>		
 	
 
-</body>
-
-</html>

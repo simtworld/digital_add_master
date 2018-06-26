@@ -17,7 +17,9 @@ public class DBConnectionHandler {
             DataSource ds = DataSourceHandler.getInstance().getDataSource();
             //log.debug("DBConnectionHandler> getDBConnection : ds="+ds);
             //ds.setLoginTimeout(30);
+            //System.out.println("DBConnectionHandler >> getDBConnection >> " +ds);//for testing
             connection = ds.getConnection();
+            //System.out.println("DBConnectionHandler >> getDBConnection >> " + connection);//for testing
             ds = null;
         } catch (SQLException e) {  
             //log.fatal("getDBConnection :: SQLException : " + e);

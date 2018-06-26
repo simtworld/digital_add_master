@@ -116,7 +116,7 @@
 											<div class="input-group">
 											<span class="input-group-addon"> <i class="material-icons">email</i></span>
 											<div class="row" style="padding-left: 20px;">
-												<select id="countries" name="countries" class="selectpicker" onchange="getStates()" data-style="btn btn-primary btn-round" title="Single Select" data-size="7" required="true">
+												<select id="countries" name="countryCode" class="selectpicker" onchange="getStates()" data-style="btn btn-primary btn-round" title="Single Select" data-size="7" required="true">
 													<option value="" disabled selected>Select Country</option>													
 												</select>
 												<span style="color: red" id="countriesError"></span>
@@ -125,7 +125,7 @@
 											<div class="input-group">
 											<span class="input-group-addon"> <i class="material-icons">email</i></span>
 											<div class="row" style="padding-left: 20px;">
-												<select id="states" name="states" class="selectpicker" onchange="getCities()" data-style="btn btn-primary btn-round" title="Single Select" data-size="7" required="true">
+												<select id="states" name="stateCode" class="selectpicker" onchange="getCities()" data-style="btn btn-primary btn-round" title="Single Select" data-size="7" required="true">
 													<option value="" disabled selected>Select State</option>
 												</select>
 												<span style="color: red" id="statesError"></span>
@@ -134,7 +134,7 @@
 											<div class="input-group" >
 											<span class="input-group-addon"> <i class="material-icons">email</i></span>
 											<div class="row" style="padding-left: 20px;">
-												<select id="cities" name="cities" class="selectpicker" data-style="btn btn-primary btn-round" title="Single Select" data-size="7" >
+												<select id="cities" name="cityCode" class="selectpicker" data-style="btn btn-primary btn-round" title="Single Select" data-size="7" >
 													<option value="" disabled selected>Select City</option>
 												</select>
 												<span style="color: red" id="citiesError"></span>
@@ -231,9 +231,12 @@ function registration(){
 	if(check){		
 		$.ajax({url : "<%=request.getContextPath()%>/customer-registration",
 			data : $("#registrationForm").serialize(),success : function(data){
-				//data = JSON.parse(data);
+				//alert("test>> "+JSON.stringify(data));
+				data = JSON.stringify(data);
+				data = JSON.parse(data);
 				
-				if(data.status == true){
+				if(data.status == "true"){
+					alert(data.status)
 					if(data.uuid != null && data.uuid != undefined){
 						$("#uuid").val(data.uuid);
 					}
@@ -250,9 +253,9 @@ function registration(){
 		                dismissible:false,
 		                showConfirmButton: false
 		            }).then(function(result){
-		            	//checkOTP();	
+		            	checkOTP();	
 		            			            
-		                /* swal({
+		                 swal({
 		                    type: 'success',
 		                    html: 'You entered: <strong>' +
 		                        $('#input-field').val() +
@@ -260,24 +263,24 @@ function registration(){
 		                    confirmButtonClass: 'btn btn-success',
 		                    buttonsStyling: false
 
-		                }) */
+		                }) 
 					
 					
-					/* swal({
+					 swal({
 		                title: "OK",
 		                text: "Registration ",
 		                buttonsStyling: false,
 		                confirmButtonClass: "btn btn-success",
 		                type: "success"
-		            }); */
+		            }); 
 				});
-				}else if(data.status == false){
+				}else if(data.status == "false"){
 					swal({
 		                title: "Oops !!!",
 		                text: "Some Error Occured, Please Try Again",
 		                buttonsStyling: false,
 		                confirmButtonClass: "btn btn-success",
-		                type: "success",
+		                type: "error",
 		                dismissible:false
 		            });
 				}else if(data.status == "mobileExists"){
@@ -286,7 +289,7 @@ function registration(){
 		                text: "Mobile Number Already Existed. Try To Login Or Use Forgot Password",
 		                buttonsStyling: false,
 		                confirmButtonClass: "btn btn-success",
-		                type: "success",
+		                type: "info",
 		                dismissible:false
 		            });
 				}
