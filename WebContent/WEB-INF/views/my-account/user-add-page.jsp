@@ -100,8 +100,7 @@
 													</div>
 													<div class="col-md-3">
 														<!-- progress bar -->
-														<div class="progress-bar1" data-percent="40"
-															data-duration="1000" data-color="#ccc,teal"></div>
+														<div class="progress-bar1" data-percent="40" data-duration="1000" data-color="#ccc,teal"></div>
 													</div>
 												</div>
 			

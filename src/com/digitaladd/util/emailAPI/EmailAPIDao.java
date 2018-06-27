@@ -5,22 +5,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.digitaladd.common.DBConnectionHandler;
 import com.digitaladd.util.ResourceUtility;
 
-@Component
+@Repository
 public class EmailAPIDao {
 	private static EmailAPIDao instance;
-
+	static Map<String,Object> cache=new Hashtable<String,Object>();
+	private int count=1;
+	private int count2=1;
 	protected static synchronized EmailAPIDao getInstance() {
 		if (instance == null) {
 			instance = new EmailAPIDao();
 		}
-		return instance;
+		return  instance;
 	}
 
 	private EmailAPIDao() {
@@ -71,13 +74,20 @@ public class EmailAPIDao {
 	 * @param emailTemplateTypeId
 	 * @return EmailTemplateVO
 	 */
-	protected EmailAPITemplateDetailsVO getEmailTemplateDetailsByTemplateId(String emailTemplateTypeId) {
+	protected synchronized EmailAPITemplateDetailsVO getEmailTemplateDetailsByTemplateId(String emailTemplateTypeId) {
+		
+		if(cache.containsKey("EmailTemplateDetails"+emailTemplateTypeId)) {
+			return  (EmailAPITemplateDetailsVO) cache.get("EmailTemplateDetails"+emailTemplateTypeId);
+		}
+		
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
 		EmailAPITemplateDetailsVO vo = null;
 		try {
 			connection = DBConnectionHandler.getDBConnection();
+			System.out.println("getEmailTemplateDetailsByTemplateId TEST "+count2+++"  "+connection);
+			
 			preparedStmt = connection
 					.prepareStatement(ResourceUtility.getSqlQuery("get.email.templatedetails.master.by.id"));
 			preparedStmt.setString(1, emailTemplateTypeId);
@@ -89,7 +99,7 @@ public class EmailAPIDao {
 					vo.setEmailTemplateDetailsId(rs.getString("EMAIL_TEMPLATE_DETAILS_ID"));
 					vo.setEmailTemplateText(rs.getString("EMAIL_TEMPLATE_TEXT"));
 					vo.setEmailSubject(rs.getString("EMAIL_SUBJECT"));
-					vo.setEmailKewords(this.getEmailTemplateKeywordsList(emailTemplateTypeId));
+					vo.setEmailKewords(getEmailTemplateKeywordsList(emailTemplateTypeId));
 					vo.setCreatedDate(rs.getString("CREATED_DATE"));
 					vo.setCreatedBy(rs.getString("CREATED_BY"));
 					vo.setUpdatedDate(rs.getString("UPDATED_DATE"));
@@ -107,20 +117,31 @@ public class EmailAPIDao {
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}
-		return vo;
+		
+		cache.put("EmailTemplateDetails"+emailTemplateTypeId, vo);
+		
+		System.out.println(cache.keySet());
+		
+		return  (EmailAPITemplateDetailsVO) cache.get("EmailTemplateDetails"+emailTemplateTypeId);
 	}
 
 	/**
 	 * @param emailTemplateDetailsId
 	 * @return
 	 */
-	private HashMap<String, String> getEmailTemplateKeywordsList(String emailTemplateDetailsId) {
+	private synchronized HashMap<String, String> getEmailTemplateKeywordsList(String emailTemplateDetailsId) {
+		
+		if(cache.containsKey("EmailTemplateKeywordsList"+emailTemplateDetailsId)) {
+			return (HashMap<String, String>) cache.get("EmailTemplateKeywordsList"+emailTemplateDetailsId);
+		}
+		
 		Connection connection = null;
 		ResultSet rs = null;
 		PreparedStatement preparedStmt = null;
 		Map<String, String> emailTemplateKeywordsMap = new HashMap<String, String>();
 		try {
 			connection = DBConnectionHandler.getDBConnection();
+			System.out.println("getEmailTemplateKeywordsList TEST "+count+++"  "+connection);
 			preparedStmt = connection.prepareStatement(ResourceUtility.getSqlQuery("get.email.templatekeywords.by.id"));
 			preparedStmt.setString(1, emailTemplateDetailsId);
 			rs = preparedStmt.executeQuery();
@@ -140,7 +161,11 @@ public class EmailAPIDao {
 		} finally {
 			DBConnectionHandler.closeJDBCResoucrs(connection, preparedStmt, rs);
 		}
-		return (HashMap<String, String>) emailTemplateKeywordsMap;
+		
+		cache.put("EmailTemplateKeywordsList"+emailTemplateDetailsId, emailTemplateKeywordsMap);
+		System.out.println(cache.keySet());
+		
+		return (HashMap<String, String>) cache.get("EmailTemplateKeywordsList"+emailTemplateDetailsId);
 	}
 
 	/**

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.digitaladd.dao.productdao.ProductDao;
+import com.digitaladd.dao.productdao.ProductDaoImpl;
 import com.digitaladd.model.ProductDetailsMO;
 import com.digitaladd.util.RandomGenerator;
 import com.digitaladd.util.ResourceUtility;
@@ -35,7 +36,7 @@ public class EmalServiceImpl implements EmailService {
 	@Override
 	public boolean sendProductMail(String productUUID, String recipiant) {
 		ProductDetailsMO productDetailsMO = productDao.getProductDetailsById(productUUID);
-		System.out.println(productDetailsMO.getProductName());
+		//System.out.println(productDetailsMO.getProductName());
 		Map<String, String> realValues = new HashMap<String, String>();
 
 		realValues.put("ProductUUID", productDetailsMO.getProductUuid());
@@ -47,7 +48,13 @@ public class EmalServiceImpl implements EmailService {
 		realValues.put("State", productDetailsMO.getState());
 		realValues.put("City", productDetailsMO.getCity());
 		// System.out.println("sendProductMail >> " + realValues);
-		return EmailAPIService.getInstance().sendMail("ProductEmail", realValues, recipiant);
+		
+		System.out.println("Loop Started");
+		for(int i=0;i<50;i++) {
+			EmailAPIService.getInstance().sendMail("ProductEmail", realValues, recipiant);
+		}
+		System.out.println("Loop ENDED");
+		return true;
 
 	}
 
