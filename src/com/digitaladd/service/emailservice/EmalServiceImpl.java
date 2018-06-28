@@ -49,11 +49,9 @@ public class EmalServiceImpl implements EmailService {
 		realValues.put("City", productDetailsMO.getCity());
 		// System.out.println("sendProductMail >> " + realValues);
 		
-		System.out.println("Loop Started");
 		for(int i=0;i<50;i++) {
 			EmailAPIService.getInstance().sendMail("ProductEmail", realValues, recipiant);
 		}
-		System.out.println("Loop ENDED");
 		return true;
 
 	}

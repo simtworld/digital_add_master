@@ -2,6 +2,8 @@ package com.digitaladd.util.emailAPI;
 
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -12,11 +14,15 @@ public class EmailAPIService {
 	private String to;
 	private String from;
 
+	static Session session;
+
 	static private String userName;
 	static private String password;
 	static private String host;
 	static private String port;
 	static private Properties props;
+
+	static ExecutorService executor = Executors.newFixedThreadPool(10);// creating a pool of 10 threads
 
 	static private EmailAPIDao emailAPIDao;
 
@@ -43,36 +49,28 @@ public class EmailAPIService {
 	 * @return boolean
 	 */
 	public boolean sendMail(String templateTypeId, Map<String, String> realValues, String recipiant) {
-		
-		boolean flag=false;
+
+		boolean flag = false;
 		try {
-		
-		// Get the Session object.
-		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(userName, password);
-			}
-		});
-		
-		
-		EmailAPIServiceThread emailAPIServiceThread=new EmailAPIServiceThread();
-		
-		emailAPIServiceThread.setRecipiant(recipiant);
-		emailAPIServiceThread.setTemplateTypeId(templateTypeId);
-		emailAPIServiceThread.setRealValues(realValues);
-		emailAPIServiceThread.setFrom(userName);
-		//emailAPIServiceThread.setEmailAPITemplateDetailsVO(emailAPITemplateDetailsVO);
-		emailAPIServiceThread.setSession(session);
-		
-		System.out.println("EmailAPIService >> sendmail >> thread STARTED");
-		emailAPIServiceThread.start();
-		
-		
-		
-		flag=true;
-		}catch (Exception e) {
+
+			EmailAPIServiceThread emailAPIServiceThread = new EmailAPIServiceThread();
+
+			emailAPIServiceThread.setRecipiant(recipiant);
+			emailAPIServiceThread.setTemplateTypeId(templateTypeId);
+			emailAPIServiceThread.setRealValues(realValues);
+			emailAPIServiceThread.setFrom(userName);
+			// emailAPIServiceThread.setEmailAPITemplateDetailsVO(emailAPITemplateDetailsVO);
+			emailAPIServiceThread.setSession(session);
+
+			Runnable thread = emailAPIServiceThread;
+
+			executor.execute(thread);// calling execute method of ExecutorService
+			System.out.println("EmailAPIService >> sendmail >> thread STARTED ");
+			
+			flag = true;
+		} catch (Exception e) {
 			e.printStackTrace();
-			flag=false;
+			flag = false;
 		}
 		return flag;
 	}
@@ -96,10 +94,10 @@ public class EmailAPIService {
 		host = emailAPIConfigVO.getHost();
 		port = emailAPIConfigVO.getPort();
 
-//		System.out.println(userName);
-//		System.out.println(password);
-//		System.out.println(host);
-//		System.out.println(port);
+		// System.out.println(userName);
+		// System.out.println(password);
+		// System.out.println(host);
+		// System.out.println(port);
 
 		props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -107,11 +105,20 @@ public class EmailAPIService {
 		props.put("mail.smtp.host", host);
 		props.put("mail.smtp.port", port);
 		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
+		// Get the Session object.
+		session = Session.getInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(userName, password);
+			}
+		});
 	}
 
 	public boolean changeEmailConfig(EmailAPIConfigVO emailAPIConfigVO) {
 		return emailAPIDao.changeEmailConfig(emailAPIConfigVO);
 	}
+	
+	
 
 	public void setTo(String to) {
 		this.to = to;
