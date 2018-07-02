@@ -84,12 +84,33 @@
 			opacity: 0.5;
 			cursor: not-allowed;
 		}
-      
+		
+		/**  STYLE 3 */
+		.scroll::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+			background-color: #F5F5F5;
+		}
+
+		.scroll::-webkit-scrollbar {
+			width: 6px;
+			background-color: #F5F5F5;
+		}
+
+		.scroll::-webkit-scrollbar-thumb {
+			background-color: #000000;
+		}
+
+		.scrollbar {
+			
+			overflow-y: scroll;
+			
+		}
+		      
       </style> 
 
 
 <!-- Main Container of user pannel START -->
-	<div class="container-fluid">
+	<div class="container-fluid ">
 		
 		<!-- 1st Row `navbar` START-->
 			<div class="row" style="height: 50px;margin-bottom: 20px"></div>
@@ -120,7 +141,7 @@
 						<div class="col-md-12">
 		
 						<!-- MAIN TASK CARD START-->
-							<div class="card ">
+							<div class="card">
 								<div class="form-horizontal card-shadow " style="border-radius:  5px; " id="viewDiv">
 								
 								<!-- Add Window button on top start -->
@@ -131,7 +152,7 @@
 								<!-- Add Window button on top end -->
 								
 								<!-- Modal START-->
-									  <div class="modal fade" id="addPopupModal" role="dialog">
+									  <div class="modal fade " id="addPopupModal" role="dialog">
 									    <div class="modal-dialog modal-lg">
 									      <div class="modal-content">
 									        <div class="modal-header">
@@ -215,7 +236,7 @@
 									
 								
 								<!-- Products Cards pannel/div START -->
-									<div style="overflow-y:scroll; max-height:  600px; overflow-x:  hidden; background:#f2f2f2" id="card_pannel" class="">
+									<div style="overflow-y:scroll; max-height:  600px; overflow-x:  hidden; background:#f2f2f2" id="card_pannel" class=" scrollbar scroll">
 								
 									<!-- Product add card start -->
 										<div style="padding-left: 10px; padding-right: 10px" id="prod-1" class="prod-incomplet">
@@ -416,9 +437,7 @@
 		
 		//to set the product data to the modal
 		function setProductDataToModal(){
-		
-			
-			console.log(count);
+
 			$("#modal-add-name").text($("#prod-"+count+" #prod_name").text());
 			$("#modal-add-desc").text($("#prod-"+count+" #prod_desc").text());
 			$("#modal-add-img").attr("src",$("#prod-"+count+" #prod_img").attr('src'));
@@ -427,7 +446,8 @@
 		
 		//to increase the product index count
 			function increaseCount(){
-				if(count < $("#card_pannel > div").length){
+			
+				if(count < $("#card_pannel > div").length ){
 					count++;
 				}
 				if($("#prod-"+count).hasClass("completed")){
