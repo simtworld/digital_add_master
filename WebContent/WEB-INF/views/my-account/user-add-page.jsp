@@ -59,6 +59,21 @@
 		.fa{
 			width: -webkit-fill-available;
 		}
+		
+		
+		.card-shadow {
+  			box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+		}
+		
+
+		.card-shadow-hover-effect {
+ 		 box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+ 		 transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+		}
+		
+		.card-shadow-hover-effect:hover {
+  			 box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+		}
       
       </style> 
 
@@ -95,11 +110,11 @@
 						<div class="col-md-12">
 		
 						<!-- MAIN TASK CARD START-->
-							<div class="card">
-								<div class="form-horizontal" id="viewDiv">
+							<div class="card ">
+								<div class="form-horizontal card-shadow " style="border-radius:  5px; " id="viewDiv">
 								
 								<!-- Add Window button on top start -->
-									<div data-toggle="modal" data-target="#addPopupModal" class="btn card-header card-header-text"
+									<div data-toggle="modal" data-target="#addPopupModal" class="btn card-header card-header-text card-shadow card-shadow-hover-effect"
 										data-background-color="rose">
 										<h4 class="card-title">Adds Window</h4>
 									</div>
@@ -183,16 +198,16 @@
 									      </div>
 									    </div>
 									  </div>
-									<!-- Modal END-->								
+								<!-- Modal END-->								
 									
 								
 								<!-- Products Cards pannel/div START -->
-									<div style="overflow-y:scroll; max-height:  600px; overflow-x:  hidden; background:#f2f2f2">
+									<div style="overflow-y:scroll; max-height:  600px; overflow-x:  hidden; background:#f2f2f2" class="">
 								
 									<!-- Product add card start -->
 										<div style="padding-left: 10px; padding-right: 10px">
-											<div class="card bg-light">
-												<div class=" row" style="margin-top: -15; margin-top: 15px">
+											<div class="card bg-light card-shadow-hover-effect">
+												<div class=" row" style="margin-top: 15px">
 													<div class="col-md-2">
 														<img class="card-img-left" src="assets/img/faces/avatar.jpg"
 															alt="product image"
@@ -222,7 +237,7 @@
 									
 									<!-- Product add card start -->
 										<div style="padding-left: 10px; padding-right: 10px">
-											<div class="card bg-light">
+											<div class="card bg-light card-shadow-hover-effect">
 												<div class=" row" style="margin-top: -15; margin-top: 15px">
 													<div class="col-md-2">
 														<img class="card-img-left" src="assets/img/faces/avatar.jpg"
@@ -252,7 +267,7 @@
 									
 									<!-- Product add card start -->
 										<div style="padding-left: 10px; padding-right: 10px">
-											<div class="card bg-light">
+											<div class="card bg-light card-shadow-hover-effect">
 												<div class=" row" style="margin-top: -15; margin-top: 15px">
 													<div class="col-md-2">
 														<img class="card-img-left" src="assets/img/faces/avatar.jpg"
