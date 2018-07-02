@@ -38,7 +38,7 @@
 								<div class="form-horizontal" id="viewDiv">
 								
 								<!-- Add Window button on top start -->
-									<div class="card-header card-header-text"
+									<div type="button" data-toggle="modal" data-target="#addPopupModal" class="card-header card-header-text"
 										data-background-color="rose">
 										<h4 class="card-title">Adds Window</h4>
 									</div>
@@ -49,6 +49,7 @@
 								
 									<!-- Product add card start -->
 										<div style="padding-left: 10px; padding-right: 10px">
+										
 											<div class="card bg-light">
 												<div class=" row" style="margin-top: -15; margin-top: 15px">
 													<div class="col-md-2">
@@ -73,8 +74,12 @@
 															data-duration="1000" data-color="#ccc,teal"></div>
 													</div>
 												</div>
-			
+													
+													
+													
+													
 											</div>
+											
 										</div>
 									<!-- Product add card end -->
 									
