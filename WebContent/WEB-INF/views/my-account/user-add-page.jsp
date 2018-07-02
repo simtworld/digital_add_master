@@ -74,7 +74,7 @@
 			<div class="row" style="">
 				<div class="col-md-2" id="google_pc_add" style="margin-top: 100px">
 					<img src="https://lh4.ggpht.com/8w5rhmn-M8IKcoktSlyKjXLUt5ABPwA8DVcPMz2JpzVc89kdJyntWb-RttwuurauryMR4lH3vw=w160" class="rounded mx-auto d-block"
-						alt="ad1" height="600" width="120">
+						alt="ad1" style="max-height:  600px; max-width: 160px;">
 				</div>
 				
 			<!-- 2nd COLUMN of 2nd ROW Start-->
@@ -82,7 +82,7 @@
 					
 				<!-- Top Add pannel start -->
 					<div class="row" style="">
-						<div class="col-md-12"	style="text-align: center;">
+						<div class="col-md-12"	style="text-align: center;margin-top: 20px;">
 							<img src="https://lh6.ggpht.com/41LFWBytPnxKsfZf6mivs6ba7qdOBtfk9-7MzWSMqwC3IFOvaXd8rejFiyeXKfBOK16mMEopeA=w728" class="rounded mx-auto d-block" alt="ad1">
 						</div>
 					</div>
