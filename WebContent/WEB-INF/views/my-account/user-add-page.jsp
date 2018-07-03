@@ -208,14 +208,14 @@
 								
 									<!-- Product add card start -->
 										<div style="padding-left: 10px; padding-right: 10px">
-<<<<<<< HEAD
+
 										
 											<div class="card bg-light">
 												<div class=" row" style="margin-top: -15; margin-top: 15px">
-=======
+
 											<div class="card bg-light card-shadow-hover-effect">
 												<div class=" row" style="margin-top: 15px">
->>>>>>> refs/remotes/origin/Satya
+
 													<div class="col-md-2">
 														<img class="card-img-left" src="assets/img/faces/avatar.jpg"
 															alt="product image"
