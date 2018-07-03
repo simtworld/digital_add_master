@@ -61,6 +61,7 @@
 		}
 		
 		
+		
 		.card-shadow {
   			box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 		}
@@ -85,26 +86,7 @@
 			cursor: not-allowed;
 		}
 		
-		/**  STYLE 3 */
-		.scroll::-webkit-scrollbar-track {
-			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-			background-color: #F5F5F5;
-		}
-
-		.scroll::-webkit-scrollbar {
-			width: 6px;
-			background-color: #F5F5F5;
-		}
-
-		.scroll::-webkit-scrollbar-thumb {
-			background-color: #000000;
-		}
-
-		.scrollbar {
-			
-			overflow-y: scroll;
-			
-		}
+		
 		      
       </style> 
 
@@ -172,12 +154,12 @@
 									                            <div class="col col-lg-12" >
 									                                <div class="row">
 									                                    <div style="text-align: center">
-									                                         <h1 id="modal-add-name"></h1>
+									                                         <h1 id="modal-add-name" style=""></h1>
 									                                    </div>
 									                                </div>
 									                                <div  class="row" >
-									                                     <div id="ad-image" >
-									                                        <img id="modal-add-img" src="" class="" alt="Responsive image" height="300">
+									                                     <div id="ad-image" style="text-align:  -webkit-center;">
+									                                        <img id="modal-add-img" src="" class="" alt="Responsive image" style=" max-height: 300px; width: auto;">
 									                                     </div>
 									                                </div>
 									                                <div class="row">
@@ -191,23 +173,23 @@
 									                                    </div>
 									                                </div>
 									                                <div class="row" >
-									                               		<div class="col col-lg-1"></div>
-									                                	<div class="col col-lg-2">
+									                               		<div class="col col-lg-1 col-md-1 col-sm-1"></div>
+									                                	<div class="col col-lg-2 col-md-2 col-sm-2 col-xs-4">
 									                                        <a href="#" id="modal-add-fb-share" class="btn fa fa-facebook"></a>
 									                                    </div>
-									                                    <div class="col col-lg-2">
+									                                    <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-4">
 									                                        <a href="#" id="modal-add-twitter-share"class="btn fa fa-twitter"></a>
 									                                    </div>
-									                                    <div class="col col-lg-2">
+									                                    <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-4">
 									                                        <a href="#" id="modal-add-google-share" class="btn fa fa-google"></a>
 									                                    </div>
-									                                    <div class="col col-lg-2">    
+									                                    <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-6">    
 									                                        <a href="#" id="modal-add-instagram-share" class="btn fa fa-instagram"></a>
 									                                    </div>
-									                                    <div class="col col-lg-2">
+									                                    <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-6">
 									                                        <a href="#" id="modal-add-pinterest-share" class="btn fa fa-pinterest"></a>
 									                                    </div>
-									                                    <div class="col col-lg-1"></div>
+									                                    <div class="col col-lg-1 col-md-1 col-sm-1"></div>
 									                               
 									                                </div>
 									                                <div class="row" style="padding-top: 20px">
@@ -236,21 +218,21 @@
 									
 								
 								<!-- Products Cards pannel/div START -->
-									<div style="overflow-y:scroll; max-height:  600px; overflow-x:  hidden; background:#f2f2f2" id="card_pannel" class=" scrollbar scroll">
+									<div id="prodCardsPannels" style="overflow-y:scroll; max-height:  600px; overflow-x:  hidden; background:#f2f2f2" id="card_pannel" class=" scrollbar scroll">
 								
 									<!-- Product add card start -->
 										<div style="padding-left: 10px; padding-right: 10px" id="prod-1" class="prod-incomplet">
-											<div class="card bg-light card-shadow-hover-effect" style="">
+											<div class="card bg-light card-shadow-hover-effect" style="padding: 10px;">
 												<div class=" row" style="margin-top: 15px">
-													<div class="col-md-2">
+													<div class="col-md-2" >
 														<img class="card-img-left" id="prod_img" src="assets/img/faces/avatar.jpg"
 															alt="product image"
-															style="padding-left: 10px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;">
+															style="padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;">
 													</div>
 													<div class="col-md-7">
 														<div class="card-body">
 															<div class="caption ">
-																<h3 style="margin-top: 0px; margin-bottom: 0px;" id="prod_name">TEST 1</h3>
+																<h3 style="margin-top: 0px; margin-bottom: 0px;font-weight: bold;" id="prod_name">TEST 1</h3>
 																<p class="card-text" id="prod_desc">Cras justo odio, dapibus ac
 																	facilisis in, egestas eget quam. Donec id elit non mi
 																	porta gravida at eget metus. Nullam id dolor id nibh
@@ -260,8 +242,7 @@
 													</div>
 													<div class="col-md-3">
 														<!-- progress bar -->
-														<div class="progress-bar1" data-percent="40"
-															data-duration="1000" data-color="#ccc,teal"></div>
+														<div class="progress-bar1" data-percent="40" data-duration="1000" data-color="#ccc,teal"></div>
 													</div>
 												</div>
 			
@@ -269,14 +250,16 @@
 										</div>
 									<!-- Product add card end -->
 									
+								  
+									
 									<!-- Product add card start -->
 										<div style="padding-left: 10px; padding-right: 10px" id="prod-2" class="prod-incomplet" >
-											<div class="card bg-light card-shadow-hover-effect">
+											<div class="card bg-light card-shadow-hover-effect" style="padding: 10px;">
 												<div class=" row" style="margin-top: -15; margin-top: 15px">
 													<div class="col-md-2">
 														<img class="card-img-left" id="prod_img" src="https://images.pexels.com/photos/53957/striped-core-butterflies-butterfly-brown-53957.jpeg?auto=compress&cs=tinysrgb&h=350"
 															alt="product image"
-															style="padding-left: 10px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;">
+															style="padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;">
 													</div>
 													<div class="col-md-7">
 														<div class="card-body">
@@ -301,12 +284,12 @@
 									
 									<!-- Product add card start -->
 										<div style="padding-left: 10px; padding-right: 10px" id="prod-3" class="completed" >
-											<div class="card bg-light  prod-completed">
+											<div class="card bg-light  prod-completed"style="padding: 10px;">
 												<div class=" row" style="margin-top: -15; margin-top: 15px">
 													<div class="col-md-2">
 														<img class="card-img-left" id="prod_img" src="https://images.pexels.com/photos/265960/pexels-photo-265960.jpeg?auto=compress&cs=tinysrgb&h=350"
 															alt="product image"
-															style="padding-left: 10px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;">
+															style="padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;">
 													</div>
 													<div class="col-md-7">
 														<div class="card-body">
@@ -331,12 +314,12 @@
 									
 									<!-- Product add card start -->
 										<div style="padding-left: 10px; padding-right: 10px" id="prod-4" class="prod-incomplet" >
-											<div class="card bg-light card-shadow-hover-effect">
+											<div class="card bg-light card-shadow-hover-effect"style="padding: 10px;">
 												<div class=" row" style="margin-top: -15; margin-top: 15px">
 													<div class="col-md-2">
 														<img class="card-img-left" id="prod_img" src="https://images.pexels.com/photos/86243/pexels-photo-86243.jpeg?auto=compress&cs=tinysrgb&h=350"
 															alt="product image"
-															style="padding-left: 10px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;">
+															style="padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;">
 													</div>
 													<div class="col-md-7">
 														<div class="card-body">
@@ -361,12 +344,12 @@
 									
 									<!-- Product add card start -->
 										<div style="padding-left: 10px; padding-right: 10px" id="prod-5" class="completed" >
-											<div class="card bg-light prod-completed">
+											<div class="card bg-light prod-completed"style="padding: 10px;">
 												<div class=" row" style="margin-top: -15; margin-top: 15px">
 													<div class="col-md-2">
 														<img class="card-img-left" id="prod_img" src="https://images.pexels.com/photos/1028725/pexels-photo-1028725.jpeg?auto=compress&cs=tinysrgb&h=350"
 															alt="product image"
-															style="padding-left: 10px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;">
+															style="padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;">
 													</div>
 													<div class="col-md-7">
 														<div class="card-body">
@@ -389,6 +372,7 @@
 										</div>
 									<!-- Product add card end -->
 									
+								
 									</div>
 									<!-- Products Cards pannel/div START -->
 								
@@ -446,7 +430,6 @@
 		
 		//to increase the product index count
 			function increaseCount(){
-			
 				if(count < $("#card_pannel > div").length ){
 					count++;
 				}
@@ -490,6 +473,68 @@
 				}
 				setProductDataToModal();
 			});
-			
+				
 	</script>
 <!-- script for modal END -->
+
+<!-- SCRIPT for get-add-products ajax call START -->
+<script type="text/javascript">
+	//$(document).ready(function(){
+	       
+	       $.ajax({url: "https://5358bdc9-8ce1-4839-9b50-e1bff2794dd4.mock.pstmn.io/get-add-products",
+	        		type: "GET",
+	        		async: false,
+	        		success: function(data){
+	            
+	            var arr = jQuery.parseJSON( data );
+				var idNo=6;
+				jQuery(arr).each(function(i, item){
+					var totalPercent = (Number(item.facebook) + Number(item.googleplus) + Number(item.instagram) + Number(item.twitter) + Number(item.pinterest))*20;
+				if(totalPercent<99)
+					{prodStatus='prod-incomplet ';
+					 prodStatus2='card-shadow-hover-effect'}
+				else
+					{prodStatus='completed';
+					 prodStatus2='prod-completed';	
+					}
+				console.log(totalPercent+"  "+ prodStatus);
+					
+					var templete = [
+						'<!-- Product add card start -->',
+										'<div style="padding-left: 10px; padding-right: 10px" id="prod-'+idNo+'" class="'+prodStatus+'">',
+										'<div class="card bg-light '+prodStatus2+'" style="padding: 10px;">',
+												'<div class=" row" style="margin-top: 15px">',
+													'<div class="col-md-2" >',
+														'<img class="card-img-left" id="prod_img" src="'+item.prod_img+'"alt="product image" style="padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;">',
+													'</div>',
+													'<div class="col-md-7">',
+														'<div class="card-body">',
+															'<div class="caption ">',
+																'<h3 style="margin-top: 0px; margin-bottom: 0px;font-weight: bold;" id="prod_name">'+item.prod_name+'</h3>',
+																'<p class="card-text" id="prod_desc">'+item.prodDesc+'</p>',
+															'</div>',
+														'</div>',
+													'</div>',
+													'<div class="col-md-3">',
+														'<!-- progress bar -->',
+														'<div class="progress-bar1" data-percent="'+totalPercent+'" data-duration="1000" data-color="#ccc,teal"></div>',
+													'</div>',
+												'</div>',
+											'</div>',
+										'</div>',
+									'<!-- Product add card end -->',
+					
+					].join("\n");
+					
+					$('#prodCardsPannels').append(templete);
+	    			idNo++;
+	        	});
+	        	
+	        	}
+	        	
+	        	});
+	   
+	//});
+</script>
+
+<!-- SCRIPT for get-add-products ajax call END -->

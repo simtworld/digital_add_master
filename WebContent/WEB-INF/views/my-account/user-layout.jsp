@@ -108,18 +108,35 @@
     margin: 10px auto 5px 20px;
     width: 28%;
     display: none;
+    
   }
+  
 }
+
+/**  STYLE 3 */
+		.scroll::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+			background-color: #F5F5F5;
+		}
+
+		.scroll::-webkit-scrollbar {
+			width: 6px;
+			background-color: #F5F5F5;
+		}
+
+		.scroll::-webkit-scrollbar-thumb {
+			background-color: #000000;
+		}
+
+		.scrollbar {
+			
+			overflow-y: scroll;
+			
+		}
+
 </style>
 
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script>
-google_adtest = "on";
-(adsbygoogle = window.adsbygoogle || []).push({
-google_ad_client: "ca-pub-123456789",
-enable_page_level_ads: true
-});
-</script>
+
 
 <!--   Core JS Files   -->
 
@@ -131,7 +148,7 @@ enable_page_level_ads: true
 	
 
 </head>
-<body>
+<body class="scrollbar scroll">
 
 	<tiles:insertAttribute name="Navbar"></tiles:insertAttribute>
 
